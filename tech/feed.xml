@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 08:03:00 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 08:12:41 +0900</pubDate>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
@@ -221,14 +221,13 @@ http://jekyllthemes.org/themes/kasper/&lt;/p&gt;
       </item>
     
       <item>
-        <title>“Wireless LAN 親機の設定&quot;</title>
+        <title>Wireless LAN 親機の設定</title>
         <link>http://NaokiMizutani.github.io/tech/peripherals/lan/2016/04/29/WirelessLAN.html</link>
         <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/peripherals/lan/2016/04/29/WirelessLAN.html</guid>
         <description>&lt;p&gt;Buffalo 無線LAN親機（WZR-HP-G301NH/U）を利用していますが、
-一度設定すると滅多に触れることがない機器なので、
-設定方法を忘れてしまいます。
-設定する必要がありましたので、そのときの記録を残します。
-設定の際には、専用の設定ツールソフトをインストールしたPCが必要です。&lt;/p&gt;
+一度設定すると滅多に触れない機器なので、設定方法を忘れます。
+再設定する必要がありましたので、そのときの記録を残します。
+設定には、専用の設定ツールソフトをインストールしたPCが必要です。&lt;/p&gt;
 
 &lt;p&gt;Internet側を固定IPで接続する方法です。&lt;/p&gt;
 
@@ -256,13 +255,20 @@ DIAG ランプが点滅することを確認する。&lt;br /&gt;
 &lt;h2 id=&quot;section&quot;&gt;エアステーション設定ツールの利用&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://buffalo.jp/download/driver/lan/airset.html&quot;&gt;ダウンロードサイト&lt;/a&gt; から
-エアステーション設定プログラムをダウンロードして PC にインストールして起動する。&lt;/li&gt;
-  &lt;li&gt;プログラムを起動すると自動的に探した無線親機が画面に表示される。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://buffalo.jp/download/driver/lan/airset.html&quot;&gt;ダウンロードサイト&lt;/a&gt; から
+エアステーション設定プログラムをダウンロードして PC にインストールして起動する。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;プログラムを起動すると自動的に無線LAN親機を探し、機器一覧が画面に表示される。&lt;/li&gt;
   &lt;li&gt;該当機器を選択して「次に」ボタンを押す。&lt;/li&gt;
-  &lt;li&gt;次の選択画面で無線親機のIPアドレス設定せず、「通常はこちら」と表示された「設定画面を開く」を押す。&lt;br /&gt;
-ブラウザが立ち上がり、ユーザ名（root）を入れる。&lt;/li&gt;
-  &lt;li&gt;各種の設定
+  &lt;li&gt;
+    &lt;p&gt;次の選択画面では、無線LAN親機のIPアドレス設定せずに、
+「通常はこちら」と表示された「設定画面を開く」を押す。&lt;br /&gt;
+ブラウザが立ち上がり、ユーザ名（root）を入れる。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;各種の設定&lt;/p&gt;
+
     &lt;ol&gt;
       &lt;li&gt;Internet/LAN のタブ
         &lt;ul&gt;
@@ -291,7 +297,7 @@ DIAG ランプが点滅することを確認する。&lt;br /&gt;
 設定ツールをログアウトしておく。&lt;/p&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;テスト&lt;/h2&gt;
-&lt;p&gt;電源を入れなおしても動作しているかチェック&lt;/p&gt;
+&lt;p&gt;電源を入れなおしても動作しているかチェックする。&lt;/p&gt;
 
 </description>
         <pubDate>Fri, 29 Apr 2016 00:00:00 +0900</pubDate>

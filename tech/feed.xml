@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 07:01:09 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 07:08:07 +0900</pubDate>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
@@ -56,12 +56,14 @@
       </item>
     
       <item>
-        <title>CentOS7 Install</title>
+        <title>Installing CentOS7</title>
         <link>http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/centos7-install.html</link>
         <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/centos7-install.html</guid>
-        <description>&lt;p&gt;CentOS7, x86_64.iso メディアを用いたインストール方法&lt;/p&gt;
+        <description>&lt;p&gt;CentOS Project サイトから、CentOS7 の ISO イメージをダウンロードして
+インストールする方法を記します。&lt;/p&gt;
 
 &lt;ul&gt;
+  &lt;li&gt;CentOS の ISOイメージを用意&lt;/li&gt;
   &lt;li&gt;BIOS の設定により、ブートドライブを DVDドライブに設定&lt;/li&gt;
   &lt;li&gt;CentOS7 x86_64.iso からインストールを開始&lt;br /&gt;
 　　[I]nstall CentOS7 を選ぶ。’I’ を押してエンターキーを押す。&lt;/li&gt;

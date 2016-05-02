@@ -6,6 +6,7 @@ then
 fi
 
 rm -rf _deploy/*
+mkdir _deploy/tech
 cp -r _site/* _deploy/tech
 cd _deploy
 git add .

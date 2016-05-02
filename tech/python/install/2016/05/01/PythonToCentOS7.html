@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Installing Python3 to CentOS7 | N.Mizutani</title>
+	<meta name="description" content="Python3 の CentOS7 へのインストール">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/install/2016/05/01/PythonToCentOS7.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Installing Python3 to CentOS7</h1>
+    <p class="meta">
+    May 1, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>Python3 の CentOS7 へのインストール</p>
+
+<ul>
+  <li>Python3 のダウンロード<br />
+  <a href="https://www.python.org/downloads/">Python サイト/ダウンロード</a> にて、ダウンロードするpython3 のバージョンを選んで、下記にように /var/tmp などのディレクトリでダウンロード</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz</code></pre></figure>
+
+<p>または</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz</code></pre></figure>
+
+<ul>
+  <li>必要となるパッケージをインストール</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel</span></code></pre></figure>
+
+<ul>
+  <li>ダウンロードした Python3 の解凍と展開、インストール<br />
+（ダウンロードしたファイルが Python-3.5.0.tar.xz の場合）</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>xz -dv Python-3.5.0.tar.xz
+<span class="gp">(# </span>yum install xz ... 必要に応じて<span class="o">)</span>
+<span class="gp">$ </span>tar -xvf Python-3.5.0.tar
+<span class="gp">$ </span><span class="nb">cd </span>Python-3.5.0
+<span class="gp">$ </span>./configure --prefix<span class="o">=</span>/usr/local/python3
+<span class="gp">$ </span>make
+<span class="c"># make install</span></code></pre></figure>
+
+<ul>
+  <li>PATH の設定<br />
+  /etc/profile または .bashrc に下記の行を追加する。</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/python3/bin/:<span class="nv">$PATH</span></code></pre></figure>
+
+<p>（.bashrc に追加した場合）追加後、 $ source .bashrc を実行</p>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

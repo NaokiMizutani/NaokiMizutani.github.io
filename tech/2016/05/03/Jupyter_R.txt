@@ -1,0 +1,42 @@
+【R のインストール】
+https://cran.r-project.org/
+から、Linux用の
+
+
+【R に関する追記】
+RStudio というインタフェースツールが存在するようだが、今後の課題としておく。
+https://www.rsutudio.com/
+
+【IRkernel のインストール】
+
+$ sudo yum install czmq-devel
+
+R をコンソールで立ち上げて、以下のコマンドを打ち込む。
+> install.packages(c('rzmq','repr','IRkernel','IRdisplay'),
+                 repos = c('http://irkernel.github.io/', getOption('repos')),
+                 type = 'source')
+
+'lib = "/usr/lib64/R/library"' は書き込み可能ではありません 
+Would you like to use a personal library instead?  (y/n)
+というメッセージが出力されるので、y を入力する。
+
+CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。
+
+* DONE (IRkernel)
+
+ ダウンロードされたパッケージは、以下にあります 
+        ‘/tmp/Rtmpe81bSy/downloaded_packages’ 
+というメッセージが出力される。
+
+次に以下のコマンドを入力する。
+> IRkernel::installspec()
+
+R を終了させる。
+> quit()
+
+コンソールで jupyter notebook を立ち上げる。
+$ jupyter notebook
+
+ファイル新規作成で R が選択肢にあれば成功。
+
+

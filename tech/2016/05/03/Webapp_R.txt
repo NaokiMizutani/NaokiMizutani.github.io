@@ -1,0 +1,35 @@
+PypeR を用いて、サーバー側で R が動く Python ベースの Webアプリケーション (CentOS7 ベース)
+
+【Python3, Apache, R, mod_wsgi は動作済とする】
+
+【PypeR のインストール】
+# pip3 install pyper
+        Downloading PypeR-1.1.2.tar.gz
+
+
+【R のサンプルプログラム (R コンソールで動作するソース)】
+a <- c(2,3,4,5,6)
+summary(a)
+
+【Python/PypeR でのサンプルプログラム（Python3 で動作するソース）】
+import pyper as pr
+
+r = pr.R()
+
+r("a <- c(2, 3, 4, 5, 6)")
+text = r("summary(a)")
+print(text)
+
+【Webアプリケーションとしての Pythonファイル】
+#!/usr/local/python35/bin/python3
+
+import pyper as pr
+
+def application(environ, start_response):
+    start_response('200 OK', [('Content-type', 'text/plain')])
+
+    r = pr.R()
+    r("a <- c(2, 3, 4, 5, 6)")
+    text = r("summary(a)")
+
+    return [text.encode('utf-8')]

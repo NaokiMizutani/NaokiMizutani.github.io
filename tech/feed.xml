@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 08:12:41 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 11:17:46 +0900</pubDate>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
@@ -18,11 +18,11 @@
   &lt;a href=&quot;https://www.python.org/downloads/&quot;&gt;Python サイト/ダウンロード&lt;/a&gt; にて、ダウンロードするpython3 のバージョンを選んで、下記にように /var/tmp などのディレクトリでダウンロード&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;または&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
   &lt;li&gt;必要となるパッケージをインストール&lt;/li&gt;
@@ -35,12 +35,12 @@
 （ダウンロードしたファイルが Python-3.5.0.tar.xz の場合）&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;xz -dv Python-3.5.0.tar.xz
-&lt;span class=&quot;gp&quot;&gt;(# &lt;/span&gt;yum install xz ... 必要に応じて&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tar -xvf Python-3.5.0.tar
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Python-3.5.0
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;./configure --prefix&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/python3
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;make
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;xz -dv Python-3.5.0.tar.xz
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# yum install xz ... 必要に応じて)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;tar -xvf Python-3.5.0.tar
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Python-3.5.0
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./configure --prefix&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/python3
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;make
 &lt;span class=&quot;c&quot;&gt;# make install&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
@@ -133,10 +133,10 @@
   &lt;li&gt;インストール方法&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;sudo gem install jekyll
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo gem install jekyll
 （以下は、jekylltheme を導入した際のオプション）
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;sudo gem install jekyll-paginate
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;sudo gem install pygments.rb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo gem install jekyll-paginate
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo gem install pygments.rb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h3 id=&quot;jekyll-&quot;&gt;Jekyll の設定&lt;/h3&gt;
 
@@ -157,13 +157,13 @@ markdown: kramdown&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;p&gt;トップディレクトリに _layouts という名前のディレクトリを作成し、その中に下記内容の default.html を作成&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;meta charset=&quot;UTF-8&quot;&amp;gt;
+&amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
 &amp;lt;title&amp;gt;Lekohub&amp;lt;/title&amp;gt;
 &amp;lt;!-- cssとかjsもここで読み込み --&amp;gt;
-&amp;lt;link rel=&quot;stylesheet&quot; href=&quot;css/common.css&quot;&amp;gt;
-&amp;lt;script src=&quot;js/top.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;css/common.css&amp;quot;&amp;gt;
+&amp;lt;script src=&amp;quot;js/top.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
  
-&amp;lt;div class=&quot;container&quot;&amp;gt;
+&amp;lt;div class=&amp;quot;container&amp;quot;&amp;gt;
     {{ content }}
 &amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
@@ -186,7 +186,7 @@ layout: default
 &lt;p&gt;_post のファイルのヘッダーに書く日時は GMT でなければならないかも。
 JSTで書くとまだ来ていない時刻と判断されてエラーになるのかも。&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;jekyll build&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;jekyll build&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
   &lt;li&gt;レイアウト（layout）
@@ -197,7 +197,7 @@ _layouts に layout.html というファイルを作成する。
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
 &amp;lt;head&amp;gt;
-  &amp;lt;meta http-equiv=&quot;Content-type&quot; content=&quot;text/html; charset=utf-8&quot;&amp;gt;
+  &amp;lt;meta http-equiv=&amp;quot;Content-type&amp;quot; content=&amp;quot;text/html; charset=utf-8&amp;quot;&amp;gt;
   &amp;lt;title&amp;gt;Jekyll の利用方法&amp;lt;/title&amp;gt;
 &amp;lt;/head&amp;gt;
 &amp;lt;body&amp;gt;

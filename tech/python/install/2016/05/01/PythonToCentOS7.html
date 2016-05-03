@@ -141,11 +141,11 @@
   <a href="https://www.python.org/downloads/">Python サイト/ダウンロード</a> にて、ダウンロードするpython3 のバージョンを選んで、下記にように /var/tmp などのディレクトリでダウンロード</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz</code></pre></figure>
 
 <p>または</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz</code></pre></figure>
 
 <ul>
   <li>必要となるパッケージをインストール</li>
@@ -158,12 +158,12 @@
 （ダウンロードしたファイルが Python-3.5.0.tar.xz の場合）</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>xz -dv Python-3.5.0.tar.xz
-<span class="gp">(# </span>yum install xz ... 必要に応じて<span class="o">)</span>
-<span class="gp">$ </span>tar -xvf Python-3.5.0.tar
-<span class="gp">$ </span><span class="nb">cd </span>Python-3.5.0
-<span class="gp">$ </span>./configure --prefix<span class="o">=</span>/usr/local/python3
-<span class="gp">$ </span>make
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>xz -dv Python-3.5.0.tar.xz
+<span class="o">(</span><span class="c"># yum install xz ... 必要に応じて)</span>
+<span class="nv">$ </span>tar -xvf Python-3.5.0.tar
+<span class="nv">$ </span><span class="nb">cd </span>Python-3.5.0
+<span class="nv">$ </span>./configure --prefix<span class="o">=</span>/usr/local/python3
+<span class="nv">$ </span>make
 <span class="c"># make install</span></code></pre></figure>
 
 <ul>

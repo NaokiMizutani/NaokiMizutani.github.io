@@ -144,10 +144,10 @@
   <li>インストール方法</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>sudo gem install jekyll
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo gem install jekyll
 （以下は、jekylltheme を導入した際のオプション）
-<span class="gp">$ </span>sudo gem install jekyll-paginate
-<span class="gp">$ </span>sudo gem install pygments.rb</code></pre></figure>
+<span class="nv">$ </span>sudo gem install jekyll-paginate
+<span class="nv">$ </span>sudo gem install pygments.rb</code></pre></figure>
 
 <h3 id="jekyll-">Jekyll の設定</h3>
 
@@ -168,13 +168,13 @@ markdown: kramdown</code></pre></figure>
 <p>トップディレクトリに _layouts という名前のディレクトリを作成し、その中に下記内容の default.html を作成</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">&lt;!DOCTYPE html&gt;
-&lt;meta charset="UTF-8"&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
 &lt;title&gt;Lekohub&lt;/title&gt;
 &lt;!-- cssとかjsもここで読み込み --&gt;
-&lt;link rel="stylesheet" href="css/common.css"&gt;
-&lt;script src="js/top.js"&gt;&lt;/script&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;css/common.css&quot;&gt;
+&lt;script src=&quot;js/top.js&quot;&gt;&lt;/script&gt;
  
-&lt;div class="container"&gt;
+&lt;div class=&quot;container&quot;&gt;
     {{ content }}
 &lt;/div&gt;</code></pre></figure>
 
@@ -197,7 +197,7 @@ layout: default
 <p>_post のファイルのヘッダーに書く日時は GMT でなければならないかも。
 JSTで書くとまだ来ていない時刻と判断されてエラーになるのかも。</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>jekyll build</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>jekyll build</code></pre></figure>
 
 <ul>
   <li>レイアウト（layout）
@@ -208,7 +208,7 @@ _layouts に layout.html というファイルを作成する。
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">&lt;!DOCTYPE html&gt;
 &lt;head&gt;
-  &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+  &lt;meta http-equiv=&quot;Content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
   &lt;title&gt;Jekyll の利用方法&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;

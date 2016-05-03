@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 13:42:39 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 13:47:26 +0900</pubDate>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
@@ -57,8 +57,8 @@
     
       <item>
         <title>Installing CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/CentOS7-install.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/CentOS7-install.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/centos7/install/2016/04/30/CentOS7-install.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/install/2016/04/30/CentOS7-install.html</guid>
         <description>&lt;p&gt;CentOS Project サイトからダウンロードした CentOS7, ISO イメージを
 インストールする方法を記します。&lt;/p&gt;
 

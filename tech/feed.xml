@@ -5,7 +5,77 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 19:00:04 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 20:35:37 +0900</pubDate>
+    
+      <item>
+        <title>Installing Python3 to CentOS7</title>
+        <link>http://NaokiMizutani.github.io/tech/python/install/2016/05/03/PythonToCentOS7.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/install/2016/05/03/PythonToCentOS7.html</guid>
+        <description>&lt;p&gt;Python3 の CentOS7 へのインストール&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Python3 のインストールに必要なものを先にインストール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install zlib-devel
+# yum install tk-devel
+# yum install sqlite-devel
+# yum install ncurses-devel
+# yum install gdbm-devel
+# yum install readline-devel
+# yum install bzip2-devel
+# yum install openssl-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Python3 のダウンロード&lt;br /&gt;
+  &lt;a href=&quot;https://www.python.org/downloads/&quot;&gt;Python サイト/ダウンロード&lt;/a&gt; にて、ダウンロードするpython3 のバージョンを選んで、下記にように /var/tmp などのディレクトリでダウンロード&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;または&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ダウンロードした Python3 の解凍と展開、インストール&lt;br /&gt;
+（ダウンロードしたファイルが Python-3.5.0.tar.xz の場合）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ xz -dv Python-3.5.0.tar.xz
+(# yum install xz ... 必要に応じて)
+$ tar -xvf Python-3.5.0.tar
+（ダウンロードしたファイルが Python3.5.0.tgz の場合はマウス操作で展開できる）
+$ cd Python-3.5.0
+（/var/tmp の下あたりで作業）
+$ ./configure --with-threads --enable-shared --prefix=/usr/local/python3
+$ make
+# make install&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PATH の設定&lt;br /&gt;
+  /etc/profile または .bashrc に下記の行を追加する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;export PATH=/usr/local/python3/bin/:$PATH&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;（.bashrc に追加した場合）追加後、 $ source .bashrc を実行&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;python3 起動時にエラーが出る場合の修正（リンクを張ることで対処）&lt;br /&gt;
+（エラー）python3: error while loading shared libraries: libpython3.4m.so.1.0: cannot open shared object file: No such file or directory&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# ln -s /usr/local/python35/lib/libpython3.5m.so.1.0 /lib64/  (Python3.5.0 の場合)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;動作チェック&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ python3 --version&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</description>
+        <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Setting Apache for using Python</title>
@@ -166,76 +236,6 @@ SELINUX=disabled&lt;/p&gt;
 # systemctl restart firewalld
 # systemctl enable firewalld&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-</description>
-        <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Installing Python3 to CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/python/install/2016/05/03/PythonToCentOS7.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/install/2016/05/03/PythonToCentOS7.html</guid>
-        <description>&lt;p&gt;Python3 の CentOS7 へのインストール&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Python3 のインストールに必要なものを先にインストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install zlib-devel
-# yum install tk-devel
-# yum install sqlite-devel
-# yum install ncurses-devel
-# yum install gdbm-devel
-# yum install readline-devel
-# yum install bzip2-devel
-# yum install openssl-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Python3 のダウンロード&lt;br /&gt;
-  &lt;a href=&quot;https://www.python.org/downloads/&quot;&gt;Python サイト/ダウンロード&lt;/a&gt; にて、ダウンロードするpython3 のバージョンを選んで、下記にように /var/tmp などのディレクトリでダウンロード&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;または&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ダウンロードした Python3 の解凍と展開、インストール&lt;br /&gt;
-（ダウンロードしたファイルが Python-3.5.0.tar.xz の場合）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ xz -dv Python-3.5.0.tar.xz
-(# yum install xz ... 必要に応じて)
-$ tar -xvf Python-3.5.0.tar
-（ダウンロードしたファイルが Python3.5.0.tgz の場合はマウス操作で展開できる）
-$ cd Python-3.5.0
-（/var/tmp の下あたりで作業）
-$ ./configure --with-threads --enable-shared --prefix=/usr/local/python3
-$ make
-# make install&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;PATH の設定&lt;br /&gt;
-  /etc/profile または .bashrc に下記の行を追加する。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;export PATH=/usr/local/python3/bin/:$PATH&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;（.bashrc に追加した場合）追加後、 $ source .bashrc を実行&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;python3 起動時にエラーが出る場合の修正（リンクを張ることで対処）&lt;br /&gt;
-（エラー）python3: error while loading shared libraries: libpython3.4m.so.1.0: cannot open shared object file: No such file or directory&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# ln -s /usr/local/python35/lib/libpython3.5m.so.1.0 /lib64/  (Python3.5.0 の場合)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;動作チェック&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ python3 --version&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 </description>
         <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
       </item>

@@ -5,7 +5,170 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 17:44:38 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 19:00:04 +0900</pubDate>
+    
+      <item>
+        <title>Setting Apache for using Python</title>
+        <link>http://NaokiMizutani.github.io/tech/python/apache/2016/05/03/Apache_Python3.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/apache/2016/05/03/Apache_Python3.html</guid>
+        <description>&lt;p&gt;CentOS7 で Apache + mod_wsgi で Python プログラムを動かす方法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;httpd の存在を確かめ（$ httpd -v）、httpd が存在しなければインストールする&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;httpd-devel のインストール状況を確かめる&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ yum list installed | grep httpd&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;httpd-devel が表示されなかったら、httpd-devel をインストールする。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install httpd-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mod_wsgi のインストール&lt;br /&gt;
+&lt;a href=&quot;https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html&quot;&gt;mod_wsgi ドキュメント&lt;/a&gt; あたりを参考に、 mod_wsgi のソースコードをダウンロードしてインストールする。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.21.tar.gz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;4.4.21.tar.gz というファイルがダウンロードされるので、それを展開する。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ tar xvfz 4.4.21.tar.gz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;mod_wsgi-4.4.21 のフォルダに入って作業。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ which apxs
+$ which python&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;を実行して、これら実行ファイルがパスに通っているか確認する。
+実行した結果、python は python2.7 だったので、python3 を使うように、次のように指定する。&lt;br /&gt;
+上に記載したサイトに説明がある。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ ./configure --with-python=/usr/local/python3/bin/python3
+$ make
+# make install&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;共有ライブラリは、/usr/lib64/httpd/modules/mod_wsgi.so としてインストールされた。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Apache 設定ファイル /etc/httpd/conf/httpd.conf の修正
+    &lt;ul&gt;
+      &lt;li&gt;httpd.conf 内で確認&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    DocumentRoot : &amp;quot;/var/www/html&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;httpd.conf における修正&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    &amp;lt;Directory &amp;quot;/var/www/html&amp;quot;&amp;gt;
+        Options Indexes FollowSymLinks
+    に追加して
+        Options Indexes FollowSymLinks ExecCGI&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;httpd.conf 内で確認&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    IncludeOptional conf.d/*.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;この記述がなければ最終行に追加する。&lt;br /&gt;
+  - 実行時にエラーが出る場合の詳細ログを出すオプション&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    LogLevel warn
+    を詳細なオプションに変更する
+    LogLevel debug&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Apache 設定ファイル /etc/httpd/conf.d/mod_wsgi.conf を作成&lt;br /&gt;
+内容&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;LoadModule wsgi_module modules/mod_wsgi.so
+&amp;lt;Directory &amp;quot;/var/www/html/&amp;quot;&amp;gt;
+    AddHandler wsgi-script .wsgi
+    AddHandler wsgi-script .py
+&amp;lt;/Directory&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Apache の起動とテスト&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# httpd -k start
+（リスタートの場合）
+# httpd -k restart&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Python Webアプリケーション テストファイル&lt;br /&gt;
+Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
+その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。&lt;br /&gt;
+TypeError: sequence of byte string values expected, value of type str found
+が出る場合には、Pythonソースファイルで文字コードの扱いに工夫が必要である。
+下記サンプルファイルに示すように、戻す文字列を utf-8 から byte列に変換する操作 encode(‘utf-8’) が
+必要である。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;参考サイト http://p–q.blogspot.jp/2014/05/wsgi1pythonwsgi.html&lt;/p&gt;
+
+&lt;p&gt;—– sample1.py —–&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python35/bin/python3
+
+def application(environ, start_response):
+    start_response(&amp;#39;200 OK&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain&amp;#39;)])
+    return [&amp;#39;Hello world!&amp;#39;.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;—– sample2.py —–&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import datetime
+
+d = datetime.datetime.today()
+
+time = &amp;quot;%s年%s月%s日  %s時%s分%s秒&amp;quot; \
+    % (d.year, d.month, d.day, d.hour, d.minute, d.second)
+
+def application(environ, start_response):
+    status = &amp;#39;200 OK&amp;#39;
+    response_headers = [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain; charset=utf-8&amp;#39;)]
+    start_response(status, response_headers)
+    return [time.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;【参考になりそうなサイト／少し古い】
+http://gihyo.jp/dev/feature/01/wsgi&lt;/p&gt;
+
+&lt;p&gt;不要かもしれない試み&lt;/p&gt;
+
+&lt;p&gt;【1】
+/etc/sysconfig/httpd の中身を修正
+LANG=ja_JP.utf8
+export LANG
+それから httpd をリスタート&lt;/p&gt;
+
+&lt;p&gt;【2】
+【SE Linux を無効化】
+# setenforce 0&lt;/p&gt;
+
+&lt;p&gt;/etc/selinux/config の記述を変更
+SELINUX=disabled&lt;/p&gt;
+
+&lt;p&gt;【3 いずれ必要】
+【Firewall の http, https のポートを開ける】&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# firewall-cmd --add-service=http --zone=public --permanent
+# firewall-cmd --add-service=https --zone=public --permanent
+# systemctl restart firewalld
+# systemctl enable firewalld&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Installing Python3 to CentOS7</title>

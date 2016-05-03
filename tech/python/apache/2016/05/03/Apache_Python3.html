@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Setting Apache for using Python | N.Mizutani</title>
+	<meta name="description" content="CentOS7 で Apache + mod_wsgi で Python プログラムを動かす方法">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/apache/2016/05/03/Apache_Python3.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Setting Apache for using Python</h1>
+    <p class="meta">
+    May 3, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>CentOS7 で Apache + mod_wsgi で Python プログラムを動かす方法</p>
+
+<ul>
+  <li>
+    <p>httpd の存在を確かめ（$ httpd -v）、httpd が存在しなければインストールする</p>
+  </li>
+  <li>
+    <p>httpd-devel のインストール状況を確かめる</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ yum list installed | grep httpd</code></pre></figure>
+
+<p>httpd-devel が表示されなかったら、httpd-devel をインストールする。</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># yum install httpd-devel</code></pre></figure>
+
+<ul>
+  <li>mod_wsgi のインストール<br />
+<a href="https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html">mod_wsgi ドキュメント</a> あたりを参考に、 mod_wsgi のソースコードをダウンロードしてインストールする。</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ wget https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.21.tar.gz</code></pre></figure>
+
+<p>4.4.21.tar.gz というファイルがダウンロードされるので、それを展開する。</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ tar xvfz 4.4.21.tar.gz</code></pre></figure>
+
+<p>mod_wsgi-4.4.21 のフォルダに入って作業。</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ which apxs
+$ which python</code></pre></figure>
+
+<p>を実行して、これら実行ファイルがパスに通っているか確認する。
+実行した結果、python は python2.7 だったので、python3 を使うように、次のように指定する。<br />
+上に記載したサイトに説明がある。</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ ./configure --with-python=/usr/local/python3/bin/python3
+$ make
+# make install</code></pre></figure>
+
+<p>共有ライブラリは、/usr/lib64/httpd/modules/mod_wsgi.so としてインストールされた。</p>
+
+<ul>
+  <li>Apache 設定ファイル /etc/httpd/conf/httpd.conf の修正
+    <ul>
+      <li>httpd.conf 内で確認</li>
+    </ul>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">    DocumentRoot : &quot;/var/www/html&quot;</code></pre></figure>
+
+<ul>
+  <li>httpd.conf における修正</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">    &lt;Directory &quot;/var/www/html&quot;&gt;
+        Options Indexes FollowSymLinks
+    に追加して
+        Options Indexes FollowSymLinks ExecCGI</code></pre></figure>
+
+<ul>
+  <li>httpd.conf 内で確認</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">    IncludeOptional conf.d/*.conf</code></pre></figure>
+
+<p>この記述がなければ最終行に追加する。<br />
+  - 実行時にエラーが出る場合の詳細ログを出すオプション</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">    LogLevel warn
+    を詳細なオプションに変更する
+    LogLevel debug</code></pre></figure>
+
+<ul>
+  <li>Apache 設定ファイル /etc/httpd/conf.d/mod_wsgi.conf を作成<br />
+内容</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">LoadModule wsgi_module modules/mod_wsgi.so
+&lt;Directory &quot;/var/www/html/&quot;&gt;
+    AddHandler wsgi-script .wsgi
+    AddHandler wsgi-script .py
+&lt;/Directory&gt;</code></pre></figure>
+
+<ul>
+  <li>Apache の起動とテスト</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># httpd -k start
+（リスタートの場合）
+# httpd -k restart</code></pre></figure>
+
+<ul>
+  <li>Python Webアプリケーション テストファイル<br />
+Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
+その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。<br />
+TypeError: sequence of byte string values expected, value of type str found
+が出る場合には、Pythonソースファイルで文字コードの扱いに工夫が必要である。
+下記サンプルファイルに示すように、戻す文字列を utf-8 から byte列に変換する操作 encode(‘utf-8’) が
+必要である。</li>
+</ul>
+
+<p>参考サイト http://p–q.blogspot.jp/2014/05/wsgi1pythonwsgi.html</p>
+
+<p>—– sample1.py —–</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">#!/usr/local/python35/bin/python3
+
+def application(environ, start_response):
+    start_response(&#39;200 OK&#39;, [(&#39;Content-type&#39;, &#39;text/plain&#39;)])
+    return [&#39;Hello world!&#39;.encode(&#39;utf-8&#39;)]</code></pre></figure>
+
+<p>—– sample2.py —–</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">import datetime
+
+d = datetime.datetime.today()
+
+time = &quot;%s年%s月%s日  %s時%s分%s秒&quot; \
+    % (d.year, d.month, d.day, d.hour, d.minute, d.second)
+
+def application(environ, start_response):
+    status = &#39;200 OK&#39;
+    response_headers = [(&#39;Content-type&#39;, &#39;text/plain; charset=utf-8&#39;)]
+    start_response(status, response_headers)
+    return [time.encode(&#39;utf-8&#39;)]</code></pre></figure>
+
+<p>【参考になりそうなサイト／少し古い】
+http://gihyo.jp/dev/feature/01/wsgi</p>
+
+<p>不要かもしれない試み</p>
+
+<p>【1】
+/etc/sysconfig/httpd の中身を修正
+LANG=ja_JP.utf8
+export LANG
+それから httpd をリスタート</p>
+
+<p>【2】
+【SE Linux を無効化】
+# setenforce 0</p>
+
+<p>/etc/selinux/config の記述を変更
+SELINUX=disabled</p>
+
+<p>【3 いずれ必要】
+【Firewall の http, https のポートを開ける】</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># firewall-cmd --add-service=http --zone=public --permanent
+# firewall-cmd --add-service=https --zone=public --permanent
+# systemctl restart firewalld
+# systemctl enable firewalld</code></pre></figure>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

@@ -14,7 +14,7 @@
 	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
 
 	<!-- Canonical -->
-	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/install/2016/05/02/PythonToCentOS7.html">
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/install/2016/05/03/PythonToCentOS7.html">
 
 	<!-- RSS -->
 	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
@@ -130,7 +130,7 @@
   <header style="background-image: url('/tech/')">
     <h1 class="title">Installing Python3 to CentOS7</h1>
     <p class="meta">
-    May 2, 2016
+    May 3, 2016
     
     </p>
   </header>
@@ -140,47 +140,47 @@
   <li>Python3 のインストールに必要なものを先にインストール</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># yum install zlib-devel</span>
-<span class="c"># yum install tk-devel</span>
-<span class="c"># yum install sqlite-devel</span>
-<span class="c"># yum install ncurses-devel</span>
-<span class="c"># yum install gdbm-devel</span>
-<span class="c"># yum install readline-devel</span>
-<span class="c"># yum install bzip2-devel</span>
-<span class="c"># yum install openssl-devel</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># yum install zlib-devel
+# yum install tk-devel
+# yum install sqlite-devel
+# yum install ncurses-devel
+# yum install gdbm-devel
+# yum install readline-devel
+# yum install bzip2-devel
+# yum install openssl-devel</code></pre></figure>
 
 <ul>
   <li>Python3 のダウンロード<br />
   <a href="https://www.python.org/downloads/">Python サイト/ダウンロード</a> にて、ダウンロードするpython3 のバージョンを選んで、下記にように /var/tmp などのディレクトリでダウンロード</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz</code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz</code></pre></figure>
 
 <p>または</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz</code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz</code></pre></figure>
 
 <ul>
   <li>ダウンロードした Python3 の解凍と展開、インストール<br />
 （ダウンロードしたファイルが Python-3.5.0.tar.xz の場合）</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>xz -dv Python-3.5.0.tar.xz
-<span class="o">(</span><span class="c"># yum install xz ... 必要に応じて)</span>
-<span class="nv">$ </span>tar -xvf Python-3.5.0.tar
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ xz -dv Python-3.5.0.tar.xz
+(# yum install xz ... 必要に応じて)
+$ tar -xvf Python-3.5.0.tar
 （ダウンロードしたファイルが Python3.5.0.tgz の場合はマウス操作で展開できる）
-<span class="nv">$ </span><span class="nb">cd </span>Python-3.5.0
+$ cd Python-3.5.0
 （/var/tmp の下あたりで作業）
-<span class="nv">$ </span>./configure --with-threads --enable-shared --prefix<span class="o">=</span>/usr/local/python3
-<span class="nv">$ </span>make
-<span class="c"># make install</span></code></pre></figure>
+$ ./configure --with-threads --enable-shared --prefix=/usr/local/python3
+$ make
+# make install</code></pre></figure>
 
 <ul>
   <li>PATH の設定<br />
   /etc/profile または .bashrc に下記の行を追加する。</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/python3/bin/:<span class="nv">$PATH</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text">export PATH=/usr/local/python3/bin/:$PATH</code></pre></figure>
 
 <p>（.bashrc に追加した場合）追加後、 $ source .bashrc を実行</p>
 
@@ -189,13 +189,13 @@
 （エラー）python3: error while loading shared libraries: libpython3.4m.so.1.0: cannot open shared object file: No such file or directory</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># ln -s /usr/local/python35/lib/libpython3.5m.so.1.0 /lib64/  (Python3.5.0 の場合)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># ln -s /usr/local/python35/lib/libpython3.5m.so.1.0 /lib64/  (Python3.5.0 の場合)</code></pre></figure>
 
 <ul>
   <li>動作チェック</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python3 --version</code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ python3 --version</code></pre></figure>
 </section>
 </article>
 

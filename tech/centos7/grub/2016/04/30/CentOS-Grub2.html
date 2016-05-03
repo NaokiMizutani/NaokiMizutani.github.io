@@ -169,7 +169,10 @@ set root=(hd0,1)
 chainloader +1
 }</code></pre></figure>
 
-<p>(hd0,1) は sda2 に、(hd0,3) は sda3 に対応する</p>
+<p>‘chainloader’ の後にスペース１つが必要、’+’ の後にスペースは入れない。</p>
+
+<p>/boot/grub2/device.map を参照するとデバイスの名称がわかる。
+また、(hd0,1) は sda2 に、(hd0,2) は sda3 に対応する</p>
 
 <ul>
   <li>‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行</li>

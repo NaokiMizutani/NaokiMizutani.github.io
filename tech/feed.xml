@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 11:17:46 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 12:16:45 +0900</pubDate>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
@@ -57,8 +57,8 @@
     
       <item>
         <title>Installing CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/centos7-install.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/centos7-install.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/CentOS7-install.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos/install/2016/04/30/CentOS7-install.html</guid>
         <description>&lt;p&gt;CentOS Project サイトからダウンロードした CentOS7, ISO イメージを
 インストールする方法を記します。&lt;/p&gt;
 
@@ -120,12 +120,62 @@
       </item>
     
       <item>
+        <title>デュアルブートのための Grub2 の設定</title>
+        <link>http://NaokiMizutani.github.io/tech/centos7/grub/2016/04/30/CentOS-Grub2.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/grub/2016/04/30/CentOS-Grub2.html</guid>
+        <description>&lt;p&gt;CentOS7 と Windows7 をデュアルブートできる状態にするための Grub2 の設定&lt;/p&gt;
+
+&lt;h2 id=&quot;windows-&quot;&gt;Windows のディスクボリュームの縮小&lt;/h2&gt;
+&lt;p&gt;(Windows 7 の場合)&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;管理者特権でコマンドプロンプトを立ち上げ、’diskmgmt.msc’ と入力して、
+ディスクの管理コンソールを起動する。&lt;/li&gt;
+  &lt;li&gt;縮小したいボリュームを選択して、右ボタンで「ボリュームの縮小」をクリックする。&lt;/li&gt;
+  &lt;li&gt;縮小する領域のサイズにサイズを指定する。&lt;br /&gt;
+（縮小してもよいサイズ＝空領域にこれから確保したいサイズ）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;centos7-&quot;&gt;CentOS7 をインストール&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Windows をシャットダウンして、CentOSをインストールする&lt;/li&gt;
+  &lt;li&gt;自動的に空領域にインストールされる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;grub2-&quot;&gt;Grub2 の変更&lt;/h2&gt;
+&lt;p&gt;CentOS の terminal 上で root 権限にて以下の作業を行う。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Windows が入っているデバイス名を調べる&lt;br /&gt;
+‘fdisk -l’ の表示結果から Windows 本体が入っているデバイス名を確認する&lt;br /&gt;
+ 例） /dev/sda2&lt;/li&gt;
+  &lt;li&gt;Windows 用の設定を追記する&lt;br /&gt;
+‘/etc/grub.d/40_custom’ を編集し、ファイルの最後に以下の行を追記&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;menuentry &amp;quot;Windows 7&amp;quot; {
+set root=(hd0,1)
+chainloader +1
+}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;(hd0,1) は sda2 に、(hd0,3) は sda3 に対応する&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行&lt;/li&gt;
+  &lt;li&gt;必要に応じて ‘vi /etc/default/grub’ によって Windows7 を自動起動にする。&lt;br /&gt;
+GRUG_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
+更新した場合、 ‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行すること。&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sat, 30 Apr 2016 05:00:00 +0900</pubDate>
+      </item>
+    
+      <item>
         <title>Jekyll の利用方法</title>
         <link>http://NaokiMizutani.github.io/tech/jekyll/2016/04/30/Jekyll.html</link>
         <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/jekyll/2016/04/30/Jekyll.html</guid>
-        <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;mac--jekyll-&quot;&gt;Mac に jekyll をインストールする方法&lt;/h3&gt;
+        <description>&lt;p&gt;Mac に jekyll をインストールする方法&lt;/p&gt;
 
 &lt;p&gt;Mac には ruby が標準でインストールされているので、jekyll をインストールするだけで利用可能となる。&lt;/p&gt;
 

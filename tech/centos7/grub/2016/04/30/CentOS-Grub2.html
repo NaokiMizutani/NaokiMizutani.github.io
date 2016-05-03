@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>デュアルブートのための Grub2 の設定 | N.Mizutani</title>
+	<meta name="description" content="CentOS7 と Windows7 をデュアルブートできる状態にするための Grub2 の設定">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/centos7/grub/2016/04/30/CentOS-Grub2.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">デュアルブートのための Grub2 の設定</h1>
+    <p class="meta">
+    April 30, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>CentOS7 と Windows7 をデュアルブートできる状態にするための Grub2 の設定</p>
+
+<h2 id="windows-">Windows のディスクボリュームの縮小</h2>
+<p>(Windows 7 の場合)</p>
+
+<ul>
+  <li>管理者特権でコマンドプロンプトを立ち上げ、’diskmgmt.msc’ と入力して、
+ディスクの管理コンソールを起動する。</li>
+  <li>縮小したいボリュームを選択して、右ボタンで「ボリュームの縮小」をクリックする。</li>
+  <li>縮小する領域のサイズにサイズを指定する。<br />
+（縮小してもよいサイズ＝空領域にこれから確保したいサイズ）</li>
+</ul>
+
+<h2 id="centos7-">CentOS7 をインストール</h2>
+<ul>
+  <li>Windows をシャットダウンして、CentOSをインストールする</li>
+  <li>自動的に空領域にインストールされる</li>
+</ul>
+
+<h2 id="grub2-">Grub2 の変更</h2>
+<p>CentOS の terminal 上で root 権限にて以下の作業を行う。</p>
+
+<ul>
+  <li>Windows が入っているデバイス名を調べる<br />
+‘fdisk -l’ の表示結果から Windows 本体が入っているデバイス名を確認する<br />
+ 例） /dev/sda2</li>
+  <li>Windows 用の設定を追記する<br />
+‘/etc/grub.d/40_custom’ を編集し、ファイルの最後に以下の行を追記</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">menuentry &quot;Windows 7&quot; {
+set root=(hd0,1)
+chainloader +1
+}</code></pre></figure>
+
+<p>(hd0,1) は sda2 に、(hd0,3) は sda3 に対応する</p>
+
+<ul>
+  <li>‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行</li>
+  <li>必要に応じて ‘vi /etc/default/grub’ によって Windows7 を自動起動にする。<br />
+GRUG_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”<br />
+更新した場合、 ‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行すること。</li>
+</ul>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

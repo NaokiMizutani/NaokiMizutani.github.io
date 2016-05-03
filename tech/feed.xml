@@ -5,7 +5,31 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 04 May 2016 07:28:38 +0900</pubDate>
+    <pubDate>Wed, 04 May 2016 07:31:49 +0900</pubDate>
+    
+      <item>
+        <title>Installing R</title>
+        <link>http://NaokiMizutani.github.io/tech/centos/r/install/2016/05/04/Install-R.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos/r/install/2016/05/04/Install-R.html</guid>
+        <description>&lt;p&gt;CentOS7 への R のインストール&lt;/p&gt;
+
+&lt;p&gt;基本的に yum でインストールできるようだが、epel のレポジトリ登録が必要になる。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install epel-release
+# yum install R&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;同様の方法として、(http://ftp.riken.jp/Linux/fedora/epel/7/x86_64/e/) を閲覧し、一覧の中から epel-release-7-?.noarch.rpm の最新版のファイル名を探して、&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# rpm -ihv http://ftp.riken.jp/Linux/fedora/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+# yum -y install R&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;を実行する方法もある。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cran.r-project.org/&quot;&gt;R Project/CRAN サイト&lt;/a&gt; から、Mac用 および Windows用実行イメージはダウンロードできるが、Linuxは 各ディストリビューションのパッケージ管理サービスに依存する。&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 04 May 2016 07:30:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Installing Python3 to CentOS7</title>

@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 04 May 2016 07:31:49 +0900</pubDate>
+    <pubDate>Wed, 04 May 2016 08:33:26 +0900</pubDate>
     
       <item>
         <title>Installing R</title>
@@ -29,6 +29,41 @@
 
 </description>
         <pubDate>Wed, 04 May 2016 07:30:00 +0900</pubDate>
+      </item>
+    
+      <item>
+        <title>Python から R を動作させる PypeR の導入</title>
+        <link>http://NaokiMizutani.github.io/tech/python/r/2016/05/04/PypeR.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/r/2016/05/04/PypeR.html</guid>
+        <description>&lt;p&gt;PypeR を用いて、Python のプログラムから R を呼び出す機能を有効にする方法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PypeR のインストール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# pip3 install pyper&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;R のサンプルプログラム (Python から動作させる目標の R のソース)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a &amp;lt;- c(2,3,4,5)
+summary(a)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Python/PypeR でのサンプルプログラム（Python3 で動作するソース）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import pyper as pr
+
+r = pr.R()
+
+r(&amp;quot;a &amp;lt;- c(2, 3, 4, 5, 6)&amp;quot;)
+text = r(&amp;quot;summary(a)&amp;quot;)
+print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Wed, 04 May 2016 06:00:00 +0900</pubDate>
       </item>
     
       <item>
@@ -267,49 +302,6 @@ SELINUX=disabled&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Webapp_r</title>
-        <link>http://NaokiMizutani.github.io/tech/2016/05/03/Webapp_R.txt</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/2016/05/03/Webapp_R.txt</guid>
-        <description>PypeR を用いて、サーバー側で R が動く Python ベースの Webアプリケーション (CentOS7 ベース)
-
-【Python3, Apache, R, mod_wsgi は動作済とする】
-
-【PypeR のインストール】
-# pip3 install pyper
-        Downloading PypeR-1.1.2.tar.gz
-
-
-【R のサンプルプログラム (R コンソールで動作するソース)】
-a &lt;- c(2,3,4,5,6)
-summary(a)
-
-【Python/PypeR でのサンプルプログラム（Python3 で動作するソース）】
-import pyper as pr
-
-r = pr.R()
-
-r(&quot;a &lt;- c(2, 3, 4, 5, 6)&quot;)
-text = r(&quot;summary(a)&quot;)
-print(text)
-
-【Webアプリケーションとしての Pythonファイル】
-#!/usr/local/python35/bin/python3
-
-import pyper as pr
-
-def application(environ, start_response):
-    start_response(&#39;200 OK&#39;, [(&#39;Content-type&#39;, &#39;text/plain&#39;)])
-
-    r = pr.R()
-    r(&quot;a &lt;- c(2, 3, 4, 5, 6)&quot;)
-    text = r(&quot;summary(a)&quot;)
-
-    return [text.encode(&#39;utf-8&#39;)]
-</description>
-        <pubDate>Tue, 03 May 2016 00:00:00 +0900</pubDate>
       </item>
     
       <item>

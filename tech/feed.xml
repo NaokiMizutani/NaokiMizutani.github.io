@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 20:35:37 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 21:27:48 +0900</pubDate>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
@@ -84,12 +84,13 @@ $ make
         <description>&lt;p&gt;CentOS7 で Apache + mod_wsgi で Python プログラムを動かす方法&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;httpd の存在を確かめ（$ httpd -v）、httpd が存在しなければインストールする&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;httpd-devel のインストール状況を確かめる&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;httpd の存在を確かめ（$ httpd -v）、httpd が存在しなければインストールする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install httpd&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;httpd-devel のインストール状況を確かめる&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ yum list installed | grep httpd&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -100,7 +101,7 @@ $ make
 
 &lt;ul&gt;
   &lt;li&gt;mod_wsgi のインストール&lt;br /&gt;
-&lt;a href=&quot;https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html&quot;&gt;mod_wsgi ドキュメント&lt;/a&gt; あたりを参考に、 mod_wsgi のソースコードをダウンロードしてインストールする。&lt;/li&gt;
+&lt;a href=&quot;https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html&quot;&gt;mod_wsgi ドキュメント&lt;/a&gt; あたりを参考に、&lt;a href=&quot;https://github.com/GrahamDumpleton/mod_wsgi/releases&quot;&gt;mod_wsgi release&lt;/a&gt; から、mod_wsgi のソースコードをダウンロードしてインストールする。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.21.tar.gz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -115,8 +116,8 @@ $ make
 $ which python&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;を実行して、これら実行ファイルがパスに通っているか確認する。
-実行した結果、python は python2.7 だったので、python3 を使うように、次のように指定する。&lt;br /&gt;
-上に記載したサイトに説明がある。&lt;/p&gt;
+実行した結果、起動される python が python2.7 だったので、python3 を使うように次のように指定する。&lt;br /&gt;
+上に記載した&lt;a href=&quot;https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html&quot;&gt;サイト&lt;/a&gt; に説明がある。&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ ./configure --with-python=/usr/local/python3/bin/python3
 $ make
@@ -175,8 +176,11 @@ $ make
 （リスタートの場合）
 # httpd -k restart&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
+&lt;p&gt;ブラウザで http://localhost/ をアクセスしてデモページが表示されるか確認する。&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;Python Webアプリケーション テストファイル&lt;br /&gt;
+下記に示すような Python ファイルをサイトのフォルダに配置してブラウザでチェックする。
 Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
 その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。&lt;br /&gt;
 TypeError: sequence of byte string values expected, value of type str found
@@ -189,7 +193,7 @@ TypeError: sequence of byte string values expected, value of type str found
 
 &lt;p&gt;—– sample1.py —–&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python35/bin/python3
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python3/bin/python3
 
 def application(environ, start_response):
     start_response(&amp;#39;200 OK&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain&amp;#39;)])
@@ -197,7 +201,8 @@ def application(environ, start_response):
 
 &lt;p&gt;—– sample2.py —–&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import datetime
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python3/bin/python3
+import datetime
 
 d = datetime.datetime.today()
 

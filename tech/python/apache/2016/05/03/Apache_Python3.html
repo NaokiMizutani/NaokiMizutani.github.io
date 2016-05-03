@@ -139,12 +139,13 @@
   <section class="post-content"><p>CentOS7 で Apache + mod_wsgi で Python プログラムを動かす方法</p>
 
 <ul>
-  <li>
-    <p>httpd の存在を確かめ（$ httpd -v）、httpd が存在しなければインストールする</p>
-  </li>
-  <li>
-    <p>httpd-devel のインストール状況を確かめる</p>
-  </li>
+  <li>httpd の存在を確かめ（$ httpd -v）、httpd が存在しなければインストールする</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># yum install httpd</code></pre></figure>
+
+<ul>
+  <li>httpd-devel のインストール状況を確かめる</li>
 </ul>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">$ yum list installed | grep httpd</code></pre></figure>
@@ -155,7 +156,7 @@
 
 <ul>
   <li>mod_wsgi のインストール<br />
-<a href="https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html">mod_wsgi ドキュメント</a> あたりを参考に、 mod_wsgi のソースコードをダウンロードしてインストールする。</li>
+<a href="https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html">mod_wsgi ドキュメント</a> あたりを参考に、<a href="https://github.com/GrahamDumpleton/mod_wsgi/releases">mod_wsgi release</a> から、mod_wsgi のソースコードをダウンロードしてインストールする。</li>
 </ul>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">$ wget https://github.com/GrahamDumpleton/mod_wsgi/archive/4.4.21.tar.gz</code></pre></figure>
@@ -170,8 +171,8 @@
 $ which python</code></pre></figure>
 
 <p>を実行して、これら実行ファイルがパスに通っているか確認する。
-実行した結果、python は python2.7 だったので、python3 を使うように、次のように指定する。<br />
-上に記載したサイトに説明がある。</p>
+実行した結果、起動される python が python2.7 だったので、python3 を使うように次のように指定する。<br />
+上に記載した<a href="https://modwsgi.readthedocs.org/en/develop/user-guides/quick-installation-guide.html">サイト</a> に説明がある。</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">$ ./configure --with-python=/usr/local/python3/bin/python3
 $ make
@@ -230,8 +231,11 @@ $ make
 （リスタートの場合）
 # httpd -k restart</code></pre></figure>
 
+<p>ブラウザで http://localhost/ をアクセスしてデモページが表示されるか確認する。</p>
+
 <ul>
   <li>Python Webアプリケーション テストファイル<br />
+下記に示すような Python ファイルをサイトのフォルダに配置してブラウザでチェックする。
 Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
 その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。<br />
 TypeError: sequence of byte string values expected, value of type str found
@@ -244,7 +248,7 @@ TypeError: sequence of byte string values expected, value of type str found
 
 <p>—– sample1.py —–</p>
 
-<figure class="highlight"><pre><code class="language-text" data-lang="text">#!/usr/local/python35/bin/python3
+<figure class="highlight"><pre><code class="language-text" data-lang="text">#!/usr/local/python3/bin/python3
 
 def application(environ, start_response):
     start_response(&#39;200 OK&#39;, [(&#39;Content-type&#39;, &#39;text/plain&#39;)])
@@ -252,7 +256,8 @@ def application(environ, start_response):
 
 <p>—– sample2.py —–</p>
 
-<figure class="highlight"><pre><code class="language-text" data-lang="text">import datetime
+<figure class="highlight"><pre><code class="language-text" data-lang="text">#!/usr/local/python3/bin/python3
+import datetime
 
 d = datetime.datetime.today()
 

@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 03 May 2016 12:16:45 +0900</pubDate>
+    <pubDate>Tue, 03 May 2016 13:42:39 +0900</pubDate>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
@@ -129,11 +129,10 @@
 &lt;p&gt;(Windows 7 の場合)&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;管理者特権でコマンドプロンプトを立ち上げ、’diskmgmt.msc’ と入力して、
+  &lt;li&gt;管理者特権でコマンドプロンプトを立ち上げ（コマンドプロンプトアイコンを右クリックして、管理者として実行し）、’diskmgmt.msc’ と入力して、
 ディスクの管理コンソールを起動する。&lt;/li&gt;
   &lt;li&gt;縮小したいボリュームを選択して、右ボタンで「ボリュームの縮小」をクリックする。&lt;/li&gt;
-  &lt;li&gt;縮小する領域のサイズにサイズを指定する。&lt;br /&gt;
-（縮小してもよいサイズ＝空領域にこれから確保したいサイズ）&lt;/li&gt;
+  &lt;li&gt;「縮小する領域のサイズ」に、空領域として確保したいサイズを設定する。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;centos7-&quot;&gt;CentOS7 をインストール&lt;/h2&gt;
@@ -150,7 +149,8 @@
 ‘fdisk -l’ の表示結果から Windows 本体が入っているデバイス名を確認する&lt;br /&gt;
  例） /dev/sda2&lt;/li&gt;
   &lt;li&gt;Windows 用の設定を追記する&lt;br /&gt;
-‘/etc/grub.d/40_custom’ を編集し、ファイルの最後に以下の行を追記&lt;/li&gt;
+‘/etc/grub.d/40_custom’ を編集し、ファイルの最後に以下の行を追記&lt;br /&gt;
+‘/etc/default/grub’&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;menuentry &amp;quot;Windows 7&amp;quot; {
@@ -163,7 +163,7 @@ chainloader +1
 &lt;ul&gt;
   &lt;li&gt;‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行&lt;/li&gt;
   &lt;li&gt;必要に応じて ‘vi /etc/default/grub’ によって Windows7 を自動起動にする。&lt;br /&gt;
-GRUG_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
+GRUB_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
 更新した場合、 ‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行すること。&lt;/li&gt;
 &lt;/ul&gt;
 

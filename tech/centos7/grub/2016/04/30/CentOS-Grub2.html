@@ -140,11 +140,10 @@
 <p>(Windows 7 の場合)</p>
 
 <ul>
-  <li>管理者特権でコマンドプロンプトを立ち上げ、’diskmgmt.msc’ と入力して、
+  <li>管理者特権でコマンドプロンプトを立ち上げ（コマンドプロンプトアイコンを右クリックして、管理者として実行し）、’diskmgmt.msc’ と入力して、
 ディスクの管理コンソールを起動する。</li>
   <li>縮小したいボリュームを選択して、右ボタンで「ボリュームの縮小」をクリックする。</li>
-  <li>縮小する領域のサイズにサイズを指定する。<br />
-（縮小してもよいサイズ＝空領域にこれから確保したいサイズ）</li>
+  <li>「縮小する領域のサイズ」に、空領域として確保したいサイズを設定する。</li>
 </ul>
 
 <h2 id="centos7-">CentOS7 をインストール</h2>
@@ -161,7 +160,8 @@
 ‘fdisk -l’ の表示結果から Windows 本体が入っているデバイス名を確認する<br />
  例） /dev/sda2</li>
   <li>Windows 用の設定を追記する<br />
-‘/etc/grub.d/40_custom’ を編集し、ファイルの最後に以下の行を追記</li>
+‘/etc/grub.d/40_custom’ を編集し、ファイルの最後に以下の行を追記<br />
+‘/etc/default/grub’</li>
 </ul>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">menuentry &quot;Windows 7&quot; {
@@ -174,7 +174,7 @@ chainloader +1
 <ul>
   <li>‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行</li>
   <li>必要に応じて ‘vi /etc/default/grub’ によって Windows7 を自動起動にする。<br />
-GRUG_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”<br />
+GRUB_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”<br />
 更新した場合、 ‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行すること。</li>
 </ul>
 

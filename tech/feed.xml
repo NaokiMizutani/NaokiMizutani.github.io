@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 04 May 2016 18:27:25 +0900</pubDate>
+    <pubDate>Wed, 04 May 2016 18:34:26 +0900</pubDate>
     
       <item>
         <title>PythonベースのWebアプリとして R を動作させる方法</title>
@@ -475,7 +475,7 @@ GRUB_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
 　　（必要に応じてインストールする）&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;matplotlib のテスト&lt;/li&gt;
+  &lt;li&gt;Python プログラムによる matplotlib のテスト&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib.pyplot as plt
@@ -490,12 +490,11 @@ plt.show()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;p&gt;グラフが表示されれば成功である。
 画像の png による保存、 pdf による保存を確認する。&lt;/p&gt;
 
-&lt;p&gt;タイトルに漢字を設定したが、うまく表示されなければ（豆腐になるならば）、
-フォントの設定が必要である。&lt;/p&gt;
+&lt;p&gt;このプログラムでタイトルに漢字を設定したが、うまく表示されなければ
+（豆腐になるならば）、日本語フォントの設定が必要である。&lt;/p&gt;
 
 &lt;p&gt;まず、CentOS7 にインストールされているフォントを 
- fc-list | grep font&lt;br /&gt;
-で確認して、日本語のフォントを見つける。&lt;/p&gt;
+ fc-list | grep font  で確認して、日本語のフォントを見つける。&lt;/p&gt;
 
 &lt;p&gt;/usr/share/fonts/vlgothic/VL-Gothic-Regular.ttf: VL ゴシック,VL Gothic:style=regular&lt;/p&gt;
 
@@ -508,30 +507,21 @@ plt.show()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib
 matplotlib.matplotlib_fname()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;ファイル名：  ‘/usr/local/python3/lib/python3.5/site-packages/matplotlib/mpl-data/matplotlibrc’  を得た。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Python 環境下で matplotlib に設定されているフォント名を確認&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;ファイル名：  ‘/usr/local/python3/lib/python3.5/site-packages/matplotlib/mpl-data/matplotlibrc’  を得た。&lt;br /&gt;
+2. Python 環境下で matplotlib に設定されているフォント名を確認&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;matplotlib.rcParams.get(&amp;#39;font.family&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;フォント名：  [‘sans-serif’]  を得た。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Python 環境下で matplotlib が利用可能なフォントのリストを表示させる&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;フォント名：  [‘sans-serif’]  を得た。&lt;br /&gt;
+3. Python 環境下で matplotlib が利用可能なフォントのリストを表示させる&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib.font_manager as fm
 fm.findSystemFonts()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;フォントファイル：  ‘/usr/share/fonts/vlgothic/VL-Gothic-Regular.ttf’&lt;br /&gt;
-など日本語フォントがあることを確認しておく。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;存在を確認した設定ファイル matplotlibrc をユーザのホームの .cache/matplotlib フォルダにコピーする&lt;br /&gt;
-コピーした matplotlibrc に以下の２行を加える（フォント名にスペースが含まれているが、クォーテーションは不要）。&lt;/li&gt;
-&lt;/ol&gt;
+など日本語フォントがあることを確認しておく。&lt;br /&gt;
+4. 存在を確認した設定ファイル matplotlibrc をユーザのホームの .cache/matplotlib フォルダにコピーする&lt;br /&gt;
+コピーした matplotlibrc に以下の２行を加える（フォント名にスペースが含まれているが、クォーテーションは不要）。&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;font.serif : VL Gothic
 font.sans-serif : VL Gothic&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -540,21 +530,19 @@ font.sans-serif : VL Gothic&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;pdf.fonttype : 42&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;と TrueType を有効にしておく。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;~/.cache/matplotlib フォルダには、 fontList.py3k.cache, tex.cache の２ファイルと、追加した matplotlibrc が存在するが、matplotlibrc を修正後、fontList.py3k.cache を削除しておく。&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;と TrueType を有効にしておく。&lt;br /&gt;
+5. ~/.cache/matplotlib フォルダには、 fontList.py3k.cache, tex.cache の２ファイルと、追加した matplotlibrc が存在するが、matplotlibrc を修正後、fontList.py3k.cache を削除しておく。&lt;/p&gt;
 
 &lt;p&gt;python3 を立ち上げ、matplotlib をインポートして cache を再作成させて
 （または $ fc-cache -fv を実行して）動作を確認する。&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;(日本語フォント).ttf ファイルを入手した場合
-/usr/share/fonts/japanese のディレクトリを作成し、そこに (日本語フォント).ttf をコピーする。
-フォントのキャッシュを更新する $ fc-cache -fv
-ホームディレクトリの .cache ディレクトリ内のデータが更新される。&lt;/p&gt;
+&lt;p&gt;(日本語フォント).ttf ファイルを入手した場合、&lt;br /&gt;
+1. /usr/share/fonts/japanese のディレクトリを作成し、そこに (日本語フォント).ttf をコピーする。
+2.  フォントのキャッシュを更新する $ fc-cache -fv と、
+ホームディレクトリの .cache ディレクトリ内のデータが更新される。
+3. Python プログラムで、フォントを指定して matplotlib を利用するサンプル&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib
 import matplotlib.font_manager as font_manager

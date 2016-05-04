@@ -5,12 +5,54 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 04 May 2016 08:33:26 +0900</pubDate>
+    <pubDate>Wed, 04 May 2016 09:45:26 +0900</pubDate>
+    
+      <item>
+        <title>PythonベースのWebアプリとして R を動作させる方法</title>
+        <link>http://NaokiMizutani.github.io/tech/python/apache/r/Python-R-Webapp.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/apache/r/Python-R-Webapp.html</guid>
+        <description>&lt;p&gt;PypeR を用いて、サーバー側で R が動く Python ベースの Webアプリケーション (CentOS7)&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CentOS7 に Apache, Python3, mod_wsgi, R, PypeR はインストールされて動作しているものとする
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/python/install/PythonToCentOS7.html&quot;&gt;Python3 のインストール&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/python/apache/Apache_Python3.html&quot;&gt;Apache/mod_wsgi のインストール&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/centos7/r/install/Install-R.html&quot;&gt;R のインストール&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/python/r/PypeR.html&quot;&gt;PypeR のインストール&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;R のサンプルプログラム (R コンソールで動作するソース)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a &amp;lt;- c(2,3,4,5)
+summary(a)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Webアプリケーションとしての Pythonファイル&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python35/bin/python3
+
+import pyper as pr
+
+def application(environ, start_response):
+    start_response(&amp;#39;200 OK&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain&amp;#39;)])
+
+    r = pr.R()
+    r(&amp;quot;a &amp;lt;- c(2, 3, 4, 5, 6)&amp;quot;)
+    text = r(&amp;quot;summary(a)&amp;quot;)
+
+    return [text.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Wed, 04 May 2016 08:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Installing R</title>
-        <link>http://NaokiMizutani.github.io/tech/centos/r/install/2016/05/04/Install-R.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos/r/install/2016/05/04/Install-R.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/centos7/r/install/Install-R.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/r/install/Install-R.html</guid>
         <description>&lt;p&gt;CentOS7 への R のインストール&lt;/p&gt;
 
 &lt;p&gt;基本的に yum でインストールできるようだが、epel のレポジトリ登録が必要になる。&lt;/p&gt;
@@ -33,8 +75,8 @@
     
       <item>
         <title>Python から R を動作させる PypeR の導入</title>
-        <link>http://NaokiMizutani.github.io/tech/python/r/2016/05/04/PypeR.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/r/2016/05/04/PypeR.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/python/r/PypeR.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/r/PypeR.html</guid>
         <description>&lt;p&gt;PypeR を用いて、Python のプログラムから R を呼び出す機能を有効にする方法&lt;/p&gt;
 
 &lt;ul&gt;
@@ -62,14 +104,15 @@ r(&amp;quot;a &amp;lt;- c(2, 3, 4, 5, 6)&amp;quot;)
 text = r(&amp;quot;summary(a)&amp;quot;)
 print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
+&lt;p&gt;[test]&lt;/p&gt;
 </description>
         <pubDate>Wed, 04 May 2016 06:00:00 +0900</pubDate>
       </item>
     
       <item>
         <title>Installing Python3 to CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/python/install/2016/05/03/PythonToCentOS7.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/install/2016/05/03/PythonToCentOS7.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/python/install/PythonToCentOS7.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/install/PythonToCentOS7.html</guid>
         <description>&lt;p&gt;Python3 の CentOS7 へのインストール&lt;/p&gt;
 
 &lt;ul&gt;
@@ -138,8 +181,8 @@ $ make
     
       <item>
         <title>Setting Apache for using Python</title>
-        <link>http://NaokiMizutani.github.io/tech/python/apache/2016/05/03/Apache_Python3.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/apache/2016/05/03/Apache_Python3.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/python/apache/Apache_Python3.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/apache/Apache_Python3.html</guid>
         <description>&lt;p&gt;CentOS7 で Apache + mod_wsgi で Python プログラムを動かす方法&lt;/p&gt;
 
 &lt;ul&gt;
@@ -306,17 +349,9 @@ SELINUX=disabled&lt;/p&gt;
     
       <item>
         <title>Jupyter_r</title>
-        <link>http://NaokiMizutani.github.io/tech/2016/05/03/Jupyter_R.txt</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/2016/05/03/Jupyter_R.txt</guid>
-        <description>【R のインストール】
-https://cran.r-project.org/
-から、Linux用の
-
-
-【R に関する追記】
-RStudio というインタフェースツールが存在するようだが、今後の課題としておく。
-https://www.rsutudio.com/
-
+        <link>http://NaokiMizutani.github.io/tech/Jupyter_R.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/Jupyter_R.html</guid>
+        <description>
 【IRkernel のインストール】
 
 $ sudo yum install czmq-devel
@@ -356,8 +391,8 @@ $ jupyter notebook
     
       <item>
         <title>デュアルブートのための Grub2 の設定</title>
-        <link>http://NaokiMizutani.github.io/tech/centos7/grub/2016/05/02/CentOS-Grub2.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/grub/2016/05/02/CentOS-Grub2.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/centos7/grub/CentOS-Grub2.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/grub/CentOS-Grub2.html</guid>
         <description>&lt;p&gt;CentOS7 と Windows7 をデュアルブートできる状態にするための Grub2 の設定&lt;/p&gt;
 
 &lt;h2 id=&quot;windows-&quot;&gt;Windows のディスクボリュームの縮小&lt;/h2&gt;
@@ -411,8 +446,8 @@ GRUB_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
     
       <item>
         <title>Installing CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/centos7/install/2016/04/30/CentOS7-install.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/install/2016/04/30/CentOS7-install.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/centos7/install/CentOS7-install.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/install/CentOS7-install.html</guid>
         <description>&lt;p&gt;CentOS Project サイトからダウンロードした CentOS7, ISO イメージを
 インストールする方法を記します。&lt;/p&gt;
 
@@ -482,8 +517,8 @@ GRUB_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
     
       <item>
         <title>Jekyll の利用方法</title>
-        <link>http://NaokiMizutani.github.io/tech/jekyll/2016/04/30/Jekyll.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/jekyll/2016/04/30/Jekyll.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/jekyll/Jekyll.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/jekyll/Jekyll.html</guid>
         <description>&lt;p&gt;Mac に jekyll をインストールする方法&lt;/p&gt;
 
 &lt;p&gt;Mac には ruby が標準でインストールされているので、jekyll をインストールするだけで利用可能となる。&lt;/p&gt;
@@ -581,8 +616,8 @@ http://jekyllthemes.org/themes/kasper/&lt;/p&gt;
     
       <item>
         <title>Wireless LAN 親機の設定</title>
-        <link>http://NaokiMizutani.github.io/tech/peripherals/lan/2016/04/29/WirelessLAN.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/peripherals/lan/2016/04/29/WirelessLAN.html</guid>
+        <link>http://NaokiMizutani.github.io/tech/peripherals/lan/WirelessLAN.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/peripherals/lan/WirelessLAN.html</guid>
         <description>&lt;p&gt;Buffalo 無線LAN親機（WZR-HP-G301NH/U）を利用していますが、
 一度設定すると滅多に触れない機器なので、設定方法を忘れます。
 再設定する必要がありましたので、そのときの記録を残します。

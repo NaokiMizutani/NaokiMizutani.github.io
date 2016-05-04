@@ -1,11 +1,3 @@
-【R のインストール】
-https://cran.r-project.org/
-から、Linux用の
-
-
-【R に関する追記】
-RStudio というインタフェースツールが存在するようだが、今後の課題としておく。
-https://www.rsutudio.com/
 
 【IRkernel のインストール】
 

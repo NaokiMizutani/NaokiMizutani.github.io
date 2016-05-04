@@ -2,8 +2,8 @@
 <html class="no-js">
   <head>
 	<meta charset="utf-8">
-	<title>Installing R | N.Mizutani</title>
-	<meta name="description" content="CentOS7 への R のインストール">
+	<title>Installing Jupyter on CentOS7 | N.Mizutani</title>
+	<meta name="description" content="CentOS7 上の Python3 で Jypyter をインストール">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-Frame-Options" content="sameorigin">
 
@@ -14,7 +14,7 @@
 	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
 
 	<!-- Canonical -->
-	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/centos7/r/install/Install-R.html">
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/centos7/python/jupyter/Jupyter.html">
 
 	<!-- RSS -->
 	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
@@ -132,28 +132,27 @@
     <div class="content">
       <article >
   <header style="background-image: url('/tech/')">
-    <h1 class="title">Installing R</h1>
+    <h1 class="title">Installing Jupyter on CentOS7</h1>
     <p class="meta">
     May 4, 2016
     
     </p>
   </header>
-  <section class="post-content"><p>CentOS7 への R のインストール</p>
+  <section class="post-content"><p>CentOS7 上の Python3 で Jypyter をインストール</p>
 
-<p>基本的に yum でインストールできるようだが、epel のレポジトリ登録が必要になる。</p>
+<ul>
+  <li>
+    <p>CentOS7 で Python3 は導入済とする。</p>
+  </li>
+  <li>
+    <p>Jupyter のインストール</p>
+  </li>
+</ul>
 
-<figure class="highlight"><pre><code class="language-text" data-lang="text"># yum install epel-release
-# yum install R</code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># pip3 install jupyter</code></pre></figure>
 
-<p>同様の方法として、(http://ftp.riken.jp/Linux/fedora/epel/7/x86_64/e/) を閲覧し、一覧の中から epel-release-7-?.noarch.rpm の最新版のファイル名を探して、</p>
-
-<figure class="highlight"><pre><code class="language-text" data-lang="text"># rpm -ihv http://ftp.riken.jp/Linux/fedora/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-# yum -y install R</code></pre></figure>
-
-<p>を実行する方法もある。</p>
-
-<p><a href="https://cran.r-project.org/">R Project/CRAN サイト</a> から、Mac用 および Windows用実行イメージはダウンロードできるが、Linuxは 各ディストリビューションのパッケージ管理サービスに依存する。</p>
-
+<p>関連記事： 
+<a href="/tech/centos7/python/matplotlib/Python-matplotlib.html">matplotlib のインストール</a></p>
 </section>
 </article>
 

@@ -5,7 +5,43 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 04 May 2016 18:58:07 +0900</pubDate>
+    <pubDate>Wed, 04 May 2016 19:05:05 +0900</pubDate>
+    
+      <item>
+        <title>“Setting Jupyter for R&quot;</title>
+        <link>http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</guid>
+        <description>* IRkernel のインストール  
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ sudo yum install czmq-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+* R をコンソールで立ち上げて、以下のコマンドを打ち込む。  
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;gt; install.packages(c(&amp;#39;rzmq&amp;#39;,&amp;#39;repr&amp;#39;,&amp;#39;IRkernel&amp;#39;,&amp;#39;IRdisplay&amp;#39;),
+                 repos = c(&amp;#39;http://irkernel.github.io/&amp;#39;, getOption(&amp;#39;repos&amp;#39;)),
+                 type = &amp;#39;source&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&#39;lib = &quot;/usr/lib64/R/library&quot;&#39; は書き込み可能ではありません  
+Would you like to use a personal library instead?  (y/n)  
+というメッセージが出力されるので、y を入力する。
+
+* CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。
+
+DONE (IRkernel)  
+ ダウンロードされたパッケージは、以下にあります  
+        ‘/tmp/Rtmpe81bSy/downloaded_packages’  
+というメッセージが出力される。
+
+* 次に以下のコマンドを入力する。  
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;gt; IRkernel::installspec()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+* R を終了させる  &gt; quit() {% endear %}
+
+* コンソールで jupyter notebook を立ち上げる。  
+{% highlight text %}
+$ jupyter notebook
+{% endhighlight %}
+ファイル新規作成で R が選択肢にあれば成功。
+</description>
+        <pubDate>Wed, 04 May 2016 18:08:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Installing matplotlib to CentOS7/Python3</title>
@@ -483,48 +519,6 @@ SELINUX=disabled&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Jupyter_r</title>
-        <link>http://NaokiMizutani.github.io/tech/Jupyter_R.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/Jupyter_R.html</guid>
-        <description>
-【IRkernel のインストール】
-
-$ sudo yum install czmq-devel
-
-R をコンソールで立ち上げて、以下のコマンドを打ち込む。
-&gt; install.packages(c(&#39;rzmq&#39;,&#39;repr&#39;,&#39;IRkernel&#39;,&#39;IRdisplay&#39;),
-                 repos = c(&#39;http://irkernel.github.io/&#39;, getOption(&#39;repos&#39;)),
-                 type = &#39;source&#39;)
-
-&#39;lib = &quot;/usr/lib64/R/library&quot;&#39; は書き込み可能ではありません 
-Would you like to use a personal library instead?  (y/n)
-というメッセージが出力されるので、y を入力する。
-
-CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。
-
-* DONE (IRkernel)
-
- ダウンロードされたパッケージは、以下にあります 
-        ‘/tmp/Rtmpe81bSy/downloaded_packages’ 
-というメッセージが出力される。
-
-次に以下のコマンドを入力する。
-&gt; IRkernel::installspec()
-
-R を終了させる。
-&gt; quit()
-
-コンソールで jupyter notebook を立ち上げる。
-$ jupyter notebook
-
-ファイル新規作成で R が選択肢にあれば成功。
-
-
-</description>
-        <pubDate>Tue, 03 May 2016 00:00:00 +0900</pubDate>
       </item>
     
       <item>

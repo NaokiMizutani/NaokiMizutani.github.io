@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>“Setting Jupyter for R" | N.Mizutani</title>
+	<meta name="description" content="* IRkernel のインストール  $ sudo yum install czmq-devel">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">“Setting Jupyter for R"</h1>
+    <p class="meta">
+    May 4, 2016
+    
+    </p>
+  </header>
+  <section class="post-content">* IRkernel のインストール  
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ sudo yum install czmq-devel</code></pre></figure>
+
+* R をコンソールで立ち上げて、以下のコマンドを打ち込む。  
+<figure class="highlight"><pre><code class="language-text" data-lang="text">&gt; install.packages(c(&#39;rzmq&#39;,&#39;repr&#39;,&#39;IRkernel&#39;,&#39;IRdisplay&#39;),
+                 repos = c(&#39;http://irkernel.github.io/&#39;, getOption(&#39;repos&#39;)),
+                 type = &#39;source&#39;)</code></pre></figure>
+'lib = "/usr/lib64/R/library"' は書き込み可能ではありません  
+Would you like to use a personal library instead?  (y/n)  
+というメッセージが出力されるので、y を入力する。
+
+* CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。
+
+DONE (IRkernel)  
+ ダウンロードされたパッケージは、以下にあります  
+        ‘/tmp/Rtmpe81bSy/downloaded_packages’  
+というメッセージが出力される。
+
+* 次に以下のコマンドを入力する。  
+<figure class="highlight"><pre><code class="language-text" data-lang="text">&gt; IRkernel::installspec()</code></pre></figure>
+
+* R を終了させる  > quit() {% endear %}
+
+* コンソールで jupyter notebook を立ち上げる。  
+{% highlight text %}
+$ jupyter notebook
+{% endhighlight %}
+ファイル新規作成で R が選択肢にあれば成功。
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

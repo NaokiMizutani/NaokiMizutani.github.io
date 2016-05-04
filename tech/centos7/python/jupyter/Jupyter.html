@@ -172,26 +172,84 @@
 
 plt.plot([1, 3, 2, 4])
 plt.title(&#39;タイトル&#39;)
+plt.xlabel(&#39;$x$ 軸&#39;)
+plt.ylabel(&#39;$y$ 軸&#39;)
+
 plt.show()</code></pre></figure>
 
 <p>グラフが表示されれば成功である。
-タイトルに漢字を設定したが、うまく表示されなければ（豆腐になるならば）、
-フォントの設定が必要である。
-CentOS7 にインストールされているフォントを  fc-list | grep font  で
-確認して、日本語のフォントを見つける。</p>
+画像の png による保存、 pdf による保存を確認する。</p>
+
+<p>タイトルに漢字を設定したが、うまく表示されなければ（豆腐になるならば）、
+フォントの設定が必要である。</p>
+
+<p>まず、CentOS7 にインストールされているフォントを 
+ fc-list | grep font<br />
+で確認して、日本語のフォントを見つける。</p>
 
 <p>/usr/share/fonts/vlgothic/VL-Gothic-Regular.ttf: VL ゴシック,VL Gothic:style=regular</p>
 
 <p>が見つかったので、これを利用する方法を示す。</p>
 
-<p>/usr/share/fonts/japanese のディレクトリを作成し、そこに VL-Gothic-Regular.ttf をコピーする。
+<ol>
+  <li>Python 環境下で設定ファイルのパスを確認</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">import matplotlib
+matplotlib.matplotlib_fname()</code></pre></figure>
+
+<p>ファイル名：  ‘/usr/local/python3/lib/python3.5/site-packages/matplotlib/mpl-data/matplotlibrc’  を得た。</p>
+
+<ol>
+  <li>Python 環境下で matplotlib に設定されているフォント名を確認</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">matplotlib.rcParams.get(&#39;font.family&#39;)</code></pre></figure>
+
+<p>フォント名：  [‘sans-serif’]  を得た。</p>
+
+<ol>
+  <li>Python 環境下で matplotlib が利用可能なフォントのリストを表示させる</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">import matplotlib.font_manager as fm
+fm.findSystemFonts()</code></pre></figure>
+
+<p>フォントファイル：  ‘/usr/share/fonts/vlgothic/VL-Gothic-Regular.ttf’<br />
+など日本語フォントがあることを確認しておく。</p>
+
+<ol>
+  <li>存在を確認した設定ファイル matplotlibrc をユーザのホームの .cache/matplotlib フォルダにコピーする<br />
+コピーした matplotlibrc に以下の２行を加える（フォント名にスペースが含まれているが、クォーテーションは不要）。</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">font.serif : VL Gothic
+font.sans-serif : VL Gothic</code></pre></figure>
+
+<p>また、’pdf backend params’ のところで、pdf.fonttype がコメントアウトされているのを</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">pdf.fonttype : 42</code></pre></figure>
+
+<p>と TrueType を有効にしておく。</p>
+
+<ol>
+  <li>~/.cache/matplotlib フォルダには、 fontList.py3k.cache, tex.cache の２ファイルと、追加した matplotlibrc が存在するが、matplotlibrc を修正後、fontList.py3k.cache を削除しておく。</li>
+</ol>
+
+<p>python3 を立ち上げ、matplotlib をインポートして cache を再作成させて
+（または $ fc-cache -fv を実行して）動作を確認する。</p>
+
+<hr />
+
+<p>(日本語フォント).ttf ファイルを入手した場合
+/usr/share/fonts/japanese のディレクトリを作成し、そこに (日本語フォント).ttf をコピーする。
 フォントのキャッシュを更新する $ fc-cache -fv
 ホームディレクトリの .cache ディレクトリ内のデータが更新される。</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">import matplotlib
 import matplotlib.font_manager as font_manager
 #TTFファイル(フォント)のアドレスを指定
-font_path = &#39;/usr/share/fonts/japanese/VL-Gothic-Regular.ttf&#39;
+font_path = &#39;/usr/share/fonts/japanese/(日本語フォント).ttf&#39;
 #フォントの詳細情報を取得
 font_prop = font_manager.FontProperties(fname = font_path)
 #フォントの名前を使い、matplotのデフォルトフォントに指定

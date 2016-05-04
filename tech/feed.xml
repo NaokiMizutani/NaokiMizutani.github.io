@@ -5,13 +5,15 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Thu, 05 May 2016 07:08:09 +0900</pubDate>
+    <pubDate>Thu, 05 May 2016 07:13:48 +0900</pubDate>
     
       <item>
         <title>Setting Jupyter for R</title>
         <link>http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</link>
         <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</guid>
         <description>&lt;p&gt;Jupyter で R を動かすために必要な IRkernel をインストールする方法&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/IRkernel/IRkernel&quot;&gt;IRkernel サイト&lt;/a&gt; に詳細にインストール方法が記載されている。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;必要なライブラリを準備&lt;/li&gt;

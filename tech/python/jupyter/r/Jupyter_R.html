@@ -2,8 +2,8 @@
 <html class="no-js">
   <head>
 	<meta charset="utf-8">
-	<title>“Setting Jupyter for R" | N.Mizutani</title>
-	<meta name="description" content="* IRkernel のインストール  $ sudo yum install czmq-devel">
+	<title>Setting Jupyter for R | N.Mizutani</title>
+	<meta name="description" content="  IRkernel のインストール$ sudo yum install czmq-devel">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-Frame-Options" content="sameorigin">
 
@@ -132,40 +132,57 @@
     <div class="content">
       <article >
   <header style="background-image: url('/tech/')">
-    <h1 class="title">“Setting Jupyter for R"</h1>
+    <h1 class="title">Setting Jupyter for R</h1>
     <p class="meta">
     May 4, 2016
     
     </p>
   </header>
-  <section class="post-content">* IRkernel のインストール  
+  <section class="post-content"><ul>
+  <li>IRkernel のインストール</li>
+</ul>
+
 <figure class="highlight"><pre><code class="language-text" data-lang="text">$ sudo yum install czmq-devel</code></pre></figure>
 
-* R をコンソールで立ち上げて、以下のコマンドを打ち込む。  
+<ul>
+  <li>R をコンソールで立ち上げて、以下のコマンドを打ち込む。</li>
+</ul>
+
 <figure class="highlight"><pre><code class="language-text" data-lang="text">&gt; install.packages(c(&#39;rzmq&#39;,&#39;repr&#39;,&#39;IRkernel&#39;,&#39;IRdisplay&#39;),
                  repos = c(&#39;http://irkernel.github.io/&#39;, getOption(&#39;repos&#39;)),
                  type = &#39;source&#39;)</code></pre></figure>
-'lib = "/usr/lib64/R/library"' は書き込み可能ではありません  
-Would you like to use a personal library instead?  (y/n)  
-というメッセージが出力されるので、y を入力する。
 
-* CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。
+<p>‘lib = “/usr/lib64/R/library”’ は書き込み可能ではありません<br />
+Would you like to use a personal library instead?  (y/n)<br />
+というメッセージが出力されるので、y を入力する。</p>
 
-DONE (IRkernel)  
- ダウンロードされたパッケージは、以下にあります  
-        ‘/tmp/Rtmpe81bSy/downloaded_packages’  
-というメッセージが出力される。
+<ul>
+  <li>CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。</li>
+</ul>
 
-* 次に以下のコマンドを入力する。  
+<p>DONE (IRkernel)<br />
+ ダウンロードされたパッケージは、以下にあります<br />
+        ‘/tmp/Rtmpe81bSy/downloaded_packages’<br />
+というメッセージが出力される。</p>
+
+<ul>
+  <li>次に以下のコマンドを入力する。</li>
+</ul>
+
 <figure class="highlight"><pre><code class="language-text" data-lang="text">&gt; IRkernel::installspec()</code></pre></figure>
 
-* R を終了させる  > quit() {% endear %}
-
-* コンソールで jupyter notebook を立ち上げる。  
+<ul>
+  <li>
+    <p>R を終了させる  &gt; quit() {% endear %}</p>
+  </li>
+  <li>
+    <p>コンソールで jupyter notebook を立ち上げる。<br />
 {% highlight text %}
 $ jupyter notebook
 {% endhighlight %}
-ファイル新規作成で R が選択肢にあれば成功。
+ファイル新規作成で R が選択肢にあれば成功。</p>
+  </li>
+</ul>
 </section>
 </article>
 

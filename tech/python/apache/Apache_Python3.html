@@ -183,32 +183,25 @@ $ make
 <p>共有ライブラリは、/usr/lib64/httpd/modules/mod_wsgi.so としてインストールされた。</p>
 
 <ul>
-  <li>Apache 設定ファイル /etc/httpd/conf/httpd.conf の修正
-    <ul>
-      <li>httpd.conf 内で確認</li>
-    </ul>
-  </li>
+  <li>Apache 設定ファイル /etc/httpd/conf/httpd.conf の修正<br />
+　-  httpd.conf 内で確認</li>
 </ul>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">    DocumentRoot : &quot;/var/www/html&quot;</code></pre></figure>
 
-<ul>
-  <li>httpd.conf における修正</li>
-</ul>
+<p>　-  httpd.conf における修正</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">    &lt;Directory &quot;/var/www/html&quot;&gt;
         Options Indexes FollowSymLinks
     に追加して
         Options Indexes FollowSymLinks ExecCGI</code></pre></figure>
 
-<ul>
-  <li>httpd.conf 内で確認</li>
-</ul>
+<p>　-  httpd.conf 内で確認</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">    IncludeOptional conf.d/*.conf</code></pre></figure>
 
-<p>この記述がなければ最終行に追加する。<br />
-  - 実行時にエラーが出る場合の詳細ログを出すオプション</p>
+<p>　　この記述がなければ最終行に追加する。<br />
+　-  実行時にエラーが出る場合の詳細ログを出すオプション</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">    LogLevel warn
     を詳細なオプションに変更する
@@ -236,15 +229,19 @@ $ make
 <p>ブラウザで http://localhost/ をアクセスしてデモページが表示されるか確認する。</p>
 
 <ul>
-  <li>Python Webアプリケーション テストファイル<br />
-下記に示すような Python ファイルをサイトのフォルダに配置してブラウザでチェックする。
-Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
-その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。<br />
-TypeError: sequence of byte string values expected, value of type str found
-が出る場合には、Pythonソースファイルで文字コードの扱いに工夫が必要である。
-下記サンプルファイルに示すように、戻す文字列を utf-8 から byte列に変換する操作 encode(‘utf-8’) が
-必要である。</li>
+  <li>Python Webアプリケーション テストファイル</li>
 </ul>
+
+<p>下記に示すような Python ファイルをサイトのフォルダに配置してブラウザでチェックする。</p>
+
+<p>Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
+その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。</p>
+
+<p>TypeError: sequence of byte string values expected, value of type str found
+が出る場合には、Pythonソースファイルで文字コードの扱いに工夫が必要である。</p>
+
+<p>下記サンプルファイルに示すように、戻す文字列を utf-8 から byte列に変換する操作 encode(‘utf-8’) が
+必要である。</p>
 
 <p>参考サイト http://p–q.blogspot.jp/2014/05/wsgi1pythonwsgi.html</p>
 

@@ -5,17 +5,19 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 04 May 2016 19:11:59 +0900</pubDate>
+    <pubDate>Thu, 05 May 2016 07:08:09 +0900</pubDate>
     
       <item>
         <title>Setting Jupyter for R</title>
         <link>http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</link>
         <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</guid>
-        <description>&lt;ul&gt;
-  &lt;li&gt;IRkernel のインストール&lt;/li&gt;
+        <description>&lt;p&gt;Jupyter で R を動かすために必要な IRkernel をインストールする方法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;必要なライブラリを準備&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ sudo yum install czmq-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install czmq-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
   &lt;li&gt;R をコンソールで立ち上げて、以下のコマンドを打ち込む。&lt;/li&gt;
@@ -25,37 +27,39 @@
                  repos = c(&amp;#39;http://irkernel.github.io/&amp;#39;, getOption(&amp;#39;repos&amp;#39;)),
                  type = &amp;#39;source&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;‘lib = “/usr/lib64/R/library”’ は書き込み可能ではありません&lt;br /&gt;
-Would you like to use a personal library instead?  (y/n)&lt;br /&gt;
-というメッセージが出力されるので、y を入力する。&lt;/p&gt;
+&lt;p&gt;—メッセージ出力 &lt;br /&gt;
+　’lib = “/usr/lib64/R/library”’ は書き込み可能ではありません&lt;br /&gt;
+　Would you like to use a personal library instead?  (y/n)&lt;br /&gt;
+が表示されるので、y を入力する。&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;DONE (IRkernel)&lt;br /&gt;
- ダウンロードされたパッケージは、以下にあります&lt;br /&gt;
-        ‘/tmp/Rtmpe81bSy/downloaded_packages’&lt;br /&gt;
-というメッセージが出力される。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;次に以下のコマンドを入力する。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。 &lt;br /&gt;
+—メッセージ出力&lt;br /&gt;
+　DONE (IRkernel)&lt;br /&gt;
+　ダウンロードされたパッケージは、以下にあります&lt;br /&gt;
+　　‘/tmp/Rtmpe81bSy/downloaded_packages’&lt;br /&gt;
+が表示される。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;次に以下のコマンドを入力する。&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;gt; IRkernel::installspec()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;R を終了させる  &amp;gt; quit()&lt;/p&gt;
+    &lt;p&gt;R を終了させる　  &amp;gt; quit()&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;コンソールで jupyter notebook を立ち上げる。&lt;/p&gt;
+    &lt;p&gt;コンソールで jupyter notebook を立ち上げ、動作を確認する。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ jupyter notebook&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;ファイル新規作成で R が選択肢にあれば成功。&lt;/p&gt;
+&lt;p&gt;ファイル新規作成で R が選択肢として表示されれば成功。&lt;/p&gt;
 </description>
         <pubDate>Wed, 04 May 2016 18:08:00 +0900</pubDate>
       </item>
@@ -284,7 +288,7 @@ def application(environ, start_response):
 summary(a)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Python/PypeR でのサンプルプログラム（Python3 で動作するソース）&lt;/li&gt;
+  &lt;li&gt;PypeR 動作確認のための Python サンプルプログラム&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import pyper as pr
@@ -295,7 +299,6 @@ r(&amp;quot;a &amp;lt;- c(2, 3, 4, 5, 6)&amp;quot;)
 text = r(&amp;quot;summary(a)&amp;quot;)
 print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;[test]&lt;/p&gt;
 </description>
         <pubDate>Wed, 04 May 2016 06:00:00 +0900</pubDate>
       </item>
@@ -419,32 +422,25 @@ $ make
 &lt;p&gt;共有ライブラリは、/usr/lib64/httpd/modules/mod_wsgi.so としてインストールされた。&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Apache 設定ファイル /etc/httpd/conf/httpd.conf の修正
-    &lt;ul&gt;
-      &lt;li&gt;httpd.conf 内で確認&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Apache 設定ファイル /etc/httpd/conf/httpd.conf の修正&lt;br /&gt;
+　-  httpd.conf 内で確認&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    DocumentRoot : &amp;quot;/var/www/html&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;httpd.conf における修正&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;　-  httpd.conf における修正&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    &amp;lt;Directory &amp;quot;/var/www/html&amp;quot;&amp;gt;
         Options Indexes FollowSymLinks
     に追加して
         Options Indexes FollowSymLinks ExecCGI&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;httpd.conf 内で確認&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;　-  httpd.conf 内で確認&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    IncludeOptional conf.d/*.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;この記述がなければ最終行に追加する。&lt;br /&gt;
-  - 実行時にエラーが出る場合の詳細ログを出すオプション&lt;/p&gt;
+&lt;p&gt;　　この記述がなければ最終行に追加する。&lt;br /&gt;
+　-  実行時にエラーが出る場合の詳細ログを出すオプション&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    LogLevel warn
     を詳細なオプションに変更する
@@ -472,15 +468,19 @@ $ make
 &lt;p&gt;ブラウザで http://localhost/ をアクセスしてデモページが表示されるか確認する。&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Python Webアプリケーション テストファイル&lt;br /&gt;
-下記に示すような Python ファイルをサイトのフォルダに配置してブラウザでチェックする。
-Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
-その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。&lt;br /&gt;
-TypeError: sequence of byte string values expected, value of type str found
-が出る場合には、Pythonソースファイルで文字コードの扱いに工夫が必要である。
-下記サンプルファイルに示すように、戻す文字列を utf-8 から byte列に変換する操作 encode(‘utf-8’) が
-必要である。&lt;/li&gt;
+  &lt;li&gt;Python Webアプリケーション テストファイル&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;下記に示すような Python ファイルをサイトのフォルダに配置してブラウザでチェックする。&lt;/p&gt;
+
+&lt;p&gt;Internal Server Error が出るときは、 /var/log/httpd/error_log の内容をチェックする。
+その際に、Apache/httpd.conf の設定で記した LogLevel を詳細なオプションにすると少しはわかりやすい。&lt;/p&gt;
+
+&lt;p&gt;TypeError: sequence of byte string values expected, value of type str found
+が出る場合には、Pythonソースファイルで文字コードの扱いに工夫が必要である。&lt;/p&gt;
+
+&lt;p&gt;下記サンプルファイルに示すように、戻す文字列を utf-8 から byte列に変換する操作 encode(‘utf-8’) が
+必要である。&lt;/p&gt;
 
 &lt;p&gt;参考サイト http://p–q.blogspot.jp/2014/05/wsgi1pythonwsgi.html&lt;/p&gt;
 

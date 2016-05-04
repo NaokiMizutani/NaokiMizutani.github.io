@@ -3,7 +3,7 @@
   <head>
 	<meta charset="utf-8">
 	<title>Setting Jupyter for R | N.Mizutani</title>
-	<meta name="description" content="  IRkernel のインストール$ sudo yum install czmq-devel">
+	<meta name="description" content="Jupyter で R を動かすために必要な IRkernel をインストールする方法">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-Frame-Options" content="sameorigin">
 
@@ -138,11 +138,13 @@
     
     </p>
   </header>
-  <section class="post-content"><ul>
-  <li>IRkernel のインストール</li>
+  <section class="post-content"><p>Jupyter で R を動かすために必要な IRkernel をインストールする方法</p>
+
+<ul>
+  <li>必要なライブラリを準備</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-text" data-lang="text">$ sudo yum install czmq-devel</code></pre></figure>
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># yum install czmq-devel</code></pre></figure>
 
 <ul>
   <li>R をコンソールで立ち上げて、以下のコマンドを打ち込む。</li>
@@ -152,37 +154,39 @@
                  repos = c(&#39;http://irkernel.github.io/&#39;, getOption(&#39;repos&#39;)),
                  type = &#39;source&#39;)</code></pre></figure>
 
-<p>‘lib = “/usr/lib64/R/library”’ は書き込み可能ではありません<br />
-Would you like to use a personal library instead?  (y/n)<br />
-というメッセージが出力されるので、y を入力する。</p>
+<p>—メッセージ出力 <br />
+　’lib = “/usr/lib64/R/library”’ は書き込み可能ではありません<br />
+　Would you like to use a personal library instead?  (y/n)<br />
+が表示されるので、y を入力する。</p>
 
 <ul>
-  <li>CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。</li>
-</ul>
-
-<p>DONE (IRkernel)<br />
- ダウンロードされたパッケージは、以下にあります<br />
-        ‘/tmp/Rtmpe81bSy/downloaded_packages’<br />
-というメッセージが出力される。</p>
-
-<ul>
-  <li>次に以下のコマンドを入力する。</li>
+  <li>
+    <p>CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。 <br />
+—メッセージ出力<br />
+　DONE (IRkernel)<br />
+　ダウンロードされたパッケージは、以下にあります<br />
+　　‘/tmp/Rtmpe81bSy/downloaded_packages’<br />
+が表示される。</p>
+  </li>
+  <li>
+    <p>次に以下のコマンドを入力する。</p>
+  </li>
 </ul>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">&gt; IRkernel::installspec()</code></pre></figure>
 
 <ul>
   <li>
-    <p>R を終了させる  &gt; quit()</p>
+    <p>R を終了させる　  &gt; quit()</p>
   </li>
   <li>
-    <p>コンソールで jupyter notebook を立ち上げる。</p>
+    <p>コンソールで jupyter notebook を立ち上げ、動作を確認する。</p>
   </li>
 </ul>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">$ jupyter notebook</code></pre></figure>
 
-<p>ファイル新規作成で R が選択肢にあれば成功。</p>
+<p>ファイル新規作成で R が選択肢として表示されれば成功。</p>
 </section>
 </article>
 

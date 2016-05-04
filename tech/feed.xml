@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 04 May 2016 19:07:36 +0900</pubDate>
+    <pubDate>Wed, 04 May 2016 19:11:59 +0900</pubDate>
     
       <item>
         <title>Setting Jupyter for R</title>
@@ -46,16 +46,16 @@ Would you like to use a personal library instead?  (y/n)&lt;br /&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;R を終了させる  &amp;gt; quit() {% endear %}&lt;/p&gt;
+    &lt;p&gt;R を終了させる  &amp;gt; quit()&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;コンソールで jupyter notebook を立ち上げる。&lt;br /&gt;
-{% highlight text %}
-$ jupyter notebook
-{% endhighlight %}
-ファイル新規作成で R が選択肢にあれば成功。&lt;/p&gt;
+    &lt;p&gt;コンソールで jupyter notebook を立ち上げる。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ jupyter notebook&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;ファイル新規作成で R が選択肢にあれば成功。&lt;/p&gt;
 </description>
         <pubDate>Wed, 04 May 2016 18:08:00 +0900</pubDate>
       </item>

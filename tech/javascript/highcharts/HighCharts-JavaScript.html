@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>JavaScript パッケージ (HighCharts) を使ってグラフを描く | N.Mizutani</title>
+	<meta name="description" content="統計分析結果をブラウザ上にグラフとして表示するためのライブラリの試用">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/javascript/highcharts/HighCharts-JavaScript.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">JavaScript パッケージ (HighCharts) を使ってグラフを描く</h1>
+    <p class="meta">
+    May 10, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>統計分析結果をブラウザ上にグラフとして表示するためのライブラリの試用</p>
+
+<p>グラフを表示する Javascript ライブラリはいくつもあるようだが、
+その中で <a href="http://www.highcharts.com/">Highcharts</a> というライブラリを試してみた。</p>
+
+<p>サイトのデモを見ながら、組み込みたい機能を決めて、<a href="http://www.highcharts.com/download">ダウンロード</a> したサンプルプログラムを参考に作りたいグラフに近づけていく。</p>
+
+<p>最終的には Javascript を生成する方法を考えなければならないが、
+高機能なグラフを比較的簡単に利用できるのはありがたい。</p>
+
+<ul>
+  <li>ブラウザで確認するための html ファイル</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+		&lt;title&gt;Highcharts Example&lt;/title&gt;
+
+		&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+		&lt;style type=&quot;text/css&quot;&gt;
+${demo.css}
+		&lt;/style&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+$(function () {
+    $(&#39;#container&#39;).highcharts({
+        chart: {
+            zoomType: &#39;xy&#39;
+        },
+        title: {
+            text: &#39;項目特性曲線&#39;
+        },
+        subtitle: {
+            text: &#39;3 Curves (a, b)&#39;
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: &#39;Ability (θ)&#39;
+            },
+            min: -4.0,
+            max: 4.0,
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true,
+            gridLineWidth: 1
+        },
+        yAxis: {
+            title: {
+                text: &#39;Probability&#39;
+            },
+            min: 0.0,
+            max: 1.0
+        },
+        legend: {
+            layout: &#39;vertical&#39;,
+            align: &#39;left&#39;,
+            verticalAlign: &#39;top&#39;,
+            x: 100,
+            y: 50,
+            floating: true,
+            backgroundColor: (Highcharts.theme &amp;&amp; Highcharts.theme.legendBackgroundColor) || &#39;#FFFFFF&#39;,
+            borderWidth: 1
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        series: [{
+            name: &#39;Data1: (1.0, 0.0)&#39;,
+            color: &#39;rgba(255, 0, 0, 1.0)&#39;,
+            data: 
+            [[-4,0.001], [-3.9,0.001], [-3.8,0.002], [-3.7,0.002], 
+            [-3.6,0.002], [-3.5,0.003], [-3.4,0.003], [-3.3,0.004], 
+            [-3.2,0.004], [-3.1,0.005], [-3,0.006], [-2.9,0.007], 
+            [-2.8,0.008], [-2.7,0.010], [-2.6,0.012], [-2.5,0.014], 
+            [-2.4,0.017], [-2.3,0.020], [-2.2,0.023], [-2.1,0.027], 
+            [-2,0.032], [-1.9,0.038], [-1.8,0.045], [-1.7,0.053], 
+            [-1.6,0.062], [-1.5,0.072], [-1.4,0.085], [-1.3,0.099], 
+            [-1.2,0.115], [-1.1,0.133], [-1,0.154], [-0.9,0.178], 
+            [-0.8,0.204], [-0.7,0.233], [-0.6,0.265], [-0.5,0.299], 
+            [-0.4,0.336], [-0.3,0.375], [-0.2,0.416], [-0.1,0.458], 
+            [0,0.500], [0.1,0.542], [0.2,0.584], [0.3,0.625], 
+            [0.4,0.664], [0.5,0.701], [0.6,0.735], [0.7,0.767], 
+            [0.8,0.796], [0.9,0.822], [1,0.846], [1.1,0.867], 
+            [1.2,0.885], [1.3,0.901], [1.4,0.915], [1.5,0.928], 
+            [1.6,0.938], [1.7,0.947], [1.8,0.955], [1.9,0.962], 
+            [2,0.968], [2.1,0.973], [2.2,0.977], [2.3,0.980], 
+            [2.4,0.983], [2.5,0.986], [2.6,0.988], [2.7,0.990], 
+            [2.8,0.992], [2.9,0.993], [3,0.994], [3.1,0.995], 
+            [3.2,0.996], [3.3,0.996], [3.4,0.997], [3.5,0.997], 
+            [3.6,0.998], [3.7,0.998], [3.8,0.998], [3.9,0.999], 
+            [4,0.999]] 
+        },
+        {
+            name: &#39;Data2: (2.0, 0.5)&#39;,
+            color: &#39;rgba(0, 255, 0, 1.0)&#39;,
+            data: 
+            [[-4,0.000], [-3.9,0.000], [-3.8,0.000], [-3.7,0.000], 
+            [-3.6,0.000], [-3.5,0.000], [-3.4,0.000], [-3.3,0.000], 
+            [-3.2,0.000], [-3.1,0.000], [-3,0.000], [-2.9,0.000], 
+            [-2.8,0.000], [-2.7,0.000], [-2.6,0.000], [-2.5,0.000], 
+            [-2.4,0.000], [-2.3,0.000], [-2.2,0.000], [-2.1,0.000], 
+            [-2,0.000], [-1.9,0.000], [-1.8,0.000], [-1.7,0.001], 
+            [-1.6,0.001], [-1.5,0.001], [-1.4,0.002], [-1.3,0.002], 
+            [-1.2,0.003], [-1.1,0.004], [-1,0.006], [-0.9,0.008], 
+            [-0.8,0.012], [-0.7,0.017], [-0.6,0.023], [-0.5,0.032], 
+            [-0.4,0.045], [-0.3,0.062], [-0.2,0.085], [-0.1,0.115], 
+            [0,0.154], [0.1,0.204], [0.2,0.265], [0.3,0.336], 
+            [0.4,0.416], [0.5,0.500], [0.6,0.584], [0.7,0.664], 
+            [0.8,0.735], [0.9,0.796], [1,0.846], [1.1,0.885], 
+            [1.2,0.915], [1.3,0.938], [1.4,0.955], [1.5,0.968], 
+            [1.6,0.977], [1.7,0.983], [1.8,0.988], [1.9,0.992], 
+            [2,0.994], [2.1,0.996], [2.2,0.997], [2.3,0.998], 
+            [2.4,0.998], [2.5,0.999], [2.6,0.999], [2.7,0.999], 
+            [2.8,1.000], [2.9,1.000], [3,1.000], [3.1,1.000], 
+            [3.2,1.000], [3.3,1.000], [3.4,1.000], [3.5,1.000], 
+            [3.6,1.000], [3.7,1.000], [3.8,1.000], [3.9,1.000], 
+            [4,1.000]] 
+        },
+        {
+            name: &#39;Data3: (3.0, -0.4)&#39;,
+            color: &#39;rgba(0, 0, 255, 1.0)&#39;,
+            data:
+            [[-4,0.000], [-3.9,0.000], [-3.8,0.000], [-3.7,0.000], 
+            [-3.6,0.000], [-3.5,0.000], [-3.4,0.000], [-3.3,0.000], 
+            [-3.2,0.000], [-3.1,0.000], [-3,0.000], [-2.9,0.000], 
+            [-2.8,0.000], [-2.7,0.000], [-2.6,0.000], [-2.5,0.000], 
+            [-2.4,0.000], [-2.3,0.000], [-2.2,0.000], [-2.1,0.000], 
+            [-2,0.000], [-1.9,0.000], [-1.8,0.001], [-1.7,0.001], 
+            [-1.6,0.002], [-1.5,0.004], [-1.4,0.006], [-1.3,0.010], 
+            [-1.2,0.017], [-1.1,0.027], [-1,0.045], [-0.9,0.072], 
+            [-0.8,0.115], [-0.7,0.178], [-0.6,0.265], [-0.5,0.375], 
+            [-0.4,0.500], [-0.3,0.625], [-0.2,0.735], [-0.1,0.822], 
+            [0,0.885], [0.1,0.928], [0.2,0.955], [0.3,0.973], 
+            [0.4,0.983], [0.5,0.990], [0.6,0.994], [0.7,0.996], 
+            [0.8,0.998], [0.9,0.999], [1,0.999], [1.1,1.000], 
+            [1.2,1.000], [1.3,1.000], [1.4,1.000], [1.5,1.000], 
+            [1.6,1.000], [1.7,1.000], [1.8,1.000], [1.9,1.000], 
+            [2,1.000], [2.1,1.000], [2.2,1.000], [2.3,1.000], 
+            [2.4,1.000], [2.5,1.000], [2.6,1.000], [2.7,1.000], 
+            [2.8,1.000], [2.9,1.000], [3,1.000], [3.1,1.000], 
+            [3.2,1.000], [3.3,1.000], [3.4,1.000], [3.5,1.000], 
+            [3.6,1.000], [3.7,1.000], [3.8,1.000], [3.9,1.000], 
+            [4,1.000]]
+        }] 
+    });
+});
+		&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+&lt;script src=&quot;https://code.highcharts.com/highcharts.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://code.highcharts.com/modules/exporting.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;container&quot; style=&quot;min-width: 310px; height: 600px; max-width: 800px; margin: 0 auto&quot;&gt;&lt;/div&gt;
+
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre></figure>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

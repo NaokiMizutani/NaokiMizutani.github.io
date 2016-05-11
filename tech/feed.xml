@@ -5,7 +5,45 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 10 May 2016 12:55:51 +0900</pubDate>
+    <pubDate>Wed, 11 May 2016 12:44:16 +0900</pubDate>
+    
+      <item>
+        <title>社会情報システム特論の内容</title>
+        <link>http://NaokiMizutani.github.io/tech/python/apache/r/Socilec2016.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/apache/r/Socilec2016.html</guid>
+        <description>&lt;p&gt;Linux(CentOS7) をベースに、データサイエンス方面で有効なツールを種々試行する。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;/tech/centos7/install/CentOS7-install.html&quot;&gt;CentOS7 のインストール&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;/tech/javascript/highcharts/HighCharts-JavaScript.html&quot;&gt;JavaScript パッケージ (HighChars) の試用&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;/tech/python/install/PythonToCentOS7.html&quot;&gt;CentOS7 への Python3 のインストール&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;/tech/centos7/python/jupyter/Jupyter.html&quot;&gt;Jupyter のインストール&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;/tech/python/apache/Apache_Python3.html&quot;&gt;Python を動作させるための Apache の設定&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;データサイエンス向けの環境構築&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/centos7/r/install/Install-R.html&quot;&gt;R のインストール&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/python/jupyter/r/Jupyter_R.html&quot;&gt;Jupyter で R を動作&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/centos7/python/matplotlib/Python-matplotlib.html&quot;&gt;matplotlib の導入&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/python/r/PypeR.html&quot;&gt;Python から R を動作&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/tech/python/apache/r/Python-R-Webapp.html&quot;&gt;Python から R を動作させる Web アプリ&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Wed, 11 May 2016 08:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>JavaScript パッケージ (HighCharts) を使ってグラフを描く</title>

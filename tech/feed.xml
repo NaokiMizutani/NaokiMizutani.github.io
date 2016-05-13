@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 13 May 2016 22:55:13 +0900</pubDate>
+    <pubDate>Fri, 13 May 2016 23:04:07 +0900</pubDate>
     
       <item>
         <title>Jinja2 を用いた JavaScript グラフのスクリプト生成</title>
@@ -34,6 +34,25 @@ Python3 が動作するサーバ環境があるものとする。&lt;/p&gt;
 
 &lt;p&gt;そして、生成されたグラフデータの数値は、凡例用のデータ名やグラフ線の色指定とともに
 Highcharts用のテキストデータとし、jinja2 によってテンプレートに入れ込む。&lt;/p&gt;
+
+&lt;p&gt;手順 1）1つの(a, b)組に対して、下に示すテキストを生成する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    {
+        name: &#39;Data1: (1.0, 0.0)&#39;,
+        color: &#39;rgba(255, 0, 0, 1.0)&#39;,
+        data: 
+        [
+            [-4,0.001],
+            [-3.9,0.001],
+            [-3.8,0.002],
+            [-3.7,0.002], 
+              :
+              :
+        ]
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;手順 2）さらに (a, b)組があれば、上記に続けてカンマを入れた後、同様のテキストを生成する。&lt;/p&gt;
 
 &lt;p&gt;作成された HTML は mod_wsgi によって web発信される仕組みとなっている。&lt;/p&gt;
 

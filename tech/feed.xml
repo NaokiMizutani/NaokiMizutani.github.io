@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 13 May 2016 22:45:10 +0900</pubDate>
+    <pubDate>Fri, 13 May 2016 22:55:13 +0900</pubDate>
     
       <item>
         <title>Jinja2 を用いた JavaScript グラフのスクリプト生成</title>
@@ -27,14 +27,15 @@ Python3 が動作するサーバ環境があるものとする。&lt;/p&gt;
 グラフ描画のためのデータ部分を {{ data_contents }} と置いて、
 ここに jinja2 を用いて Python プログラムでデータを生成して流し込む。&lt;/p&gt;
 
-&lt;p&gt;Python プログラム jinja2webtest.py の中で、リスト case_list には 10種類のパラメータを
-準備してあり、それぞれのパラメータ &lt;script type=&quot;math/tex&quot;&gt;(a, b)&lt;/script&gt; に対して、
-関数   &lt;script type=&quot;math/tex&quot;&gt;y = 1 / ( 1 + e^{-D a (x - b)} )&lt;/script&gt; に従う &lt;script type=&quot;math/tex&quot;&gt;(x, y)&lt;/script&gt; データを生成する。&lt;/p&gt;
+&lt;p&gt;Python プログラム jinja2webtest.py の中で、リスト case_list には 10種類のパラメータが
+格納してある。
+まず、それぞれのパラメータ &lt;script type=&quot;math/tex&quot;&gt;(a, b)&lt;/script&gt; に対して、
+関数   &lt;script type=&quot;math/tex&quot;&gt;y = 1 / ( 1 + e^{-D a (x - b)} )&lt;/script&gt; に従う &lt;script type=&quot;math/tex&quot;&gt;(x, y)&lt;/script&gt; 数値データを生成する。&lt;/p&gt;
 
-&lt;p&gt;生成されたグラフデータの数値は、凡例用のデータ名やグラフ線の色指定とともに
-Highcharts用のテキストデータとして生成し、jinja2 によってテンプレートに入れ込む。&lt;/p&gt;
+&lt;p&gt;そして、生成されたグラフデータの数値は、凡例用のデータ名やグラフ線の色指定とともに
+Highcharts用のテキストデータとし、jinja2 によってテンプレートに入れ込む。&lt;/p&gt;
 
-&lt;p&gt;そして、作成された HTML は mod_wsgi によって web発信される仕組みとなっている。&lt;/p&gt;
+&lt;p&gt;作成された HTML は mod_wsgi によって web発信される仕組みとなっている。&lt;/p&gt;
 
 &lt;p&gt;なお、Python のファイル jinja2webtest.py において、Jinja2 の FileSystemLoader のところで
 相対パスを設定したところ、テンプレートファイルを見つけられない現象に陥った。

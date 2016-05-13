@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Jinja2 を用いた JavaScript グラフのスクリプト生成 | N.Mizutani</title>
+	<meta name="description" content="Jinja2 を試してみて、テンプレートに流し込む大まかな手続きをつかんだので、Jinja2 を使ってサイト用の HTML(JavaScript) を生成する。">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2-JS.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Jinja2 を用いた JavaScript グラフのスクリプト生成</h1>
+    <p class="meta">
+    May 13, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p><a href="/tech/python/jinja2/Python3-Jinja2.html">Jinja2 を試してみて</a>、
+テンプレートに流し込む大まかな手続きをつかんだので、
+Jinja2 を使ってサイト用の HTML(JavaScript) を生成する。</p>
+
+<p>JavaScriptグラフパッケージ <a href="/tech/javascript/highcharts/HighCharts-JavaScript.html">HighCharts</a> のデータを Python で生成して描かせるタスクを目標とし、
+<a href="/tech/python/apache/Apache_Python3.html">Apache + mod_wsgi</a> など、
+Python3 が動作するサーバ環境があるものとする。</p>
+
+<hr />
+
+<p>下に示す２つのファイルを /var/www/html に配置する。</p>
+
+<p>template.html は、Highcharts を用いたグラフ描画を行う html ファイルである。
+グラフ描画のためのデータ部分を {{ data_contents }} と置いて、
+ここに jinja2 を用いて Python プログラムでデータを生成して流し込む。</p>
+
+<p>Python プログラム jinja2webtest.py の中で、リスト case_list には 10種類のパラメータを
+準備してあり、それぞれのパラメータ <script type="math/tex">(a, b)</script> に対して、
+関数   <script type="math/tex">y = 1 / ( 1 + e^{-D a (x - b)} )</script> に従う <script type="math/tex">(x, y)</script> データを生成する。</p>
+
+<p>生成されたグラフデータの数値は、凡例用のデータ名やグラフ線の色指定とともに
+Highcharts用のテキストデータとして生成し、jinja2 によってテンプレートに入れ込む。</p>
+
+<p>そして、作成された HTML は mod_wsgi によって web発信される仕組みとなっている。</p>
+
+<p>なお、Python のファイル jinja2webtest.py において、Jinja2 の FileSystemLoader のところで
+相対パスを設定したところ、テンプレートファイルを見つけられない現象に陥った。
+解決法がわからなかったので、絶対パスを使っている。</p>
+
+<p>— template.html</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+		&lt;title&gt;Highcharts Example&lt;/title&gt;
+
+		&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+		&lt;style type=&quot;text/css&quot;&gt;
+${demo.css}
+		&lt;/style&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+$(function () {
+    $(&#39;#container&#39;).highcharts({
+        chart: {
+            zoomType: &#39;xy&#39;
+        },
+        title: {
+            text: &#39;項目特性曲線&#39;
+        },
+        subtitle: {
+            text: &#39;Some curves with params:(a, b)&#39;
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: &#39;Ability (θ)&#39;
+            },
+            min: -4.0,
+            max: 4.0,
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true,
+            gridLineWidth: 1
+        },
+        yAxis: {
+            title: {
+                text: &#39;Probability&#39;
+            },
+            min: 0.0,
+            max: 1.0
+        },
+        legend: {
+            layout: &#39;vertical&#39;,
+            align: &#39;left&#39;,
+            verticalAlign: &#39;top&#39;,
+            x: 55,
+            y: 50,
+            floating: true,
+            backgroundColor: (Highcharts.theme &amp;&amp; Highcharts.theme.legendBackgroundColor) || &#39;#FFFFFF&#39;,
+            borderWidth: 1
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        series: [
+{{ data_contents }}
+        ] 
+    });
+});
+		&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+&lt;script src=&quot;https://code.highcharts.com/highcharts.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://code.highcharts.com/modules/exporting.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;container&quot; style=&quot;min-width: 310px; height: 600px; max-width: 800px; margin: 0 auto&quot;&gt;&lt;/div&gt;
+
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre></figure>
+
+<p>— jinja2webtest.py</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">import math
+from jinja2 import Environment, FileSystemLoader
+
+class AppSample(object):
+
+    def __init__(self):
+        pass
+
+    def __call__(self, environ, start_response):
+        method = environ[&#39;REQUEST_METHOD&#39;]
+        if method == &#39;GET&#39;:
+            return self.message1(environ, start_response)
+        else:
+            start_response(&#39;501 Not Implemented&#39;, [(&#39;Content-type&#39;, &#39;text/plain&#39;)])
+            return &#39;Not Implemented&#39;
+
+    def message1(self, environ, start_response):
+
+        env = Environment(loader=FileSystemLoader(&#39;/var/www/html/&#39;, encoding=&#39;utf8&#39;))
+        template = env.get_template(&#39;template.html&#39;)
+        
+        selection_color = [&quot;color: &#39;rgba(255,    0,    0, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(  0,  255,    0, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(  0,    0,  255, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(  0,  255,  255, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(255,    0,  255, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(255,  255,    0, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(128,    0,    0, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(  0,  128,    0, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(  0,    0,  128, 1.0)&#39;,\n&quot;, 
+        		   &quot;color: &#39;rgba(100,  100,  100, 1.0)&#39;,\n&quot;]
+        
+        insert_text = &#39;&#39;
+        tab = &#39; &#39; * 4
+        
+        case_list = [[&quot;Data1&quot;, 1.0, 0.0],
+                     [&quot;Data2&quot;, 2.0, -0.5],
+                     [&quot;Data3&quot;, 3.0, 0.3],
+        	     [&quot;Data4&quot;, 4.0, -2.0],
+                     [&quot;Data5&quot;, 5.0, 1.5],
+                     [&quot;Data6&quot;, 6.0, 0.7],
+        	     [&quot;Data7&quot;, 7.0, -1.5],
+                     [&quot;Data8&quot;, 8.0, 0.8],
+                     [&quot;Data9&quot;, 9.0, 1.2],
+        	     [&quot;Data10&quot;, 10.0, -0.7]]
+        
+        val_D = 1.701
+        for n in range(len(case_list)):
+            case = case_list[n]
+            val_a = case[1] 
+            val_b = case[2]
+            insert_text += tab*2 + &quot;{\n&quot;
+            insert_text += tab*3 + &quot;name: &#39;{0}: ({1:5.3f}, {2:5.3f})&#39;,\n&quot;.format(case[0], val_a, val_b)
+            insert_text += tab*3 + selection_color[n]
+            insert_text += tab*3 + &quot;data: [\n&quot;
+            for ntheta in range(-40, 41, 1):
+                val_theta = ntheta / 10.0
+                val_prob = 1.0 / (1.0 + math.exp(- val_D * val_a * (val_theta - val_b))) 
+                if ntheta == 40:
+                    insert_text += (tab*4 + &quot;[{0:3.1f},{1:5.3f}]\n&quot;.format(val_theta, val_prob))
+                else:
+                    insert_text += (tab*4 + &quot;[{0:3.1f},{1:5.3f}],\n&quot;.format(val_theta, val_prob))
+            insert_text += tab*3 + &quot;]\n&quot;
+            if n == len(case_list) - 1:
+                insert_text += tab*2 + &quot;}\n&quot;
+            else:
+                insert_text += tab*2 + &quot;},\n&quot;
+        text = template.render({&#39;data_contents&#39;: insert_text})
+        
+        start_response(&#39;200 OK&#39;, [(&#39;Content-type&#39;, &#39;text/html; charset=utf-8&#39;)])
+
+        return [text.encode(&#39;utf-8&#39;)]
+
+
+application = AppSample()</code></pre></figure>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

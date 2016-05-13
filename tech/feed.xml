@@ -5,7 +5,284 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 11 May 2016 12:44:16 +0900</pubDate>
+    <pubDate>Fri, 13 May 2016 22:45:10 +0900</pubDate>
+    
+      <item>
+        <title>Jinja2 を用いた JavaScript グラフのスクリプト生成</title>
+        <link>http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2-JS.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2-JS.html</guid>
+        <description>&lt;p&gt;&lt;a href=&quot;/tech/python/jinja2/Python3-Jinja2.html&quot;&gt;Jinja2 を試してみて&lt;/a&gt;、
+テンプレートに流し込む大まかな手続きをつかんだので、
+Jinja2 を使ってサイト用の HTML(JavaScript) を生成する。&lt;/p&gt;
+
+&lt;p&gt;JavaScriptグラフパッケージ &lt;a href=&quot;/tech/javascript/highcharts/HighCharts-JavaScript.html&quot;&gt;HighCharts&lt;/a&gt; のデータを Python で生成して描かせるタスクを目標とし、
+&lt;a href=&quot;/tech/python/apache/Apache_Python3.html&quot;&gt;Apache + mod_wsgi&lt;/a&gt; など、
+Python3 が動作するサーバ環境があるものとする。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;下に示す２つのファイルを /var/www/html に配置する。&lt;/p&gt;
+
+&lt;p&gt;template.html は、Highcharts を用いたグラフ描画を行う html ファイルである。
+グラフ描画のためのデータ部分を {{ data_contents }} と置いて、
+ここに jinja2 を用いて Python プログラムでデータを生成して流し込む。&lt;/p&gt;
+
+&lt;p&gt;Python プログラム jinja2webtest.py の中で、リスト case_list には 10種類のパラメータを
+準備してあり、それぞれのパラメータ &lt;script type=&quot;math/tex&quot;&gt;(a, b)&lt;/script&gt; に対して、
+関数   &lt;script type=&quot;math/tex&quot;&gt;y = 1 / ( 1 + e^{-D a (x - b)} )&lt;/script&gt; に従う &lt;script type=&quot;math/tex&quot;&gt;(x, y)&lt;/script&gt; データを生成する。&lt;/p&gt;
+
+&lt;p&gt;生成されたグラフデータの数値は、凡例用のデータ名やグラフ線の色指定とともに
+Highcharts用のテキストデータとして生成し、jinja2 によってテンプレートに入れ込む。&lt;/p&gt;
+
+&lt;p&gt;そして、作成された HTML は mod_wsgi によって web発信される仕組みとなっている。&lt;/p&gt;
+
+&lt;p&gt;なお、Python のファイル jinja2webtest.py において、Jinja2 の FileSystemLoader のところで
+相対パスを設定したところ、テンプレートファイルを見つけられない現象に陥った。
+解決法がわからなかったので、絶対パスを使っている。&lt;/p&gt;
+
+&lt;p&gt;— template.html&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;!DOCTYPE HTML&amp;gt;
+&amp;lt;html&amp;gt;
+	&amp;lt;head&amp;gt;
+		&amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=utf-8&amp;quot;&amp;gt;
+		&amp;lt;title&amp;gt;Highcharts Example&amp;lt;/title&amp;gt;
+
+		&amp;lt;script type=&amp;quot;text/javascript&amp;quot; src=&amp;quot;https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+		&amp;lt;style type=&amp;quot;text/css&amp;quot;&amp;gt;
+${demo.css}
+		&amp;lt;/style&amp;gt;
+		&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+$(function () {
+    $(&amp;#39;#container&amp;#39;).highcharts({
+        chart: {
+            zoomType: &amp;#39;xy&amp;#39;
+        },
+        title: {
+            text: &amp;#39;項目特性曲線&amp;#39;
+        },
+        subtitle: {
+            text: &amp;#39;Some curves with params:(a, b)&amp;#39;
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: &amp;#39;Ability (θ)&amp;#39;
+            },
+            min: -4.0,
+            max: 4.0,
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true,
+            gridLineWidth: 1
+        },
+        yAxis: {
+            title: {
+                text: &amp;#39;Probability&amp;#39;
+            },
+            min: 0.0,
+            max: 1.0
+        },
+        legend: {
+            layout: &amp;#39;vertical&amp;#39;,
+            align: &amp;#39;left&amp;#39;,
+            verticalAlign: &amp;#39;top&amp;#39;,
+            x: 55,
+            y: 50,
+            floating: true,
+            backgroundColor: (Highcharts.theme &amp;amp;&amp;amp; Highcharts.theme.legendBackgroundColor) || &amp;#39;#FFFFFF&amp;#39;,
+            borderWidth: 1
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        series: [
+{{ data_contents }}
+        ] 
+    });
+});
+		&amp;lt;/script&amp;gt;
+	&amp;lt;/head&amp;gt;
+	&amp;lt;body&amp;gt;
+&amp;lt;script src=&amp;quot;https://code.highcharts.com/highcharts.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;https://code.highcharts.com/modules/exporting.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+
+&amp;lt;div id=&amp;quot;container&amp;quot; style=&amp;quot;min-width: 310px; height: 600px; max-width: 800px; margin: 0 auto&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+
+	&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;— jinja2webtest.py&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import math
+from jinja2 import Environment, FileSystemLoader
+
+class AppSample(object):
+
+    def __init__(self):
+        pass
+
+    def __call__(self, environ, start_response):
+        method = environ[&amp;#39;REQUEST_METHOD&amp;#39;]
+        if method == &amp;#39;GET&amp;#39;:
+            return self.message1(environ, start_response)
+        else:
+            start_response(&amp;#39;501 Not Implemented&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain&amp;#39;)])
+            return &amp;#39;Not Implemented&amp;#39;
+
+    def message1(self, environ, start_response):
+
+        env = Environment(loader=FileSystemLoader(&amp;#39;/var/www/html/&amp;#39;, encoding=&amp;#39;utf8&amp;#39;))
+        template = env.get_template(&amp;#39;template.html&amp;#39;)
+        
+        selection_color = [&amp;quot;color: &amp;#39;rgba(255,    0,    0, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(  0,  255,    0, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(  0,    0,  255, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(  0,  255,  255, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(255,    0,  255, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(255,  255,    0, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(128,    0,    0, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(  0,  128,    0, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(  0,    0,  128, 1.0)&amp;#39;,\n&amp;quot;, 
+        		   &amp;quot;color: &amp;#39;rgba(100,  100,  100, 1.0)&amp;#39;,\n&amp;quot;]
+        
+        insert_text = &amp;#39;&amp;#39;
+        tab = &amp;#39; &amp;#39; * 4
+        
+        case_list = [[&amp;quot;Data1&amp;quot;, 1.0, 0.0],
+                     [&amp;quot;Data2&amp;quot;, 2.0, -0.5],
+                     [&amp;quot;Data3&amp;quot;, 3.0, 0.3],
+        	     [&amp;quot;Data4&amp;quot;, 4.0, -2.0],
+                     [&amp;quot;Data5&amp;quot;, 5.0, 1.5],
+                     [&amp;quot;Data6&amp;quot;, 6.0, 0.7],
+        	     [&amp;quot;Data7&amp;quot;, 7.0, -1.5],
+                     [&amp;quot;Data8&amp;quot;, 8.0, 0.8],
+                     [&amp;quot;Data9&amp;quot;, 9.0, 1.2],
+        	     [&amp;quot;Data10&amp;quot;, 10.0, -0.7]]
+        
+        val_D = 1.701
+        for n in range(len(case_list)):
+            case = case_list[n]
+            val_a = case[1] 
+            val_b = case[2]
+            insert_text += tab*2 + &amp;quot;{\n&amp;quot;
+            insert_text += tab*3 + &amp;quot;name: &amp;#39;{0}: ({1:5.3f}, {2:5.3f})&amp;#39;,\n&amp;quot;.format(case[0], val_a, val_b)
+            insert_text += tab*3 + selection_color[n]
+            insert_text += tab*3 + &amp;quot;data: [\n&amp;quot;
+            for ntheta in range(-40, 41, 1):
+                val_theta = ntheta / 10.0
+                val_prob = 1.0 / (1.0 + math.exp(- val_D * val_a * (val_theta - val_b))) 
+                if ntheta == 40:
+                    insert_text += (tab*4 + &amp;quot;[{0:3.1f},{1:5.3f}]\n&amp;quot;.format(val_theta, val_prob))
+                else:
+                    insert_text += (tab*4 + &amp;quot;[{0:3.1f},{1:5.3f}],\n&amp;quot;.format(val_theta, val_prob))
+            insert_text += tab*3 + &amp;quot;]\n&amp;quot;
+            if n == len(case_list) - 1:
+                insert_text += tab*2 + &amp;quot;}\n&amp;quot;
+            else:
+                insert_text += tab*2 + &amp;quot;},\n&amp;quot;
+        text = template.render({&amp;#39;data_contents&amp;#39;: insert_text})
+        
+        start_response(&amp;#39;200 OK&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/html; charset=utf-8&amp;#39;)])
+
+        return [text.encode(&amp;#39;utf-8&amp;#39;)]
+
+
+application = AppSample()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Fri, 13 May 2016 20:00:00 +0900</pubDate>
+      </item>
+    
+      <item>
+        <title>HTML生成のための Jinja2 の導入</title>
+        <link>http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2.html</guid>
+        <description>&lt;p&gt;ダイナミックなページを Python を用いて作成することを考えると、
+労力を減らすためにテンプレートエンジンやフレームワークを導入するのが
+得策と考えられる。
+ここでは、Python 用のテンプレートエンジンとして、利用者が多そうな Jinja2 を試す。&lt;/p&gt;
+
+&lt;p&gt;Python用のテンプレートエンジンとして、&lt;br /&gt;
+* 標準モジュールとしての string.Template（&lt;a href=&quot;http://coreblog.org/ats/stuff/minpy_web/09/03.html&quot;&gt;みんなのPython Web編&lt;/a&gt; に解説）&lt;br /&gt;
+* &lt;a href=&quot;http://jinja.pocoo.org/&quot;&gt;jinja2&lt;/a&gt;&lt;br /&gt;
+などがある。&lt;/p&gt;
+
+&lt;p&gt;Webアプリケーション・フレームワークとしては、&lt;br /&gt;
+* &lt;a href=&quot;https://www.djangoproject.com/&quot;&gt;Django&lt;/a&gt;  （ &lt;a href=&quot;http://djangoproject.jp/&quot;&gt;DjangoProject.jp&lt;/a&gt; には日本語のドキュメンテーションも充実している）&lt;br /&gt;
+* &lt;a href=&quot;http://bottlepy.org/docs/dev/index.html&quot;&gt;Bottle&lt;/a&gt;&lt;br /&gt;
+などがある。
+また、Pythonサイトには、&lt;a href=&quot;https://wiki.python.org/moin/WebFrameworks&quot;&gt;フレームワークの一覧&lt;/a&gt; も掲載されている。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;jinja2-&quot;&gt;Jinja2 のインストール&lt;/h2&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# pip3 install jinja2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;jinja2-hello-world&quot;&gt;Jinja2 の利用（Hello world）&lt;/h2&gt;
+&lt;p&gt;Python ターミナルで下記を実行すると、テンプレートとしての ‘Hello ‘ の  のところに、値 ‘World’ がレンダリングされ、戻り値 ‘Hello World’ を得る。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;from jinja2 import Template
+template = Template(&amp;#39;Hello {{ name }}!&amp;#39;)
+template.render(name=&amp;#39;World&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;この機能を使って、HTML の枠組みの中の特定箇所に Python プログラムの結果を
+流し込むことにより、得たい HTML を容易に生成することができる。&lt;/p&gt;
+
+&lt;h2 id=&quot;jinja2--1&quot;&gt;Jinja2 によるテンプレートの利用&lt;/h2&gt;
+
+&lt;p&gt;下記ファイル（data.csv, template.txt, jinja2test.py） を同一ディレクトリにおいて、
+jinja2test.py を実行すると、template.txt に指定された形式で data.csv の内容が整形されて
+出力される。&lt;/p&gt;
+
+&lt;p&gt;— data.csv&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;西暦年,和暦年,干支,干支の読み
+西暦2008年,平成20年,子年,ねずみどし
+西暦2009年,平成21年,丑年,うしどし
+西暦2010年,平成22年,寅年,とらどし
+西暦2011年,平成23年,卯年,うさぎどし
+西暦2012年,平成24年,辰年,たつどし
+西暦2013年,平成25年,巳年,みどし
+西暦2014年,平成26年,午年,うまどし
+西暦2015年,平成27年,未年,ひつじどし
+西暦2016年,平成28年,申年,さるどし
+西暦2017年,平成29年,酉年,とりどし
+西暦2018年,平成30年,戌年,いぬどし
+西暦2019年,平成31年,亥年,いのししどし&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;— template.txt&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;----- This is a test. -----
+{% for data in dictlist %}{{ loop.index }}: {{ data.year_w }} ({{ data.year_j }}) ： {{ data.eto }} ({{ data.eto_yomi }})
+{% endfor %}----- The test ended. -----&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;— jinja2test.py&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import csv
+from jinja2 import Environment, FileSystemLoader
+env = Environment(loader=FileSystemLoader(&amp;#39;./&amp;#39;, encoding=&amp;#39;utf8&amp;#39;))
+template = env.get_template(&amp;#39;template.txt&amp;#39;)
+
+dictlist = []
+with open(&amp;#39;data.csv&amp;#39;, &amp;#39;r&amp;#39;) as f:
+    reader = csv.reader(f)
+    header = next(reader)
+    for row in reader:
+        dictlist.append({&amp;#39;year_w&amp;#39;: row[0], &amp;#39;year_j&amp;#39;: row[1], &amp;#39;eto&amp;#39;: row[2], &amp;#39;eto_yomi&amp;#39;: row[3] })
+
+text = template.render({&amp;#39;dictlist&amp;#39;: dictlist})
+
+print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Fri, 13 May 2016 19:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>社会情報システム特論の内容</title>
@@ -690,12 +967,10 @@ $ make
 &lt;p&gt;TypeError: sequence of byte string values expected, value of type str found
 が出る場合には、Pythonソースファイルで文字コードの扱いに工夫が必要である。&lt;/p&gt;
 
-&lt;p&gt;下記サンプルファイルに示すように、戻す文字列を utf-8 から byte列に変換する操作 encode(‘utf-8’) が
+&lt;p&gt;下記サンプルファイルに示すように、戻す文字列を utf-8 の byte列に変換する操作 encode(‘utf-8’) が
 必要である。&lt;/p&gt;
 
-&lt;p&gt;参考サイト http://p–q.blogspot.jp/2014/05/wsgi1pythonwsgi.html&lt;/p&gt;
-
-&lt;p&gt;—– sample1.py —–&lt;/p&gt;
+&lt;p&gt;— sample1.py —&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python3/bin/python3
 
@@ -703,7 +978,7 @@ def application(environ, start_response):
     start_response(&amp;#39;200 OK&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain&amp;#39;)])
     return [&amp;#39;Hello world!&amp;#39;.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;—– sample2.py —–&lt;/p&gt;
+&lt;p&gt;— sample2.py —&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python3/bin/python3
 import datetime
@@ -719,26 +994,64 @@ def application(environ, start_response):
     start_response(status, response_headers)
     return [time.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;【参考になりそうなサイト／少し古い】
-http://gihyo.jp/dev/feature/01/wsgi&lt;/p&gt;
+&lt;p&gt;— sample3.py —&lt;/p&gt;
 
-&lt;p&gt;不要かもしれない試み&lt;/p&gt;
+&lt;p&gt;下記プログラムは、上部の html_text の内容を表示するものである。
+このテキスト内容を Python を使って動的に作成することによって有用性が増す。&lt;/p&gt;
 
-&lt;p&gt;【1】
-/etc/sysconfig/httpd の中身を修正
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;html_text = &amp;#39;&amp;#39;&amp;#39;
+    &amp;lt;html&amp;gt;
+      &amp;lt;head&amp;gt;
+        &amp;lt;title&amp;gt;Web App Sample&amp;lt;/title&amp;gt;
+        &amp;lt;meta http-equiv=&amp;quot;Content-type&amp;quot; content=&amp;quot;text/html&amp;quot;; charset=utf-8&amp;quot;&amp;gt;
+      &amp;lt;/head&amp;gt;
+      &amp;lt;body&amp;gt;Hello, world!&amp;lt;/body&amp;gt;
+    &amp;lt;/html&amp;gt;
+&amp;#39;&amp;#39;&amp;#39;
+
+class AppSample(object):
+
+    def __init__(self):
+        pass
+
+    def __call__(self, environ, start_response):
+        method = environ[&amp;#39;REQUEST_METHOD&amp;#39;]
+        if method == &amp;#39;GET&amp;#39;:
+            return self.message(environ, start_response)
+        else:
+            start_response(&amp;#39;501 Not Implemented&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain&amp;#39;)])
+            return [&amp;#39;Not Implemented&amp;#39;.encode(&amp;#39;utf-8&amp;#39;)]
+
+    def message(self, environ, start_response):
+
+        text = html_text
+
+        start_response(&amp;#39;200 OK&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/html; charset=utf-8&amp;#39;)])
+        
+        return [text.encode(&amp;#39;utf-8&amp;#39;)]
+
+application = AppSample()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;【参考サイト】&lt;br /&gt;
+http://gihyo.jp/dev/feature/01/wsgi  — 上の sample3.py は左のサイトに掲載されていたものを Python3 向けに手直しして単純にしたものである。&lt;/p&gt;
+
+&lt;p&gt;http://p–q.blogspot.jp/2014/05/wsgi1pythonwsgi.html  — Python3 における文字操作について参考になった。&lt;/p&gt;
+
+&lt;p&gt;【不要かもしれない試み】&lt;/p&gt;
+
+&lt;p&gt;(1) /etc/sysconfig/httpd の中身を修正&lt;br /&gt;
 LANG=ja_JP.utf8
 export LANG
 それから httpd をリスタート&lt;/p&gt;
 
-&lt;p&gt;【2】
-【SE Linux を無効化】
+&lt;p&gt;(2) SE Linux を無効化&lt;br /&gt;
 # setenforce 0&lt;/p&gt;
 
 &lt;p&gt;/etc/selinux/config の記述を変更
 SELINUX=disabled&lt;/p&gt;
 
-&lt;p&gt;【3 いずれ必要】
-【Firewall の http, https のポートを開ける】&lt;/p&gt;
+&lt;p&gt;(3) いずれ必要&lt;br /&gt;
+Firewall の http, https のポートを開ける&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# firewall-cmd --add-service=http --zone=public --permanent
 # firewall-cmd --add-service=https --zone=public --permanent
@@ -972,89 +1285,6 @@ http://jekyllthemes.org/themes/kasper/&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 30 Apr 2016 05:00:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Wireless LAN 親機の設定</title>
-        <link>http://NaokiMizutani.github.io/tech/peripherals/lan/WirelessLAN.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/peripherals/lan/WirelessLAN.html</guid>
-        <description>&lt;p&gt;Buffalo 無線LAN親機（WZR-HP-G301NH/U）を利用していますが、
-一度設定すると滅多に触れない機器なので、設定方法を忘れます。
-再設定する必要がありましたので、そのときの記録を残します。
-設定には、専用の設定ツールソフトをインストールしたPCが必要です。&lt;/p&gt;
-
-&lt;p&gt;Internet側を固定IPで接続する方法です。&lt;/p&gt;
-
-&lt;h2 id=&quot;buffalo-lan-&quot;&gt;Buffalo 無線LAN 親機の設定&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;本体のRouterスイッチをONにする。&lt;br /&gt;
-（別機種）WSR-1166DHPの場合、背面にあるスイッチを次のようにする
-    &lt;ul&gt;
-      &lt;li&gt;モードスイッチを ROUTER に&lt;/li&gt;
-      &lt;li&gt;AUTO/MANUALスイッチを MANUAL に&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;無線LAN親機を工場出荷状態に戻す。&lt;br /&gt;
-製品底面にリセットスイッチがあり、それを３秒以上押して
-DIAG ランプが点滅することを確認する。&lt;br /&gt;
-（電源を入れ直す。← 不要かもしれません。）&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Internet側のコネクタ口（青）は、大学のLAN回線につなぐ。&lt;/li&gt;
-  &lt;li&gt;LAN側のコネクタ口（黒）に設定のためのPCをつなぐ。&lt;/li&gt;
-  &lt;li&gt;PCのIPアドレス設定は、自動取得にしておく。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;エアステーション設定ツールの利用&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;http://buffalo.jp/download/driver/lan/airset.html&quot;&gt;ダウンロードサイト&lt;/a&gt; から
-エアステーション設定プログラムをダウンロードして PC にインストールして起動する。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;プログラムを起動すると自動的に無線LAN親機を探し、機器一覧が画面に表示される。&lt;/li&gt;
-  &lt;li&gt;該当機器を選択して「次に」ボタンを押す。&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;次の選択画面では、無線LAN親機のIPアドレス設定せずに、
-「通常はこちら」と表示された「設定画面を開く」を押す。&lt;br /&gt;
-ブラウザが立ち上がり、ユーザ名（root）を入れる。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;各種の設定&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;Internet/LAN のタブ
-        &lt;ul&gt;
-          &lt;li&gt;IPアドレス取得方法として「手動設定」を選んでアドレスを入力&lt;/li&gt;
-          &lt;li&gt;サブネットマスクを確認&lt;/li&gt;
-          &lt;li&gt;「拡張設定」でデフォルトゲートウェイ、DNSを入力&lt;/li&gt;
-          &lt;li&gt;「設定」ボタンを押す。&lt;br /&gt;
-しばらくすると初期画面が表示される。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;無線設定のタブ、基本(11n/g/b)
-        &lt;ul&gt;
-          &lt;li&gt;SSID として適当な値を入力して名前を設定、&lt;/li&gt;
-          &lt;li&gt;WPA-PSK にパスワードを変更設定&lt;/li&gt;
-          &lt;li&gt;「設定」ボタンを押す。&lt;br /&gt;
-しばらくすると初期画面が表示される。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;セキュリティタブ&lt;br /&gt;
-有害サイト排除ツールの機能を切る。&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これで基本的な設定は終了である。
-設定ツールをログアウトしておく。&lt;/p&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;テスト&lt;/h2&gt;
-&lt;p&gt;電源を入れなおしても動作しているかチェックする。&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 29 Apr 2016 00:00:00 +0900</pubDate>
       </item>
     
   </channel>

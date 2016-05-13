@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>HTML生成のための Jinja2 の導入 | N.Mizutani</title>
+	<meta name="description" content="ダイナミックなページを Python を用いて作成することを考えると、労力を減らすためにテンプレートエンジンやフレームワークを導入するのが得策と考えられる。ここでは、Python 用のテンプレートエンジンとして、利用者が多そうな Jinja2 を試す。">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">HTML生成のための Jinja2 の導入</h1>
+    <p class="meta">
+    May 13, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>ダイナミックなページを Python を用いて作成することを考えると、
+労力を減らすためにテンプレートエンジンやフレームワークを導入するのが
+得策と考えられる。
+ここでは、Python 用のテンプレートエンジンとして、利用者が多そうな Jinja2 を試す。</p>
+
+<p>Python用のテンプレートエンジンとして、<br />
+* 標準モジュールとしての string.Template（<a href="http://coreblog.org/ats/stuff/minpy_web/09/03.html">みんなのPython Web編</a> に解説）<br />
+* <a href="http://jinja.pocoo.org/">jinja2</a><br />
+などがある。</p>
+
+<p>Webアプリケーション・フレームワークとしては、<br />
+* <a href="https://www.djangoproject.com/">Django</a>  （ <a href="http://djangoproject.jp/">DjangoProject.jp</a> には日本語のドキュメンテーションも充実している）<br />
+* <a href="http://bottlepy.org/docs/dev/index.html">Bottle</a><br />
+などがある。
+また、Pythonサイトには、<a href="https://wiki.python.org/moin/WebFrameworks">フレームワークの一覧</a> も掲載されている。</p>
+
+<hr />
+
+<h2 id="jinja2-">Jinja2 のインストール</h2>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># pip3 install jinja2</code></pre></figure>
+
+<h2 id="jinja2-hello-world">Jinja2 の利用（Hello world）</h2>
+<p>Python ターミナルで下記を実行すると、テンプレートとしての ‘Hello ‘ の  のところに、値 ‘World’ がレンダリングされ、戻り値 ‘Hello World’ を得る。</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">from jinja2 import Template
+template = Template(&#39;Hello {{ name }}!&#39;)
+template.render(name=&#39;World&#39;)</code></pre></figure>
+
+<p>この機能を使って、HTML の枠組みの中の特定箇所に Python プログラムの結果を
+流し込むことにより、得たい HTML を容易に生成することができる。</p>
+
+<h2 id="jinja2--1">Jinja2 によるテンプレートの利用</h2>
+
+<p>下記ファイル（data.csv, template.txt, jinja2test.py） を同一ディレクトリにおいて、
+jinja2test.py を実行すると、template.txt に指定された形式で data.csv の内容が整形されて
+出力される。</p>
+
+<p>— data.csv</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">西暦年,和暦年,干支,干支の読み
+西暦2008年,平成20年,子年,ねずみどし
+西暦2009年,平成21年,丑年,うしどし
+西暦2010年,平成22年,寅年,とらどし
+西暦2011年,平成23年,卯年,うさぎどし
+西暦2012年,平成24年,辰年,たつどし
+西暦2013年,平成25年,巳年,みどし
+西暦2014年,平成26年,午年,うまどし
+西暦2015年,平成27年,未年,ひつじどし
+西暦2016年,平成28年,申年,さるどし
+西暦2017年,平成29年,酉年,とりどし
+西暦2018年,平成30年,戌年,いぬどし
+西暦2019年,平成31年,亥年,いのししどし</code></pre></figure>
+
+<p>— template.txt</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">----- This is a test. -----
+{% for data in dictlist %}{{ loop.index }}: {{ data.year_w }} ({{ data.year_j }}) ： {{ data.eto }} ({{ data.eto_yomi }})
+{% endfor %}----- The test ended. -----</code></pre></figure>
+
+<p>— jinja2test.py</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">import csv
+from jinja2 import Environment, FileSystemLoader
+env = Environment(loader=FileSystemLoader(&#39;./&#39;, encoding=&#39;utf8&#39;))
+template = env.get_template(&#39;template.txt&#39;)
+
+dictlist = []
+with open(&#39;data.csv&#39;, &#39;r&#39;) as f:
+    reader = csv.reader(f)
+    header = next(reader)
+    for row in reader:
+        dictlist.append({&#39;year_w&#39;: row[0], &#39;year_j&#39;: row[1], &#39;eto&#39;: row[2], &#39;eto_yomi&#39;: row[3] })
+
+text = template.render({&#39;dictlist&#39;: dictlist})
+
+print(text)</code></pre></figure>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

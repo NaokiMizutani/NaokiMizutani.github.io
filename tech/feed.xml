@@ -5,7 +5,165 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 13 May 2016 23:04:07 +0900</pubDate>
+    <pubDate>Mon, 16 May 2016 12:01:31 +0900</pubDate>
+    
+      <item>
+        <title>Python (mod_wsgi) を使った FORMタグの処理</title>
+        <link>http://NaokiMizutani.github.io/tech/python/mod_wsgi/form/Python-Web-Upload.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/mod_wsgi/form/Python-Web-Upload.html</guid>
+        <description>&lt;p&gt;HTML の入力・送信フォーム中のテキストボックスやファイルアップロードに対する
+処理方法について、Python/mod_wsgi の利用を前提にサンプルを示す。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;テキストボックスの例&lt;/h2&gt;
+
+&lt;p&gt;文字入力のためのテキストボックスに文字が入力され送信ボタンが押された場合に、
+POSTメソッドでサーバに入力データを回収する手続きを示す。&lt;/p&gt;
+
+&lt;p&gt;Apache 等のサーバで mod_wsgi が動作する python3 環境を想定している。&lt;/p&gt;
+
+&lt;p&gt;mod_wsgi についてのサンプルプログラムはいくつか検索できるが、python3 で
+漢字入力がうまく動作するまでに試行錯誤しなければならなかった。&lt;/p&gt;
+
+&lt;p&gt;— input.py&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import cgi
+
+html = &amp;#39;&amp;#39;&amp;#39;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot;
+&amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xml:lang=&amp;quot;ja&amp;quot; lang=&amp;quot;ja&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;テキスト入力フィールドに入力された文字を取得する&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;テキスト入力フィールドに入力された文字を取得する&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;入力された文字は、「%s」です。&amp;lt;/p&amp;gt;
+&amp;lt;form action=&amp;quot;http://localhost/input.py&amp;quot; method=&amp;quot;post&amp;quot; AcceptEncoding=&amp;quot;utf-8&amp;quot;&amp;gt;
+&amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;text&amp;quot; /&amp;gt;
+&amp;lt;input type=&amp;quot;submit&amp;quot; /&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&amp;#39;&amp;#39;&amp;#39;
+
+def application(environ, start_response):
+	method = environ.get(&amp;#39;REQUEST_METHOD&amp;#39;)
+	data = &amp;#39;&amp;#39;
+	if method == &amp;quot;GET&amp;quot;:
+		pass
+	elif method == &amp;quot;POST&amp;quot;:
+		wsgi_input = environ.get(&amp;#39;wsgi.input&amp;#39;)
+		form = cgi.FieldStorage(fp=wsgi_input, environ=environ, keep_blank_values=True)
+#		for key in form:
+#			data += &amp;quot;name:&amp;quot; + key + &amp;quot; value:&amp;quot; + form[key].value + &amp;quot;&amp;lt;br&amp;gt;&amp;quot;
+		data = form[&amp;#39;text&amp;#39;].value
+
+	output = html % data
+	status = &amp;#39;200 OK&amp;#39;
+	response_headers = [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/html; charset=utf-8&amp;#39;),
+				(&amp;#39;Content-Length&amp;#39;, str(len(output.encode(&amp;#39;utf-8&amp;#39;))))]
+	start_response(status, response_headers)
+	return [output.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;ファイル・アップロードの例&lt;/h2&gt;
+
+&lt;p&gt;GETメソッドでアクセスされた場合にファイル名選択のためのダイアログを表示し、
+ファイルが選択され送信ボタンが押されると、
+POSTメソッドでサーバにファイルデータを回収し、
+ファイルの内容を入手する手続きを示す。&lt;/p&gt;
+
+&lt;p&gt;アップロードされたファイルのデータは、サーバ側の実ファイルとして
+保存するようにした。&lt;/p&gt;
+
+&lt;p&gt;アップロードを行うには、フォームで enctype を multipart/form-data にする。&lt;/p&gt;
+
+&lt;p&gt;— upload.py&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import cgi
+from tempfile import TemporaryFile
+
+html_head = &amp;#39;&amp;#39;&amp;#39;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot;
+&amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xml:lang=&amp;quot;ja&amp;quot; lang=&amp;quot;ja&amp;quot;&amp;gt;
+&amp;#39;&amp;#39;&amp;#39;
+
+html_get = &amp;#39;&amp;#39;&amp;#39;&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;ファイル・アップロードのテスト&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;ファイル・アップロード操作画面&amp;lt;/h1&amp;gt;
+&amp;lt;form action=&amp;quot;http://localhost/upload.py&amp;quot; method=&amp;quot;post&amp;quot; enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt;
+--- Select File and Push Upload-Button --- &amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;upfile&amp;quot; size=&amp;quot;50&amp;quot; /&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot; Upload &amp;quot; /&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&amp;#39;&amp;#39;&amp;#39;
+
+html_post = &amp;#39;&amp;#39;&amp;#39;&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;ファイル・アップロードのテスト&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;アップロードされたファイルの内容&amp;lt;/h1&amp;gt;
+--- Uploaded Text --- &amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;p&amp;gt;%s&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&amp;#39;&amp;#39;&amp;#39;
+
+def application(environ, start_response):
+	method = environ.get(&amp;#39;REQUEST_METHOD&amp;#39;)
+	data = &amp;#39;&amp;#39;
+	if method == &amp;quot;GET&amp;quot;:
+		output = html_head + html_get
+	elif method == &amp;quot;POST&amp;quot;:
+		form = cgi.FieldStorage(environ[&amp;#39;wsgi.input&amp;#39;], environ=environ, keep_blank_values=True)
+		data = form.getvalue(&amp;#39;upfile&amp;#39;, &amp;#39;&amp;#39;).decode(&amp;#39;utf-8&amp;#39;)
+		output = html_head + html_post % data
+		outf = open(&amp;#39;/tmp/tmp.txt&amp;#39;, &amp;#39;w&amp;#39;)
+		outf.write(data)
+		outf.close()
+	status = &amp;#39;200 OK&amp;#39;
+	response_headers = [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/html; charset=utf-8&amp;#39;),
+				(&amp;#39;Content-Length&amp;#39;, str(len(output.encode(&amp;#39;utf-8&amp;#39;))))]
+	start_response(status, response_headers)
+	return [output.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;参考サイト&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;http://d.hatena.ne.jp/addition/20130330/1364620476&lt;/li&gt;
+  &lt;li&gt;https://github.com/thejimmyg/wsgi-file-upload&lt;/li&gt;
+  &lt;li&gt;http://flying-cat.hatenablog.com/entry/2013/09/03/102807&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 15 May 2016 15:00:00 +0900</pubDate>
+      </item>
+    
+      <item>
+        <title>CentOS7 への Google Chorome のインストール</title>
+        <link>http://NaokiMizutani.github.io/tech/centos7/chrome/CentOS-Chrome.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/chrome/CentOS-Chrome.html</guid>
+        <description>&lt;p&gt;Google Chrome はモバイル系も含めると Webブラウザとして圧倒的な世界シェア(４割強)を
+有しているようだ。
+デベロッパーツールも組み込まれており、その解説が様々なサイトに載っている。
+ところが、Chrome は Fedora系のパッケージサポートから外れていて、簡単に yum でインストールできない。CentOS7 への Chrome のインストールを行ったので記しておく。&lt;/p&gt;
+
+&lt;h2 id=&quot;google-chrome-&quot;&gt;Google Chrome のダウンロードとインストール方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.co.jp/chrome/browser/desktop/index.html&quot;&gt;Google Chrome&lt;/a&gt; のダウンロードサイトから、Chrome for Linux (Fedora 版）をダウンロードする。
+ダウンロードすると、64bit ステーブル版の rpm パッケージがダウンロードされる。&lt;/p&gt;
+
+&lt;p&gt;この rpm パッケージファイルをもとにインストールする。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum localinstall rpmパッケージファイル名&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;インストールが完了すると、デスクトップのアプリケーションにアイコンが追加されている。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 14 May 2016 12:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Jinja2 を用いた JavaScript グラフのスクリプト生成</title>
@@ -1135,176 +1293,6 @@ GRUB_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
 
 </description>
         <pubDate>Mon, 02 May 2016 05:00:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Installing CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/centos7/install/CentOS7-install.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/install/CentOS7-install.html</guid>
-        <description>&lt;p&gt;CentOS Project サイトからダウンロードした CentOS7, ISO イメージを
-インストールする方法を記します。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;CentOS の ISOイメージを用意&lt;/li&gt;
-  &lt;li&gt;BIOS の設定により、ブートドライブを DVDドライブに設定&lt;/li&gt;
-  &lt;li&gt;CentOS7 x86_64.iso からインストールを開始&lt;br /&gt;
-　　[I]nstall CentOS7 を選ぶ。’I’ を押してエンターキーを押す。&lt;/li&gt;
-  &lt;li&gt;インストールで用いる言語として「日本語」を選択して続行&lt;/li&gt;
-  &lt;li&gt;インストールの概要画面
-    &lt;ul&gt;
-      &lt;li&gt;日付と時刻　で、時刻(UTC)修正・ネットワーク時刻はオフに設定&lt;/li&gt;
-      &lt;li&gt;キーボード　は「日本語」であることを確認&lt;br /&gt;
-キーボードレイアウトとして積極的に日本語を選ぶ。
-言語サポートでキーボードがjpになっていることを確認する。
-（それでも立ち上がってから us になっている可能性があリ、その場合にはキーボードレイアウトを設定し直す。）&lt;/li&gt;
-      &lt;li&gt;言語サポート　は「日本語（日本）」であることを確認&lt;/li&gt;
-      &lt;li&gt;インストールソース　は「ローカルメディア」となっていることを確認&lt;/li&gt;
-      &lt;li&gt;ソフトウェアの選択
-        &lt;ul&gt;
-          &lt;li&gt;ベース環境として「KDE Plasma Workspace」を選択&lt;/li&gt;
-          &lt;li&gt;選択した環境のアドオンとして、以下の３つを選択&lt;br /&gt;
-  KDE アプリケーション, オフィススイートと生産性, 開発ツール&lt;br /&gt;
-  （開発ツールを導入しなくても python2.7 はインストールされるが、 cc, gcc類はインストールされない）&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;インストール先のディスクを選び、自動構成のパーティション構成を選択、暗号化しない&lt;br /&gt;
-　  （既に利用済みのディスクの場合、完了ボタンを押してから残り容量が少ないというメッセージが出て、領域削除ができるメニューが表示される）&lt;/li&gt;
-      &lt;li&gt;KDUMP を無効にする&lt;/li&gt;
-      &lt;li&gt;ネットワークの設定はインストール後に行うことにする&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;root パスワード、ユーザの作成&lt;br /&gt;
-　（パスワードが単純なものである場合には、実行ボタンを２回クリックする必要がある）&lt;/li&gt;
-  &lt;li&gt;インストールが完了すると、「再起動」ボタンが表示されるので、クリックする。
-（再起動する際に、インストールメディアを抜かずに、自動的に排出されてから抜くこと）&lt;/li&gt;
-  &lt;li&gt;起動後、かな漢字変換のテスト
-    &lt;ul&gt;
-      &lt;li&gt;キーボードが us と表示され jp でない場合（数字 ‘8’ キーのシフトで ‘(‘ が入力されない場合）、「システム設定」の「入力デバイス（キーボード）」で、「レイアウト」タブのところで 「jp 日本語」があるか確認して、なければ「レイアウトを設定」にチェックして追加ボタンを押して「日本語」を加え上位位置にする。&lt;/li&gt;
-      &lt;li&gt;super+space キーで（superはwindowsキー）、入力メソッドの切り替えができるか確認&lt;/li&gt;
-      &lt;li&gt;詳細に確認するには、「アプリケーション-&amp;gt;設定-&amp;gt;入力メソッドのセレクター」&lt;/li&gt;
-      &lt;li&gt;「iBusを使用する」が選ばれていることを確認し、「設定」リンクをクリック&lt;/li&gt;
-      &lt;li&gt;入力メソッドタブを選び、「日本語 - Japanese」と「日本語 - Kana Kanji」が存在することを確認&lt;br /&gt;
-入力メソッドは画面右下の iBus のアイコンをクリックして、「あ」日本語-KanaKanji を選んで「日本語 - Kana Kanji」の状態で利用し、日本語と英語の切り替えは、半角/全角キーで切り替えるのがお勧め&lt;/li&gt;
-      &lt;li&gt;iBus のアイコンをクリックし、「設定」の「動作」タブで、初期入力モードを ‘直接入力’ にする。&lt;/li&gt;
-      &lt;li&gt;Windowsキーで、漢字と直接の切替ができるか確認する。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;ネットワークの設定を「アプリケーション」「設定」「システム設定」「ネットワークの設定」で行う
-    &lt;ul&gt;
-      &lt;li&gt;Network Connections の「有線」タブでポートの編集を行い、IPv4 のアドレス等を設定する
-        &lt;ul&gt;
-          &lt;li&gt;方法を「手動」、IPアドレス等を入力設定&lt;/li&gt;
-          &lt;li&gt;IPv4 is required for this connection にチェックを入れる&lt;/li&gt;
-          &lt;li&gt;上部にある「自動的に接続する」にチェックを入れる&lt;/li&gt;
-          &lt;li&gt;KDEウォレットシステムの選択では、Classic を選び、その後キャンセルボタンで抜ける（機能の低い方をとりあえず選択）&lt;/li&gt;
-          &lt;li&gt;ツールバー（デスクトップ下のバー）にあるネットワーク接続のアイコンをクリックし、ポート名をクリックして接続する&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Sat, 30 Apr 2016 21:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Jekyll の利用方法</title>
-        <link>http://NaokiMizutani.github.io/tech/jekyll/Jekyll.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/jekyll/Jekyll.html</guid>
-        <description>&lt;p&gt;Mac に jekyll をインストールする方法&lt;/p&gt;
-
-&lt;p&gt;Mac には ruby が標準でインストールされているので、jekyll をインストールするだけで利用可能となる。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;インストール方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo gem install jekyll
-（以下は、jekylltheme を導入した際のオプション）
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo gem install jekyll-paginate
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo gem install pygments.rb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;jekyll-&quot;&gt;Jekyll の設定&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;config.yml を編集&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;（以下の内容のテキストファイル config.yml をトップディレクトリに作成）&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;auto: true
-server: true
-markdown: kramdown&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;default.html を編集&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;トップディレクトリに _layouts という名前のディレクトリを作成し、その中に下記内容の default.html を作成&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
-&amp;lt;title&amp;gt;Lekohub&amp;lt;/title&amp;gt;
-&amp;lt;!-- cssとかjsもここで読み込み --&amp;gt;
-&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;css/common.css&amp;quot;&amp;gt;
-&amp;lt;script src=&amp;quot;js/top.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
- 
-&amp;lt;div class=&amp;quot;container&amp;quot;&amp;gt;
-    {{ content }}
-&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;index.md の編集&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;（トリプル・ダッシュ行２つの間に YAML Front Matter を挟む）&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;---
-layout: default
----
- 
-# leko.github.com
- 
-## とりあえず作ってみたGithubページ
- 
-ほげほげ&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;_post のファイルのヘッダーに書く日時は GMT でなければならないかも。
-JSTで書くとまだ来ていない時刻と判断されてエラーになるのかも。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;jekyll build&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;レイアウト（layout）
-トップディレクトリに _layouts というディレクトリを作成する。
-_layouts に layout.html というファイルを作成する。
-### layout.html&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;head&amp;gt;
-  &amp;lt;meta http-equiv=&amp;quot;Content-type&amp;quot; content=&amp;quot;text/html; charset=utf-8&amp;quot;&amp;gt;
-  &amp;lt;title&amp;gt;Jekyll の利用方法&amp;lt;/title&amp;gt;
-&amp;lt;/head&amp;gt;
-&amp;lt;body&amp;gt;
-{{ content }}
-  &amp;lt;p&amp;gt;- rendered with layout template -&amp;lt;/p&amp;gt;
-&amp;lt;/body&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;参考サイト&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://melborne.github.io/2012/05/13/first-step-of-jekyll/&quot;&gt;http://melborne.github.io/2012/05/13/first-step-of-jekyll/&lt;/a&gt;
-（古いバージョンに対応している）
-http://leko.jp/archives/371
-https://github.com/github/training-kit
-http://jekyllthemes.org/
-http://jekyllthemes.org/themes/kasper/&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 30 Apr 2016 05:00:00 +0900</pubDate>
       </item>
     
   </channel>

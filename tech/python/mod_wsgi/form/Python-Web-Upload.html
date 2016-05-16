@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Python (mod_wsgi) を使った FORMタグの処理 | N.Mizutani</title>
+	<meta name="description" content="HTML の入力・送信フォーム中のテキストボックスやファイルアップロードに対する処理方法について、Python/mod_wsgi の利用を前提にサンプルを示す。">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/mod_wsgi/form/Python-Web-Upload.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Python (mod_wsgi) を使った FORMタグの処理</h1>
+    <p class="meta">
+    May 15, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>HTML の入力・送信フォーム中のテキストボックスやファイルアップロードに対する
+処理方法について、Python/mod_wsgi の利用を前提にサンプルを示す。</p>
+
+<h2 id="section">テキストボックスの例</h2>
+
+<p>文字入力のためのテキストボックスに文字が入力され送信ボタンが押された場合に、
+POSTメソッドでサーバに入力データを回収する手続きを示す。</p>
+
+<p>Apache 等のサーバで mod_wsgi が動作する python3 環境を想定している。</p>
+
+<p>mod_wsgi についてのサンプルプログラムはいくつか検索できるが、python3 で
+漢字入力がうまく動作するまでに試行錯誤しなければならなかった。</p>
+
+<p>— input.py</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">import cgi
+
+html = &#39;&#39;&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;ja&quot; lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;テキスト入力フィールドに入力された文字を取得する&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;テキスト入力フィールドに入力された文字を取得する&lt;/h1&gt;
+&lt;p&gt;入力された文字は、「%s」です。&lt;/p&gt;
+&lt;form action=&quot;http://localhost/input.py&quot; method=&quot;post&quot; AcceptEncoding=&quot;utf-8&quot;&gt;
+&lt;input type=&quot;text&quot; name=&quot;text&quot; /&gt;
+&lt;input type=&quot;submit&quot; /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&#39;&#39;&#39;
+
+def application(environ, start_response):
+	method = environ.get(&#39;REQUEST_METHOD&#39;)
+	data = &#39;&#39;
+	if method == &quot;GET&quot;:
+		pass
+	elif method == &quot;POST&quot;:
+		wsgi_input = environ.get(&#39;wsgi.input&#39;)
+		form = cgi.FieldStorage(fp=wsgi_input, environ=environ, keep_blank_values=True)
+#		for key in form:
+#			data += &quot;name:&quot; + key + &quot; value:&quot; + form[key].value + &quot;&lt;br&gt;&quot;
+		data = form[&#39;text&#39;].value
+
+	output = html % data
+	status = &#39;200 OK&#39;
+	response_headers = [(&#39;Content-type&#39;, &#39;text/html; charset=utf-8&#39;),
+				(&#39;Content-Length&#39;, str(len(output.encode(&#39;utf-8&#39;))))]
+	start_response(status, response_headers)
+	return [output.encode(&#39;utf-8&#39;)]</code></pre></figure>
+
+<h2 id="section-1">ファイル・アップロードの例</h2>
+
+<p>GETメソッドでアクセスされた場合にファイル名選択のためのダイアログを表示し、
+ファイルが選択され送信ボタンが押されると、
+POSTメソッドでサーバにファイルデータを回収し、
+ファイルの内容を入手する手続きを示す。</p>
+
+<p>アップロードされたファイルのデータは、サーバ側の実ファイルとして
+保存するようにした。</p>
+
+<p>アップロードを行うには、フォームで enctype を multipart/form-data にする。</p>
+
+<p>— upload.py</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">import cgi
+from tempfile import TemporaryFile
+
+html_head = &#39;&#39;&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;ja&quot; lang=&quot;ja&quot;&gt;
+&#39;&#39;&#39;
+
+html_get = &#39;&#39;&#39;&lt;head&gt;
+&lt;title&gt;ファイル・アップロードのテスト&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;ファイル・アップロード操作画面&lt;/h1&gt;
+&lt;form action=&quot;http://localhost/upload.py&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+--- Select File and Push Upload-Button --- &lt;br /&gt;&lt;br /&gt;
+&lt;input type=&quot;file&quot; name=&quot;upfile&quot; size=&quot;50&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;input type=&quot;submit&quot; value=&quot; Upload &quot; /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&#39;&#39;&#39;
+
+html_post = &#39;&#39;&#39;&lt;head&gt;
+&lt;title&gt;ファイル・アップロードのテスト&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;アップロードされたファイルの内容&lt;/h1&gt;
+--- Uploaded Text --- &lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;%s&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&#39;&#39;&#39;
+
+def application(environ, start_response):
+	method = environ.get(&#39;REQUEST_METHOD&#39;)
+	data = &#39;&#39;
+	if method == &quot;GET&quot;:
+		output = html_head + html_get
+	elif method == &quot;POST&quot;:
+		form = cgi.FieldStorage(environ[&#39;wsgi.input&#39;], environ=environ, keep_blank_values=True)
+		data = form.getvalue(&#39;upfile&#39;, &#39;&#39;).decode(&#39;utf-8&#39;)
+		output = html_head + html_post % data
+		outf = open(&#39;/tmp/tmp.txt&#39;, &#39;w&#39;)
+		outf.write(data)
+		outf.close()
+	status = &#39;200 OK&#39;
+	response_headers = [(&#39;Content-type&#39;, &#39;text/html; charset=utf-8&#39;),
+				(&#39;Content-Length&#39;, str(len(output.encode(&#39;utf-8&#39;))))]
+	start_response(status, response_headers)
+	return [output.encode(&#39;utf-8&#39;)]</code></pre></figure>
+
+<p>参考サイト</p>
+
+<ul>
+  <li>http://d.hatena.ne.jp/addition/20130330/1364620476</li>
+  <li>https://github.com/thejimmyg/wsgi-file-upload</li>
+  <li>http://flying-cat.hatenablog.com/entry/2013/09/03/102807</li>
+</ul>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

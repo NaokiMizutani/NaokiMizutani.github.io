@@ -5,7 +5,47 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Mon, 16 May 2016 12:01:31 +0900</pubDate>
+    <pubDate>Wed, 18 May 2016 13:58:12 +0900</pubDate>
+    
+      <item>
+        <title>CentOS7 における各種サービスの管理</title>
+        <link>http://NaokiMizutani.github.io/tech/centos7/admin/CentOS7-systemctl.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/admin/CentOS7-systemctl.html</guid>
+        <description>&lt;p&gt;サーバーの管理についてのメモ（httpd, firewalld などサービスの管理）&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;サービスの起動&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;systemctl start サービス名&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;サービスの停止&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;systemctl stop サービス名&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;自動起動の指定&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;systemctl enable または disable サービス名&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;管理できるサービスの一覧を表示&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;systemctl list-unit-files&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;サービスのステータス&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;systemctl status サービス名&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Wed, 18 May 2016 12:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Python (mod_wsgi) を使った FORMタグの処理</title>
@@ -1238,61 +1278,6 @@ Firewall の http, https のポートを開ける&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>デュアルブートのための Grub2 の設定</title>
-        <link>http://NaokiMizutani.github.io/tech/centos7/grub/CentOS-Grub2.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/grub/CentOS-Grub2.html</guid>
-        <description>&lt;p&gt;CentOS7 と Windows7 をデュアルブートできる状態にするための Grub2 の設定&lt;/p&gt;
-
-&lt;h2 id=&quot;windows-&quot;&gt;Windows のディスクボリュームの縮小&lt;/h2&gt;
-&lt;p&gt;(Windows 7 の場合)&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;管理者特権でコマンドプロンプトを立ち上げ（コマンドプロンプトアイコンを右クリックして、管理者として実行し）、’diskmgmt.msc’ と入力して、
-ディスクの管理コンソールを起動する。&lt;/li&gt;
-  &lt;li&gt;縮小したいボリュームを選択して、右ボタンで「ボリュームの縮小」をクリックする。&lt;/li&gt;
-  &lt;li&gt;「縮小する領域のサイズ」に、空領域として確保したいサイズを設定する。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;centos7-&quot;&gt;CentOS7 をインストール&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Windows をシャットダウンして、CentOSをインストールする&lt;/li&gt;
-  &lt;li&gt;自動的に空領域にインストールされる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;grub2-&quot;&gt;Grub2 の変更&lt;/h2&gt;
-&lt;p&gt;CentOS の terminal 上で root 権限にて以下の作業を行う。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Windows が入っているデバイス名を調べる&lt;br /&gt;
-‘fdisk -l’ の表示結果から Windows 本体が入っているデバイス名を確認する&lt;br /&gt;
- 例） /dev/sda2&lt;/li&gt;
-  &lt;li&gt;Windows 用の設定を追記する&lt;br /&gt;
-‘/etc/grub.d/40_custom’ を編集し、ファイルの最後に以下の行を追記&lt;br /&gt;
-‘/etc/default/grub’&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;menuentry &amp;quot;Windows 7&amp;quot; {
-set root=(hd0,1)
-chainloader +1
-}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;‘chainloader’ の後にスペース１つが必要、’+’ の後にスペースは入れない。&lt;/p&gt;
-
-&lt;p&gt;/boot/grub2/device.map を参照するとデバイスの名称がわかる。
-また、(hd0,1) は sda2 に、(hd0,2) は sda3 に対応する&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行&lt;/li&gt;
-  &lt;li&gt;必要に応じて ‘vi /etc/default/grub’ によって Windows7 を自動起動にする。&lt;br /&gt;
-GRUB_DEFAULT=saved を GRUB_DEFAULT=”Windows 7”&lt;br /&gt;
-更新した場合、 ‘grub2-mkconfig -o /boot/grub2/grub.cfg’ を実行すること。&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Mon, 02 May 2016 05:00:00 +0900</pubDate>
       </item>
     
   </channel>

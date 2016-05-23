@@ -2,8 +2,8 @@
 <html class="no-js">
   <head>
 	<meta charset="utf-8">
-	<title>Python から R を動作させる PypeR の導入 | N.Mizutani</title>
-	<meta name="description" content="PypeR を用いて、Python のプログラムから R を呼び出す機能を有効にする方法">
+	<title> N.Mizutani</title>
+	<meta name="description" content="A website with blog posts and pages">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-Frame-Options" content="sameorigin">
 
@@ -14,7 +14,7 @@
 	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
 
 	<!-- Canonical -->
-	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/python/r/PypeR.html">
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/blog/page5/">
 
 	<!-- RSS -->
 	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
@@ -134,49 +134,76 @@
 </header>
 
     <div class="content">
-      <article >
-  <header style="background-image: url('/tech/')">
-    <h1 class="title">Python から R を動作させる PypeR の導入</h1>
-    <p class="meta">
-    May 4, 2016
+      <div class="home">
+  
+  <div class="call-out" 
+  style="background-image: url('/tech/')">
+    <p>Memorandoms about PC settings, programming, etc.</p>
+
+  </div>
+  
+
+  <div class="posts">
     
-    </p>
-  </header>
-  <section class="post-content"><p>PypeR を用いて、Python のプログラムから R を呼び出す機能を有効にする方法</p>
-
-<ul>
-  <li>PypeR のインストール</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-text" data-lang="text"># pip3 install pyper</code></pre></figure>
-
-<ul>
-  <li>R のサンプルプログラム (Python から動作させる目標の R のソース)</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-text" data-lang="text">a &lt;- c(2,3,4,5)
-summary(a)</code></pre></figure>
-
-<ul>
-  <li>PypeR 動作確認のための Python サンプルプログラム</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-text" data-lang="text">import pyper as pr
-
-r = pr.R()
-
-r(&quot;a &lt;- c(2, 3, 4, 5, 6)&quot;)
-text = r(&quot;summary(a)&quot;)
-print(text)</code></pre></figure>
-
-</section>
-</article>
-
-<!-- Post navigation -->
+    <div class="post-teaser">
+      <header>
+        <h1>
+          <a class="post-link" href="/tech/jekyll/Jekyll.html">
+            Jekyll の利用方法
+          </a>
+        </h1>
+        <p class="meta">
+          April 30, 2016
+        </p>
+      </header>
+      <div class="excerpt">
+        <p>Mac に jekyll をインストールする方法</p>
 
 
-<!-- Disqus -->
+        <a class="button" href="/tech/jekyll/Jekyll.html">
+          Continue reading
+        </a>
+      </div>
+    </div>
+    
+    <div class="post-teaser">
+      <header>
+        <h1>
+          <a class="post-link" href="/tech/peripherals/lan/WirelessLAN.html">
+            Wireless LAN 親機の設定
+          </a>
+        </h1>
+        <p class="meta">
+          April 29, 2016
+        </p>
+      </header>
+      <div class="excerpt">
+        <p>Buffalo 無線LAN親機（WZR-HP-G301NH/U）を利用していますが、
+一度設定すると滅多に触れない機器なので、設定方法を忘れます。
+再設定する必要がありましたので、そのときの記録を残します。
+設定には、専用の設定ツールソフトをインストールしたPCが必要です。</p>
 
+
+        <a class="button" href="/tech/peripherals/lan/WirelessLAN.html">
+          Continue reading
+        </a>
+      </div>
+    </div>
+    
+  </div>
+
+  
+  <div class="pagination">
+    
+    <a href="/tech/blog/page4" class="button" >
+      <i class="fa fa-chevron-left"></i>
+      Prev
+    </a>
+    
+    
+  </div>
+  
+</div>
 
     </div>
     

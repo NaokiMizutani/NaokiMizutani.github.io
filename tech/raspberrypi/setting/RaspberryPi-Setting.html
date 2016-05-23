@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Raspberry Pi 動作までの設定 | N.Mizutani</title>
+	<meta name="description" content="Raspberry Pi のセッティング">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/raspberrypi/setting/RaspberryPi-Setting.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Raspberry Pi 動作までの設定</h1>
+    <p class="meta">
+    May 23, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>Raspberry Pi のセッティング</p>
+
+<h2 id="raspberry-pi-">Raspberry Pi の起動メディア作成</h2>
+
+<ul>
+  <li>MicroSD に OS/Rasbian を用意
+    <ul>
+      <li><a href="https://www.raspberrypi.org/downloads/">Raspberry Pi のサイト</a> から Raspbian をダウンロード
+        <ul>
+          <li>選択肢として、NOOBS, RASPBIAN, Third party’s がある。<br />
+RASPBIAN が Supported OS である。
+また、NOOBS はいくつかのOSが含まれたインストーラとなっている。</li>
+        </ul>
+      </li>
+      <li>zip ファイルを展開し、イメージを得る（2015-05-05-raspbian-wheezy.img）</li>
+      <li><a href="https://www.raspberrypi.org/documentation/installation/installing-images/mac.md">インストレーション・ガイド</a> に従って microSD カードに書き込み
+        <ul>
+          <li>コマンド・ラインからの方法の場合</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">    $ diskutil list  
+       （SDカードの IDENTIFIER を得る／disk2s1 ではなく disk2 *付のほう）  
+    $ diskutil unmountDisk /dev/disk2  
+       （Unmount of all volumes on disk2 was successful のメッセージ）  
+    $ sudo dd bs=1m if=2015-05-05-raspbian-wheezy.img of=/dev/disk2  
+       （30分かかる。実行状況は ctrl+t で表示できる）</code></pre></figure>
+
+<hr />
+<ul>
+  <li>MicroSD に OS/Rasbian を用意（NOOBS ではなく Raspbian で試す）
+    <ul>
+      <li>Raspbian の ZIP をダウンロード<br />
+ （2016.5.23 現在, RASPBIAN JESSIE 4.4 / May 2016, 1.3GB 約20分）</li>
+      <li>チェックサムの確認<br />
+ 　ダウンロードした zip ファイルに対して、shasum コマンドを適用した戻り値と
+ 　サイトに表示されている SHA-1値を diff コマンド等で比較する。<br />
+$ shasum *.zip</li>
+    </ul>
+  </li>
+  <li>コマンドラインからの方法に従ったインストール
+    <ul>
+      <li>SD カードの Disk ID を diskutil コマンドを使って得る<br />
+　 （パーティションではなく、Disk ID なので、下記の場合 disk4 である）</li>
+    </ul>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">        $ diskutil list  
+        /dev/disk4 (internal, physical):
+         #:                       TYPE NAME                    SIZE       IDENTIFIER
+         0:     FDisk_partition_scheme                        *8.0 GB     disk4
+         1:                 DOS_FAT_32 NO NAME                 8.0 GB     disk4s1</code></pre></figure>
+
+<pre><code>- SD カードをアンマウントする  
+
+$ diskutil unmountDisk /dev/disk4　（上記の Disk ID の場合）
+
+- イメージをSDカードに転送  
+
+$ sudo dd bs=1m if=2016-05-..........img of=/dev/rdisk4
+   （30分かかる。実行状況は ctrl+t で表示できる）
+   
+- SD カードをアンマウントする  
+
+$ diskutil unmountDisk /dev/disk4　（上記の Disk ID の場合）
+
+- SD カードを抜いて、microSD カードを Raspberry PI に挿入する。
+</code></pre>
+
+<hr />
+
+<h2 id="raspberry-pi--1">Raspberry Pi 起動時の設定作業</h2>
+
+<ul>
+  <li>
+    <p>電源を入れるとウィンドウシステムまで自動的に立ち上がる。<br />
+（Python2, Python3, Libre Office もインストール済となっている）</p>
+  </li>
+  <li>
+    <p>ネットワークを設定してブラウザで動作確認する。<br />
+ブラウザで日本語が表示されない場合は、漢字フォントのインストールの必要性と
+ロケールの設定が疑わしい。</p>
+  </li>
+  <li>
+    <p>SD カードの容量確認<br />
+  $ df -h</p>
+  </li>
+  <li>
+    <p>パッケージのリストをサーバーから入手<br />
+  $ sudo apt-get update</p>
+  </li>
+  <li>
+    <p>漢字フォントのインストール  <br />
+  $ sudo apt-get install ttf-kochi-gothic xfonts-intl-japanese xfonts-intl-japanese-big xfonts-kaname</p>
+  </li>
+  <li>初期設定（ロケールの設定を含めて）<br />
+スタートメニューの Preferences の中の Raspberry PI Configuration を起動<br />
+（ターミナルを起動して $ sudo raspi-config を行うのと同じと思われる）
+    <ul>
+      <li>‘System’ タブで、<br />
+Expand Filesystem を押す（既に Expand モードのようである）<br />
+基本的にデフォルトでよいと思われる。</li>
+      <li>‘Interface’ タブ、’Performance’ タブも、基本的にデフォルトでよいと思われる。</li>
+      <li>‘Localization’ タブで、<br />
+Locale &gt;  Language: ja (Japanese)  Country: JP (Japan)  Character Set: UTF-8<br />
+Timezone &gt;  Area: Japan <br />
+Keyboard &gt;  Country: Japan  Variant: Japanese<br />
+WiFiCounty &gt;  WiFi Country Code: JP Japan<br />
++リブートが促される。</li>
+    </ul>
+  </li>
+  <li>
+    <p>ウィンドウシステムとしての日本語表示ができているか、ブラウザで日本語表示ができているか確認する。</p>
+  </li>
+  <li>
+    <p>かな漢字変換のインストール（メジャーなものとして２種類）</p>
+
+    <p>$ sudo apt-get install ibus ibus-anthy<br />
+  $ sudo apt-get install uim uim-anthy<br />
+  $ sudo apt-get install uim-dict-gtk3    （uim で用いる漢字辞書ツール）</p>
+  </li>
+</ul>
+
+<p>参考サイト
+https://www.generation.ne.jp/topics/raspberry01/</p>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

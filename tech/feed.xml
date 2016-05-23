@@ -5,7 +5,186 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 20 May 2016 19:06:49 +0900</pubDate>
+    <pubDate>Mon, 23 May 2016 17:50:03 +0900</pubDate>
+    
+      <item>
+        <title>Visual Studio Code のインストール</title>
+        <link>http://NaokiMizutani.github.io/tech/vscode/install/VScode-Install.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/vscode/install/VScode-Install.html</guid>
+        <description>&lt;p&gt;Visual Studio Code のインストール と キー・バインディングの設定&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;インストール&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.visualstudio.com/ja-jp/products/code-vs.aspx&quot;&gt;Visual Studio Code&lt;/a&gt;
+の
+&lt;a href=&quot;https://code.visualstudio.com/download&quot;&gt;ダウンロードサイト&lt;/a&gt; から、
+CentOS にインストールするための.rpm パッケージを選択してダウンロードする。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;rpm ファイルを /var/tmp あたりに移動し、そこを作業ディレクトリとして、&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;  # yum localinstall rpmパッケージファイル名
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;によってインストールする。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;デスクトップのスタートボタンには、アプリケーション、ユーティリティの中に 
+Text Editor として起動用アイコンが設定されている。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;キー・バインディングの設定&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;設定ファイル（~/.config/Code/User/keybindings.json）に、
+種々のサイトで紹介されているキー・バインディングを書き込んでいけばよい。&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 23 May 2016 15:00:00 +0900</pubDate>
+      </item>
+    
+      <item>
+        <title>Raspberry Pi 動作までの設定</title>
+        <link>http://NaokiMizutani.github.io/tech/raspberrypi/setting/RaspberryPi-Setting.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/raspberrypi/setting/RaspberryPi-Setting.html</guid>
+        <description>&lt;p&gt;Raspberry Pi のセッティング&lt;/p&gt;
+
+&lt;h2 id=&quot;raspberry-pi-&quot;&gt;Raspberry Pi の起動メディア作成&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MicroSD に OS/Rasbian を用意
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.raspberrypi.org/downloads/&quot;&gt;Raspberry Pi のサイト&lt;/a&gt; から Raspbian をダウンロード
+        &lt;ul&gt;
+          &lt;li&gt;選択肢として、NOOBS, RASPBIAN, Third party’s がある。&lt;br /&gt;
+RASPBIAN が Supported OS である。
+また、NOOBS はいくつかのOSが含まれたインストーラとなっている。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;zip ファイルを展開し、イメージを得る（2015-05-05-raspbian-wheezy.img）&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.raspberrypi.org/documentation/installation/installing-images/mac.md&quot;&gt;インストレーション・ガイド&lt;/a&gt; に従って microSD カードに書き込み
+        &lt;ul&gt;
+          &lt;li&gt;コマンド・ラインからの方法の場合&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;    $ diskutil list  
+       （SDカードの IDENTIFIER を得る／disk2s1 ではなく disk2 *付のほう）  
+    $ diskutil unmountDisk /dev/disk2  
+       （Unmount of all volumes on disk2 was successful のメッセージ）  
+    $ sudo dd bs=1m if=2015-05-05-raspbian-wheezy.img of=/dev/disk2  
+       （30分かかる。実行状況は ctrl+t で表示できる）&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;MicroSD に OS/Rasbian を用意（NOOBS ではなく Raspbian で試す）
+    &lt;ul&gt;
+      &lt;li&gt;Raspbian の ZIP をダウンロード&lt;br /&gt;
+ （2016.5.23 現在, RASPBIAN JESSIE 4.4 / May 2016, 1.3GB 約20分）&lt;/li&gt;
+      &lt;li&gt;チェックサムの確認&lt;br /&gt;
+ 　ダウンロードした zip ファイルに対して、shasum コマンドを適用した戻り値と
+ 　サイトに表示されている SHA-1値を diff コマンド等で比較する。&lt;br /&gt;
+$ shasum *.zip&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;コマンドラインからの方法に従ったインストール
+    &lt;ul&gt;
+      &lt;li&gt;SD カードの Disk ID を diskutil コマンドを使って得る&lt;br /&gt;
+　 （パーティションではなく、Disk ID なので、下記の場合 disk4 である）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;        $ diskutil list  
+        /dev/disk4 (internal, physical):
+         #:                       TYPE NAME                    SIZE       IDENTIFIER
+         0:     FDisk_partition_scheme                        *8.0 GB     disk4
+         1:                 DOS_FAT_32 NO NAME                 8.0 GB     disk4s1&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;pre&gt;&lt;code&gt;- SD カードをアンマウントする  
+
+$ diskutil unmountDisk /dev/disk4　（上記の Disk ID の場合）
+
+- イメージをSDカードに転送  
+
+$ sudo dd bs=1m if=2016-05-..........img of=/dev/rdisk4
+   （30分かかる。実行状況は ctrl+t で表示できる）
+   
+- SD カードをアンマウントする  
+
+$ diskutil unmountDisk /dev/disk4　（上記の Disk ID の場合）
+
+- SD カードを抜いて、microSD カードを Raspberry PI に挿入する。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;raspberry-pi--1&quot;&gt;Raspberry Pi 起動時の設定作業&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;電源を入れるとウィンドウシステムまで自動的に立ち上がる。&lt;br /&gt;
+（Python2, Python3, Libre Office もインストール済となっている）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ネットワークを設定してブラウザで動作確認する。&lt;br /&gt;
+ブラウザで日本語が表示されない場合は、漢字フォントのインストールの必要性と
+ロケールの設定が疑わしい。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SD カードの容量確認&lt;br /&gt;
+  $ df -h&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;パッケージのリストをサーバーから入手&lt;br /&gt;
+  $ sudo apt-get update&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;漢字フォントのインストール  &lt;br /&gt;
+  $ sudo apt-get install ttf-kochi-gothic xfonts-intl-japanese xfonts-intl-japanese-big xfonts-kaname&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;初期設定（ロケールの設定を含めて）&lt;br /&gt;
+スタートメニューの Preferences の中の Raspberry PI Configuration を起動&lt;br /&gt;
+（ターミナルを起動して $ sudo raspi-config を行うのと同じと思われる）
+    &lt;ul&gt;
+      &lt;li&gt;‘System’ タブで、&lt;br /&gt;
+Expand Filesystem を押す（既に Expand モードのようである）&lt;br /&gt;
+基本的にデフォルトでよいと思われる。&lt;/li&gt;
+      &lt;li&gt;‘Interface’ タブ、’Performance’ タブも、基本的にデフォルトでよいと思われる。&lt;/li&gt;
+      &lt;li&gt;‘Localization’ タブで、&lt;br /&gt;
+Locale &amp;gt;  Language: ja (Japanese)  Country: JP (Japan)  Character Set: UTF-8&lt;br /&gt;
+Timezone &amp;gt;  Area: Japan &lt;br /&gt;
+Keyboard &amp;gt;  Country: Japan  Variant: Japanese&lt;br /&gt;
+WiFiCounty &amp;gt;  WiFi Country Code: JP Japan&lt;br /&gt;
++リブートが促される。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ウィンドウシステムとしての日本語表示ができているか、ブラウザで日本語表示ができているか確認する。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;かな漢字変換のインストール（メジャーなものとして２種類）&lt;/p&gt;
+
+    &lt;p&gt;$ sudo apt-get install ibus ibus-anthy&lt;br /&gt;
+  $ sudo apt-get install uim uim-anthy&lt;br /&gt;
+  $ sudo apt-get install uim-dict-gtk3    （uim で用いる漢字辞書ツール）&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;参考サイト
+https://www.generation.ne.jp/topics/raspberry01/&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 23 May 2016 15:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Raspberry Pi の各種セッティング</title>
@@ -1025,111 +1204,6 @@ def application(environ, start_response):
 
 </description>
         <pubDate>Wed, 04 May 2016 07:30:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Python から R を動作させる PypeR の導入</title>
-        <link>http://NaokiMizutani.github.io/tech/python/r/PypeR.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/r/PypeR.html</guid>
-        <description>&lt;p&gt;PypeR を用いて、Python のプログラムから R を呼び出す機能を有効にする方法&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;PypeR のインストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# pip3 install pyper&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;R のサンプルプログラム (Python から動作させる目標の R のソース)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a &amp;lt;- c(2,3,4,5)
-summary(a)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;PypeR 動作確認のための Python サンプルプログラム&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import pyper as pr
-
-r = pr.R()
-
-r(&amp;quot;a &amp;lt;- c(2, 3, 4, 5, 6)&amp;quot;)
-text = r(&amp;quot;summary(a)&amp;quot;)
-print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Wed, 04 May 2016 06:00:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Installing Python3 to CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/python/install/PythonToCentOS7.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/install/PythonToCentOS7.html</guid>
-        <description>&lt;p&gt;Python3 の CentOS7 へのインストール&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Python3 のインストールに必要なものを先にインストール&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install zlib-devel
-# yum install tk-devel
-# yum install sqlite-devel
-# yum install ncurses-devel
-# yum install gdbm-devel
-# yum install readline-devel
-# yum install bzip2-devel
-# yum install openssl-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Python3 のダウンロード&lt;br /&gt;
-  &lt;a href=&quot;https://www.python.org/downloads/&quot;&gt;Python サイト/ダウンロード&lt;/a&gt; にて、ダウンロードするpython3 のバージョンを選んで、下記にように /var/tmp などのディレクトリでダウンロード&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;または&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tgz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ダウンロードした Python3 の解凍と展開、インストール&lt;br /&gt;
-（ダウンロードしたファイルが Python-3.5.0.tar.xz の場合）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ xz -dv Python-3.5.0.tar.xz
-(# yum install xz ... 必要に応じて)
-$ tar -xvf Python-3.5.0.tar
-（ダウンロードしたファイルが Python3.5.0.tgz の場合はマウス操作で展開できる）
-$ cd Python-3.5.0
-（/var/tmp の下あたりで作業）
-$ ./configure --with-threads --enable-shared --prefix=/usr/local/python3
-$ make
-# make install&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;PATH の設定&lt;br /&gt;
-  /etc/profile または .bashrc に下記の行を追加する。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;export PATH=/usr/local/python3/bin/:$PATH&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;（.bashrc に追加した場合）追加後、 $ source .bashrc を実行&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;python3 起動時にエラーが出る場合の修正（リンクを張ることで対処）&lt;br /&gt;
-（エラー）python3: error while loading shared libraries: libpython3.4m.so.1.0: cannot open shared object file: No such file or directory&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# ln -s /usr/local/python3/lib/libpython3.5m.so.1.0 /lib64/  (Python3.5.0 の場合)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;動作チェック&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ python3 --version&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-</description>
-        <pubDate>Tue, 03 May 2016 05:08:00 +0900</pubDate>
       </item>
     
   </channel>

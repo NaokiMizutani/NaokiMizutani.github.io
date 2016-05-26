@@ -2,8 +2,8 @@
 <html class="no-js">
   <head>
 	<meta charset="utf-8">
-	<title>Visual Studio Code のインストール | N.Mizutani</title>
-	<meta name="description" content="Visual Studio Code のインストール と キー・バインディングの設定">
+	<title>Visual Studio Code のインストールと設定 | N.Mizutani</title>
+	<meta name="description" content="Visual Studio Code のインストール と 設定初歩">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-Frame-Options" content="sameorigin">
 
@@ -136,15 +136,17 @@
     <div class="content">
       <article >
   <header style="background-image: url('/tech/')">
-    <h1 class="title">Visual Studio Code のインストール</h1>
+    <h1 class="title">Visual Studio Code のインストールと設定</h1>
     <p class="meta">
     May 23, 2016
     
     </p>
   </header>
-  <section class="post-content"><p>Visual Studio Code のインストール と キー・バインディングの設定</p>
+  <section class="post-content"><p>Visual Studio Code のインストール と 設定初歩</p>
 
 <h2 id="section">インストール</h2>
+
+<h3 id="centos7-">CentOS7 へのインストール</h3>
 
 <ul>
   <li>
@@ -168,12 +170,57 @@ CentOS にインストールするための.rpm パッケージを選択して�
 Text Editor として起動用アイコンが設定されている。</li>
 </ul>
 
-<h2 id="section-1">キー・バインディングの設定</h2>
+<h3 id="mac-windows-">Mac, Windows へのインストール</h3>
 
 <ul>
-  <li>設定ファイル（~/.config/Code/User/keybindings.json）に、
-種々のサイトで紹介されているキー・バインディングを書き込んでいけばよい。</li>
+  <li>
+    <p><a href="https://code.visualstudio.com/download">ダウンロードサイト</a> には、
+Mac用, Windows用のダウンロードボタンがある。</p>
+  </li>
+  <li>
+    <p>Macには、OS X 用のもの (VSCode-darwin-stable.zip) をダウンロードし、
+zip ファイルをダブルクリックすると、アプリケーションファイルが入っているので、
+アプリケーションフォルダに移動する。</p>
+  </li>
+  <li>
+    <p>Windowsは、インストーラによって簡単にインストールできる。</p>
+  </li>
 </ul>
+
+<h2 id="extension-">Extension の導入</h2>
+
+<p><a href="https://marketplace.visualstudio.com/vscode">VisualStudio/Marketplace</a> から、
+役に立つ Extension を VScode に導入する方法を示す。</p>
+
+<p>たとえば <a href="https://marketplace.visualstudio.com/items?itemName=donjayamanne.python">Python Extension</a> は、
+その Installation 方法に記載のとおり、
+コマンド入力ライン（F1キー または ctrl+shift+P / command+shift+P..mac）で、
+Extensions: install extensions
+が選択肢に表示されるように適宜文字を入力して、さらに選択肢の中から選択すると
+インストールされる。</p>
+
+<h2 id="python-">Python 実行環境の設定</h2>
+
+<p>ワークスペースフォルダを指定するために、
+エクスプローラー（ウィンドウ左上のアイコンを押して、フォルダーを開くを押して
+出てくるエクスプローラーメニュー）にて、実行環境を働かせたいフォルダーを指定する。</p>
+
+<p>次に、コマンド入力ライン（F1キー または ctrl+shift+P / command+shift+P..mac）で、
+Tasks: Configure Task Runner
+を選択するために適宜入力して選択後、 Others を選ぶと、
+定義ファイル tasks.json が表示されるので下記のように編集する。</p>
+
+<pre><code>"command": "python3",
+"isShellCommand": true,
+"args": ["${file}"],
+"showOutput": "always"
+</code></pre>
+
+<p>この内容は、ワークスペースフォルダの .vscode ディレクトリに tasks.json として書き込まれる。</p>
+
+<p>Python のコードを書いたとき、ファイルを保存して
+Tasks: Run Build Task (Ctrl+Shift+B / Command+Shift+B..Mac)
+でエディタとは別エリアに実行結果が表示される。</p>
 
 </section>
 </article>

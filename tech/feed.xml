@@ -5,15 +5,17 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Mon, 23 May 2016 17:50:03 +0900</pubDate>
+    <pubDate>Thu, 26 May 2016 18:43:16 +0900</pubDate>
     
       <item>
-        <title>Visual Studio Code のインストール</title>
+        <title>Visual Studio Code のインストールと設定</title>
         <link>http://NaokiMizutani.github.io/tech/vscode/install/VScode-Install.html</link>
         <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/vscode/install/VScode-Install.html</guid>
-        <description>&lt;p&gt;Visual Studio Code のインストール と キー・バインディングの設定&lt;/p&gt;
+        <description>&lt;p&gt;Visual Studio Code のインストール と 設定初歩&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;インストール&lt;/h2&gt;
+
+&lt;h3 id=&quot;centos7-&quot;&gt;CentOS7 へのインストール&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -37,12 +39,57 @@ CentOS にインストールするための.rpm パッケージを選択して�
 Text Editor として起動用アイコンが設定されている。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;キー・バインディングの設定&lt;/h2&gt;
+&lt;h3 id=&quot;mac-windows-&quot;&gt;Mac, Windows へのインストール&lt;/h3&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;設定ファイル（~/.config/Code/User/keybindings.json）に、
-種々のサイトで紹介されているキー・バインディングを書き込んでいけばよい。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://code.visualstudio.com/download&quot;&gt;ダウンロードサイト&lt;/a&gt; には、
+Mac用, Windows用のダウンロードボタンがある。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Macには、OS X 用のもの (VSCode-darwin-stable.zip) をダウンロードし、
+zip ファイルをダブルクリックすると、アプリケーションファイルが入っているので、
+アプリケーションフォルダに移動する。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Windowsは、インストーラによって簡単にインストールできる。&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h2 id=&quot;extension-&quot;&gt;Extension の導入&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://marketplace.visualstudio.com/vscode&quot;&gt;VisualStudio/Marketplace&lt;/a&gt; から、
+役に立つ Extension を VScode に導入する方法を示す。&lt;/p&gt;
+
+&lt;p&gt;たとえば &lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=donjayamanne.python&quot;&gt;Python Extension&lt;/a&gt; は、
+その Installation 方法に記載のとおり、
+コマンド入力ライン（F1キー または ctrl+shift+P / command+shift+P..mac）で、
+Extensions: install extensions
+が選択肢に表示されるように適宜文字を入力して、さらに選択肢の中から選択すると
+インストールされる。&lt;/p&gt;
+
+&lt;h2 id=&quot;python-&quot;&gt;Python 実行環境の設定&lt;/h2&gt;
+
+&lt;p&gt;ワークスペースフォルダを指定するために、
+エクスプローラー（ウィンドウ左上のアイコンを押して、フォルダーを開くを押して
+出てくるエクスプローラーメニュー）にて、実行環境を働かせたいフォルダーを指定する。&lt;/p&gt;
+
+&lt;p&gt;次に、コマンド入力ライン（F1キー または ctrl+shift+P / command+shift+P..mac）で、
+Tasks: Configure Task Runner
+を選択するために適宜入力して選択後、 Others を選ぶと、
+定義ファイル tasks.json が表示されるので下記のように編集する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&quot;command&quot;: &quot;python3&quot;,
+&quot;isShellCommand&quot;: true,
+&quot;args&quot;: [&quot;${file}&quot;],
+&quot;showOutput&quot;: &quot;always&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この内容は、ワークスペースフォルダの .vscode ディレクトリに tasks.json として書き込まれる。&lt;/p&gt;
+
+&lt;p&gt;Python のコードを書いたとき、ファイルを保存して
+Tasks: Run Build Task (Ctrl+Shift+B / Command+Shift+B..Mac)
+でエディタとは別エリアに実行結果が表示される。&lt;/p&gt;
 
 </description>
         <pubDate>Mon, 23 May 2016 15:00:00 +0900</pubDate>

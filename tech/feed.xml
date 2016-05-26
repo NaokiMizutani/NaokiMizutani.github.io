@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Thu, 26 May 2016 18:43:16 +0900</pubDate>
+    <pubDate>Thu, 26 May 2016 18:50:54 +0900</pubDate>
     
       <item>
         <title>Visual Studio Code のインストールと設定</title>
@@ -65,7 +65,8 @@ zip ファイルをダブルクリックすると、アプリケーションフ�
 その Installation 方法に記載のとおり、
 コマンド入力ライン（F1キー または ctrl+shift+P / command+shift+P..mac）で、
 Extensions: install extensions
-が選択肢に表示されるように適宜文字を入力して、さらに選択肢の中から選択すると
+が選択肢に表示されるように適宜文字を入力してこれを選ぶ。
+そして表示される Extension 選択肢の中から導入したいものを選択すると
 インストールされる。&lt;/p&gt;
 
 &lt;h2 id=&quot;python-&quot;&gt;Python 実行環境の設定&lt;/h2&gt;

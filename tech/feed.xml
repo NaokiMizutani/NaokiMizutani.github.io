@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Thu, 26 May 2016 18:50:54 +0900</pubDate>
+    <pubDate>Wed, 01 Jun 2016 12:41:34 +0900</pubDate>
     
       <item>
         <title>Visual Studio Code のインストールと設定</title>
@@ -815,6 +815,8 @@ print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;![画像] (structure.png)&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 11 May 2016 08:00:00 +0900</pubDate>

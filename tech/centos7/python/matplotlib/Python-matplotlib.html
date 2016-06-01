@@ -208,7 +208,7 @@ fm.findSystemFonts()</code></pre></figure>
 
 <p>フォントファイル：  ‘/usr/share/fonts/vlgothic/VL-Gothic-Regular.ttf’<br />
 など日本語フォントがあることを確認しておく。<br />
-4. 存在を確認した設定ファイル matplotlibrc をユーザのホームの .cache/matplotlib フォルダにコピーする<br />
+4. 存在を確認した設定ファイル matplotlibrc をユーザのホームの .config/matplotlib フォルダに、同名のファイル名 ‘matplotlibrc’ としてコピーする<br />
 コピーした matplotlibrc に以下の２行を加える（フォント名にスペースが含まれているが、クォーテーションは不要）。</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">font.serif : VL Gothic
@@ -219,7 +219,8 @@ font.sans-serif : VL Gothic</code></pre></figure>
 <figure class="highlight"><pre><code class="language-text" data-lang="text">pdf.fonttype : 42</code></pre></figure>
 
 <p>と TrueType を有効にしておく。<br />
-5. ~/.cache/matplotlib フォルダには、 fontList.py3k.cache, tex.cache の２ファイルと、追加した matplotlibrc が存在するが、matplotlibrc を修正後、fontList.py3k.cache を削除しておく。</p>
+ユーザーごとの設定ファイル matplotlibrc の場所は OS によって異なり、詳しくは <a href="http://matplotlib.org/users/customizing.html">オリジナルサイト</a>を参照のこと。<br />
+5. ~/.cache/matplotlib フォルダには、 fontList.py3k.cache, tex.cache の２つのファイルが存在するが、fontList.py3k.cache を削除しておく。</p>
 
 <p>python3 を立ち上げ、matplotlib をインポートして cache を再作成させて
 （または $ fc-cache -fv を実行して）動作を確認する。</p>

@@ -5,7 +5,89 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 08 Jun 2016 12:17:32 +0900</pubDate>
+    <pubDate>Wed, 08 Jun 2016 18:57:45 +0900</pubDate>
+    
+      <item>
+        <title>R, RStudio, Shiny のインストール</title>
+        <link>http://NaokiMizutani.github.io/tech/r,/rstudio,/shiny/R-RStudio-Shiny.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/r,/rstudio,/shiny/R-RStudio-Shiny.html</guid>
+        <description>&lt;p&gt;CentOS7 への R, RStudio, Shiny のインストールについてのメモ&lt;/p&gt;
+
+&lt;h1 id=&quot;r-&quot;&gt;R のインストール&lt;/h1&gt;
+
+&lt;p&gt;【方法１】&lt;/p&gt;
+
+&lt;p&gt;基本的に yum でインストールできるようだが、 epel のレポジトリを登録する必要がある。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# yum install epel-release
+# yum install R
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;【方法２】&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cran.r-project.org/&quot;&gt;CRANサイト&lt;/a&gt; のトップページに、
+各OSへのダウンロードに関する説明へのリンクが貼られており、
+Linux/redhat 用の Readme ファイルによると、以下のようにインストールを進めるとのことである。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://fedoraproject.org/wiki/EPEL&quot;&gt;EPELサイト&lt;/a&gt; で 
+&lt;a href=&quot;https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm&quot;&gt;newest ‘epel-release’ package for EL7&lt;/a&gt; を
+確認する。&lt;/p&gt;
+
+&lt;p&gt;その URI を用いて、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# rpm -ihv https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# yum install R
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;を実行する。&lt;/p&gt;
+
+&lt;h1 id=&quot;rstudio-&quot;&gt;RStudio のインストール&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.rstudio.com/products/rstudio/&quot;&gt;RStudioサイト&lt;/a&gt; のページで、
+RStudio Desktop の Open Source Edition のダウンロードボタンを押し、
+CentOS7 へのインストール用として、 Fedora/Redhat 用 64bit インストーラ rpmパッケージが
+あることを確認する。&lt;/p&gt;
+
+&lt;p&gt;その URI を用いて、
+    # rpm -ivh https://download1.rstudio.org/rstudio-0.99.902-x86_64.rpm
+でインストールできる。&lt;/p&gt;
+
+&lt;p&gt;なお、
+* rpm パッケージのインストールは、ルート権限で、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;`# rpm -ivh package.rpm`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;インストールしたい RPM パッケージの古いバージョンが既にインストールされている場合は&lt;/p&gt;
+
+    &lt;p&gt;&lt;code&gt;# rpm -Uvh package.rpm&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ある RPM パッケージが既にインストールされているかどうかを調べる場合は&lt;/p&gt;
+
+    &lt;p&gt;&lt;code&gt;# rpm -q package&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;を使う。&lt;/p&gt;
+
+&lt;p&gt;起動は、RStudio のアプリケーションアイコンが「開発」のところに入るので、そこから起動する。&lt;/p&gt;
+
+&lt;h1 id=&quot;shiny-&quot;&gt;Shiny のインストール&lt;/h1&gt;
+
+&lt;p&gt;R を root で起動し、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; install.packages(&#39;shiny&#39;, repos=&#39;https://cran.rstudio.com/&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;その他の方法として、RStudio の右下のサブウィンドウの ‘Packages’ タブで ‘Install’ ボタンを
+押すことによって、ダイアログが開き、Packages 欄に ‘shiny’ と入力し、’Install dependencies’ に
+チェックを入れると、依存関係にある必要なライブラリも導入される。&lt;/p&gt;
+</description>
+        <pubDate>Wed, 08 Jun 2016 18:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>R と GitHub の連携</title>
@@ -1281,48 +1363,6 @@ plt.show()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;a href=&quot;/tech/centos7/python/matplotlib/Python-matplotlib.html&quot;&gt;matplotlib のインストール&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 04 May 2016 16:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>PythonベースのWebアプリとして R を動作させる方法</title>
-        <link>http://NaokiMizutani.github.io/tech/python/apache/r/Python-R-Webapp.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/apache/r/Python-R-Webapp.html</guid>
-        <description>&lt;p&gt;PypeR を用いて、サーバー側で R が動く Python ベースの Webアプリケーション (CentOS7)&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;CentOS7 に Apache, Python3, mod_wsgi, R, PypeR はインストールされて動作しているものとする
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/python/install/PythonToCentOS7.html&quot;&gt;Python3 のインストール&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/python/apache/Apache_Python3.html&quot;&gt;Apache/mod_wsgi のインストール&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/centos7/r/install/Install-R.html&quot;&gt;R のインストール&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/python/r/PypeR.html&quot;&gt;PypeR のインストール&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;R のサンプルプログラム (R コンソールで動作するソース)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a &amp;lt;- c(2,3,4,5)
-summary(a)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Webアプリケーションとしての Pythonファイル&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/usr/local/python35/bin/python3
-
-import pyper as pr
-
-def application(environ, start_response):
-    start_response(&amp;#39;200 OK&amp;#39;, [(&amp;#39;Content-type&amp;#39;, &amp;#39;text/plain&amp;#39;)])
-
-    r = pr.R()
-    r(&amp;quot;a &amp;lt;- c(2, 3, 4, 5, 6)&amp;quot;)
-    text = r(&amp;quot;summary(a)&amp;quot;)
-
-    return [text.encode(&amp;#39;utf-8&amp;#39;)]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Wed, 04 May 2016 08:00:00 +0900</pubDate>
       </item>
     
   </channel>

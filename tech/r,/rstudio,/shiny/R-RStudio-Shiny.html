@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>R, RStudio, Shiny のインストール | N.Mizutani</title>
+	<meta name="description" content="CentOS7 への R, RStudio, Shiny のインストールについてのメモ">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/r,/rstudio,/shiny/R-RStudio-Shiny.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">R, RStudio, Shiny のインストール</h1>
+    <p class="meta">
+    June 8, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>CentOS7 への R, RStudio, Shiny のインストールについてのメモ</p>
+
+<h1 id="r-">R のインストール</h1>
+
+<p>【方法１】</p>
+
+<p>基本的に yum でインストールできるようだが、 epel のレポジトリを登録する必要がある。</p>
+
+<pre><code># yum install epel-release
+# yum install R
+</code></pre>
+
+<p>【方法２】</p>
+
+<p><a href="https://cran.r-project.org/">CRANサイト</a> のトップページに、
+各OSへのダウンロードに関する説明へのリンクが貼られており、
+Linux/redhat 用の Readme ファイルによると、以下のようにインストールを進めるとのことである。</p>
+
+<p><a href="http://fedoraproject.org/wiki/EPEL">EPELサイト</a> で 
+<a href="https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm">newest ‘epel-release’ package for EL7</a> を
+確認する。</p>
+
+<p>その URI を用いて、</p>
+
+<pre><code># rpm -ihv https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# yum install R
+</code></pre>
+
+<p>を実行する。</p>
+
+<h1 id="rstudio-">RStudio のインストール</h1>
+
+<p><a href="https://www.rstudio.com/products/rstudio/">RStudioサイト</a> のページで、
+RStudio Desktop の Open Source Edition のダウンロードボタンを押し、
+CentOS7 へのインストール用として、 Fedora/Redhat 用 64bit インストーラ rpmパッケージが
+あることを確認する。</p>
+
+<p>その URI を用いて、
+    # rpm -ivh https://download1.rstudio.org/rstudio-0.99.902-x86_64.rpm
+でインストールできる。</p>
+
+<p>なお、
+* rpm パッケージのインストールは、ルート権限で、</p>
+
+<pre><code>`# rpm -ivh package.rpm`
+</code></pre>
+
+<ul>
+  <li>
+    <p>インストールしたい RPM パッケージの古いバージョンが既にインストールされている場合は</p>
+
+    <p><code># rpm -Uvh package.rpm</code></p>
+  </li>
+  <li>
+    <p>ある RPM パッケージが既にインストールされているかどうかを調べる場合は</p>
+
+    <p><code># rpm -q package</code></p>
+  </li>
+</ul>
+
+<p>を使う。</p>
+
+<p>起動は、RStudio のアプリケーションアイコンが「開発」のところに入るので、そこから起動する。</p>
+
+<h1 id="shiny-">Shiny のインストール</h1>
+
+<p>R を root で起動し、</p>
+
+<pre><code>&gt; install.packages('shiny', repos='https://cran.rstudio.com/')
+</code></pre>
+
+<p>その他の方法として、RStudio の右下のサブウィンドウの ‘Packages’ タブで ‘Install’ ボタンを
+押すことによって、ダイアログが開き、Packages 欄に ‘shiny’ と入力し、’Install dependencies’ に
+チェックを入れると、依存関係にある必要なライブラリも導入される。</p>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

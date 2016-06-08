@@ -5,7 +5,99 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Mon, 06 Jun 2016 17:12:53 +0900</pubDate>
+    <pubDate>Wed, 08 Jun 2016 12:17:32 +0900</pubDate>
+    
+      <item>
+        <title>R と GitHub の連携</title>
+        <link>http://NaokiMizutani.github.io/tech/r/github/R-GitHub.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/r/github/R-GitHub.html</guid>
+        <description>&lt;p&gt;CRAN ではなく GitHub にも R の有用なライブラリが公開されている。
+また、Shiny アプリケーションが公開されていることもある。
+そこで、R で GitHub から ライブラリをインストール方法 および Shiny アプリケーションを実行する方法
+を示す。
+GitHub に公開されているライブラリを活用するには devtools という R のパッケージ操作支援ライブラリを
+導入する必要がある。&lt;/p&gt;
+
+&lt;h2 id=&quot;devtools--cran-&quot;&gt;devtools を CRAN からダウンロード&lt;/h2&gt;
+
+&lt;p&gt;devtools がインストールされていなければ、CRAN からダウンロードする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (!require(&quot;devtools&quot;))  install.packages(&quot;devtools&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Linux で devtools のインストールでエラーが出る場合、下記を参照&lt;/p&gt;
+
+&lt;h2 id=&quot;github-&quot;&gt;GitHub アカウントからのライブラリダウンロード&lt;/h2&gt;
+
+&lt;p&gt;GitHub にも多くの有用な R のライブラリが公開されており、例えば &lt;a href=&quot;https://github.com/rstudio&quot;&gt;RStudio&lt;/a&gt; には
+多くのライブラリ（R 以外のものもある）が存在することを確認できる。&lt;/p&gt;
+
+&lt;p&gt;その中のライブラリ（rstudio/DT : Javascript で表を表示）をインストールする例を示す。
+なお、このライブラリは、&lt;a href=&quot;https://github.com/rstudio/DT&quot;&gt;Rstudio/DT&lt;/a&gt; の README.md を読むと
+CRAN からインストールできるようである。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;GitHub からのインストール方法&lt;/p&gt;
+
+    &lt;p&gt;devtools::install_github(‘rstudio/DT’)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;github--shiny-&quot;&gt;GitHub からの Shiny アプリケーションを実行&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GitHub に公開されている Shiny アプリケーションを RStudio で実行する方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;GitHub の User-name のところにあるプロジェクト名 Project-name を実行する場合は、
+RStudio のコンソールで下記のようにコマンドを入力する。
+ただし、ダウンロードして展開等するため、起動するまでにじばらく時間がかかる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (!require(&#39;shiny&#39;)) install.packages(&quot;shiny&quot;)
+
+shiny::runGitHub(&quot;Project-name&quot;, &quot;User-name&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;（具体的事例）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;shiny::runGitHub(&quot;ShinyDistributionsApp&quot;, &quot;ksmzn&quot;)
+shiny::runGitHub(&quot;shiny-examples&quot;, &quot;rstudio&quot;, subdir = &quot;001-hello&quot;)
+shiny::runGitHub(&quot;Irt_Web&quot;, &quot;NaokiMizutani&quot;, subdir = &quot;Shiny_v3&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;devtools-libcurl-&quot;&gt;devtools インストール時のエラー（libcurl のインストールが事前に必要）&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; install.packages(&quot;devtools&quot;, verbose=TRUE)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これによれば、&lt;/p&gt;
+
+&lt;p&gt;————————- ANTICONF ERROR —————————&lt;br /&gt;
+Configuration failed because libcurl was not found. Try installing:&lt;br /&gt;
+ * deb: libcurl4-openssl-dev (Debian, Ubuntu, etc)&lt;br /&gt;
+ * rpm: libcurl-devel (Fedora, CentOS, RHEL)&lt;br /&gt;
+ * csw: libcurl_dev (Solaris)&lt;br /&gt;
+If libcurl is already installed, check that ‘pkg-config’ is in your&lt;br /&gt;
+PATH and PKG_CONFIG_PATH contains a libcurl.pc file. If pkg-config&lt;br /&gt;
+is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:&lt;br /&gt;
+R CMD INSTALL –configure-vars=’INCLUDE_DIR=… LIB_DIR=…’  
+——————————————————————–&lt;/p&gt;
+
+&lt;p&gt;と出力されているので、
+    # yum install libcurl-devel
+を実行する。&lt;br /&gt;
+このあと、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; install.packages(&quot;devtools&quot;, verbose=TRUE)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;を実行して成功した。&lt;/p&gt;
+</description>
+        <pubDate>Wed, 08 Jun 2016 10:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Visual Studio Code のインストールと設定</title>
@@ -1231,30 +1323,6 @@ def application(environ, start_response):
 
 </description>
         <pubDate>Wed, 04 May 2016 08:00:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Installing R to CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/centos7/r/install/Install-R.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/r/install/Install-R.html</guid>
-        <description>&lt;p&gt;CentOS7 への R のインストール&lt;/p&gt;
-
-&lt;p&gt;基本的に yum でインストールできるようだが、epel のレポジトリ登録が必要になる。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install epel-release
-# yum install R&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;同様の方法として、(http://ftp.riken.jp/Linux/fedora/epel/7/x86_64/e/) を閲覧し、一覧の中から epel-release-7-?.noarch.rpm の最新版のファイル名を探して、&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# rpm -ihv http://ftp.riken.jp/Linux/fedora/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-# yum -y install R&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;を実行する方法もある。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://cran.r-project.org/&quot;&gt;R Project/CRAN サイト&lt;/a&gt; から、Mac用 および Windows用実行イメージはダウンロードできるが、Linuxは 各ディストリビューションのパッケージ管理サービスに依存する。&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 04 May 2016 07:30:00 +0900</pubDate>
       </item>
     
   </channel>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>R と GitHub の連携 | N.Mizutani</title>
+	<meta name="description" content="CRAN ではなく GitHub にも R の有用なライブラリが公開されている。また、Shiny アプリケーションが公開されていることもある。そこで、R で GitHub から ライブラリをインストール方法 および Shiny アプリケーションを実行する方法を示す。GitHub に公開されているライブラリを活用す...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/r/github/R-GitHub.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">R と GitHub の連携</h1>
+    <p class="meta">
+    June 8, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>CRAN ではなく GitHub にも R の有用なライブラリが公開されている。
+また、Shiny アプリケーションが公開されていることもある。
+そこで、R で GitHub から ライブラリをインストール方法 および Shiny アプリケーションを実行する方法
+を示す。
+GitHub に公開されているライブラリを活用するには devtools という R のパッケージ操作支援ライブラリを
+導入する必要がある。</p>
+
+<h2 id="devtools--cran-">devtools を CRAN からダウンロード</h2>
+
+<p>devtools がインストールされていなければ、CRAN からダウンロードする。</p>
+
+<pre><code>if (!require("devtools"))  install.packages("devtools")
+</code></pre>
+
+<p>Linux で devtools のインストールでエラーが出る場合、下記を参照</p>
+
+<h2 id="github-">GitHub アカウントからのライブラリダウンロード</h2>
+
+<p>GitHub にも多くの有用な R のライブラリが公開されており、例えば <a href="https://github.com/rstudio">RStudio</a> には
+多くのライブラリ（R 以外のものもある）が存在することを確認できる。</p>
+
+<p>その中のライブラリ（rstudio/DT : Javascript で表を表示）をインストールする例を示す。
+なお、このライブラリは、<a href="https://github.com/rstudio/DT">Rstudio/DT</a> の README.md を読むと
+CRAN からインストールできるようである。</p>
+
+<ul>
+  <li>
+    <p>GitHub からのインストール方法</p>
+
+    <p>devtools::install_github(‘rstudio/DT’)</p>
+  </li>
+</ul>
+
+<h2 id="github--shiny-">GitHub からの Shiny アプリケーションを実行</h2>
+
+<ul>
+  <li>GitHub に公開されている Shiny アプリケーションを RStudio で実行する方法</li>
+</ul>
+
+<p>GitHub の User-name のところにあるプロジェクト名 Project-name を実行する場合は、
+RStudio のコンソールで下記のようにコマンドを入力する。
+ただし、ダウンロードして展開等するため、起動するまでにじばらく時間がかかる。</p>
+
+<pre><code>if (!require('shiny')) install.packages("shiny")
+
+shiny::runGitHub("Project-name", "User-name")
+</code></pre>
+
+<p>（具体的事例）</p>
+
+<pre><code>shiny::runGitHub("ShinyDistributionsApp", "ksmzn")
+shiny::runGitHub("shiny-examples", "rstudio", subdir = "001-hello")
+shiny::runGitHub("Irt_Web", "NaokiMizutani", subdir = "Shiny_v3")
+</code></pre>
+
+<hr />
+
+<h2 id="devtools-libcurl-">devtools インストール時のエラー（libcurl のインストールが事前に必要）</h2>
+
+<pre><code>&gt; install.packages("devtools", verbose=TRUE)
+</code></pre>
+
+<p>これによれば、</p>
+
+<p>————————- ANTICONF ERROR —————————<br />
+Configuration failed because libcurl was not found. Try installing:<br />
+ * deb: libcurl4-openssl-dev (Debian, Ubuntu, etc)<br />
+ * rpm: libcurl-devel (Fedora, CentOS, RHEL)<br />
+ * csw: libcurl_dev (Solaris)<br />
+If libcurl is already installed, check that ‘pkg-config’ is in your<br />
+PATH and PKG_CONFIG_PATH contains a libcurl.pc file. If pkg-config<br />
+is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:<br />
+R CMD INSTALL –configure-vars=’INCLUDE_DIR=… LIB_DIR=…’  
+——————————————————————–</p>
+
+<p>と出力されているので、
+    # yum install libcurl-devel
+を実行する。<br />
+このあと、</p>
+
+<pre><code>&gt; install.packages("devtools", verbose=TRUE)
+</code></pre>
+
+<p>を実行して成功した。</p>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

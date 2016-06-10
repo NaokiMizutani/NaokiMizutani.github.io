@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 10 Jun 2016 15:39:43 +0900</pubDate>
+    <pubDate>Fri, 10 Jun 2016 16:12:09 +0900</pubDate>
     
       <item>
         <title>Jupyter notebook での pdf 出力</title>
@@ -108,9 +108,14 @@ nbconvert がデフォルトで使うテンプレートファイルが &lt;code&
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;dviファイルの生成&lt;/p&gt;
+    &lt;p&gt;texファイルの生成&lt;/p&gt;
 
     &lt;p&gt;jupyter nbconvert –to latex (–template article.tplx) jupyter_note.ipynb&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;dviへの変換&lt;/p&gt;
+
+    &lt;p&gt;platex jupyter_note.tex&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;pdfへの変換&lt;/p&gt;

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Anaconda を用いた R 対応 Jupyter の導入 | N.Mizutani</title>
+	<meta name="description" content="プログラミングを行う環境（ツール）として、コンパイラ・テキストエディタ・デバッガなどをまとめ GUI から利用できる統合開発環境 (IDE) が、大抵のコンピュータ言語で整備されるようになっている。R (1997〜)においても、標準で導入される GUI に加えて、RStudio (2010〜)が統合開発環境の地位...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/jupyter/r/windows/Anaconda-Win.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Anaconda を用いた R 対応 Jupyter の導入</h1>
+    <p class="meta">
+    June 10, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>プログラミングを行う環境（ツール）として、
+コンパイラ・テキストエディタ・デバッガなどをまとめ GUI から利用できる統合開発環境 (IDE) が、
+大抵のコンピュータ言語で整備されるようになっている。
+R (1997〜)においても、標準で導入される GUI に加えて、RStudio (2010〜)が
+統合開発環境の地位を確立しつつある。</p>
+
+<p>一方、特にスクリプト言語において、対話実行環境 (REPL: Read-Eval-Print-Loop) の有用性が指摘されている。
+R 用の対話実行環境としては、 Jupyter (Julia, Python, R 等の複数言語に適用可) が一例として挙げられる。
+R を用いたデータサイエンスの実作業においては、プログラムのプロトタイプの作成、
+試行した実行結果の評価、ドキュメントを作成、他の者と情報を共有 などが繰り返される。
+Jupyter の対話実行環境は、それら作業をサポートする機能を有しており、
+生産性向上の一助になるツールである。</p>
+
+<h2 id="jupyter--windows-">Jupyter の Windows への導入方法</h2>
+
+<p>R の実行環境としての Jupyter を Windows機に導入する方法としていくつかの方法があるが、
+最も簡単な方法は Jupyter を動かすための必要パーツを一括してインストールしてくれる
+パッケージ Anaconda を利用することである。</p>
+
+<p>以下、Windows機を対象に、Jupyter の対話型実行環境を利用可能にする方法として、
+パッケージ Anaconda を導入して利用する手順を説明する。</p>
+
+<h3 id="anaconda---r">Anaconda のインストール と R用カスタマイズ</h3>
+
+<ul>
+  <li>
+    <p><a href="https://www.continuum.io/">Continuum</a> サイトの Anaconda/Download ページで、
+Python 3.5 / Windows 64-Bit のインストーラーをダウンロードする。<br />
+（Company Email アドレスを入力するように促されるが、No Thanks ボタンを押せば良い。）</p>
+  </li>
+  <li>
+    <p>ダウンロードしたインストーラーをダブルクリックして、デフォルトでインストールする。</p>
+  </li>
+  <li>
+    <p>Windows のスタートメニューにいくつかのアイコンが追加されるはずなので、その中で Jupyter Notebook の
+動作を確認して終了する。<br />
+（ブラウザを終了して、プロンプトウィンドウで ctrl-c を押して抜ける。）</p>
+  </li>
+  <li>
+    <p>Jupyter で R が動作するようカスタマイズする。</p>
+    <ul>
+      <li>Windows のスタートメニューのアイコンから、Anaconda Prompt を立ち上げる。</li>
+      <li>そのコンソール画面で、<code>conda install -c r r-essentials</code> と打ち込む。</li>
+      <li>ダウンロード、インストールされるパッケージのリストが表示され、確認が促されるので ‘y’ を入力する。<br />
+（最後のモジュール組み込みでエラーメッセージが出るが、completed と表示され実害はなさそうである。）</li>
+    </ul>
+  </li>
+</ul>
+
+<p>この R モジュールの組込みによって、GUI等のツールのない必要最小限の R がインストールされる。
+Jupyter の中で install.packages() 関数は使えないので、
+ライブラリをインストールするには、上記 R を立ち上げて
+（Anaconda Prompt で <code>chcp 65001</code> を実行してから <code>R</code> と入力して）、
+install.packages() 関数でインストールする。</p>
+
+<p>conda コマンドで組み込んだ必要最小限の R と、ユーザがインストールした R とが共存した場合に起きる
+トラブル発生（ライブラリ保存場所が複数となっておきる問題）については未確認である。</p>
+
+<p>なお、R をインストールして、その中から IRkernel をインストールする方法は Windows/Anaconda では
+うまくいかなかった。</p>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

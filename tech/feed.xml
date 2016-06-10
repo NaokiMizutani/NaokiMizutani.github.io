@@ -5,7 +5,404 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Wed, 08 Jun 2016 18:57:45 +0900</pubDate>
+    <pubDate>Fri, 10 Jun 2016 15:39:43 +0900</pubDate>
+    
+      <item>
+        <title>Jupyter notebook での pdf 出力</title>
+        <link>http://NaokiMizutani.github.io/tech/jupyter/pdf/Jupyter-PDF.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/jupyter/pdf/Jupyter-PDF.html</guid>
+        <description>&lt;p&gt;Jupyter notebook には Fileタブの Download as カテゴリに PDF via LaTeX の
+選択肢がある。
+ところが、この機能は pandoc や LaTeX をインストールしないと動作しない。
+Jupyter のノートを PDF化する方法について説明する。&lt;/p&gt;
+
+&lt;h2 id=&quot;latex-&quot;&gt;LaTeX の動作確認&lt;/h2&gt;
+
+&lt;p&gt;Jupyter notebook で PDFを出力するには、LaTeX を使うので、
+LaTeX が動作するように整備しておく必要がある。
+特に、日本語が出るところまで動作を確認しておく。&lt;/p&gt;
+
+&lt;h2 id=&quot;pandoc-&quot;&gt;Pandoc について&lt;/h2&gt;
+
+&lt;p&gt;ノートブックに Markdownタイプのセルが1つもなければ PDFファイルは
+作成されるはずである。
+ところが、 Markdownタイプのセルがあると次のようなエラーが表示される。
+これは、日本語の有無の問題ではない。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nbconvert failed: Pandoc wasn&#39;t found.  
+Please check that pandoc is installed:  
+http://johnmacfarlane.net/pandoc/installing.html  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pandoc とは、ドキュメント変換ツールで、Markdown, HTML, LaTeX などの形式を
+Word, PDF, Markdown, HTML などに変換する機能をもち、
+コマンドラインツールとして&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pandoc -o output.html input.txt  
+pandoc 01_hoge.md 02_fuga.md -o test.pdf -V documentclass=ltjarticle --latex-engine=lualatex
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;のように利用するものである。&lt;/p&gt;
+
+&lt;p&gt;Pandoc については、&lt;a href=&quot;http://pandoc.org/README.html&quot;&gt;ユーザガイド&lt;/a&gt; に
+詳しい説明がある。&lt;/p&gt;
+
+&lt;h2 id=&quot;pandoc--1&quot;&gt;Pandoc のインストール&lt;/h2&gt;
+
+&lt;p&gt;Pandoc のインストール方法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Anaconda で Jupyter を導入した場合 :   &lt;code&gt;conda install pandoc&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Mac の場合、Homebrew を用いる :   &lt;code&gt;brew install pandoc&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Linux(Redhat系) :   &lt;code&gt;yum install pandoc&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Linux(Debian系) :   &lt;code&gt;apt-get install pandoc&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これで、日本語が含まれないノートブックは pdf化に成功するはずである。
+日本語が入ったノートブックは（日本語が Markdown タイプのセルに入っても code タイプのセルに入っても）、
+PDF への変換で &lt;code&gt;nbconvert failed: PDF creating failed&lt;/code&gt; と表示されてエラーとなる。
+PDF化する際に latex を経由するが、そのときに使われるスタイルファイルが日本語に対応しないためと
+考えられる。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;日本語用テンプレートファイルの準備&lt;/h2&gt;
+
+&lt;p&gt;ディレクトリ &lt;code&gt;PYTHONDIR/site-packages/nbconvert/templates/latex/&lt;/code&gt; にある
+&lt;code&gt;*.tplx&lt;/code&gt; ファイルの中で、
+nbconvert がデフォルトで使うテンプレートファイルが &lt;code&gt;article.tplx&lt;/code&gt; のようで、
+このファイルの中で LaTeX が使うスタイルファイルが記されている。&lt;/p&gt;
+
+&lt;p&gt;この &lt;code&gt;article.tplx&lt;/code&gt; ファイルの内容が&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;`\documentclass{article}` となっているのを、  
+`\documentclass{jsarticle}`   
+`\documentclass{ltjsarticle}` 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;などに変更しておく。&lt;/p&gt;
+
+&lt;h2 id=&quot;pdf&quot;&gt;PDF化の方法&lt;/h2&gt;
+
+&lt;p&gt;コマンドラインで nbconvert を使って PDF化する方法は、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;jupyter nbconvert Untitled.ipynb --to pdf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;であり、以下のようなメッセージが表示される。（pdflatex が実行されていることが分かる。）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[NbConvertApp] Converting notebook Untitled.ipynb to pdf
+[NbConvertApp] Writing 14233 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running pdflatex 3 times: [&#39;pdflatex&#39;, &#39;notebook.tex&#39;]
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 54725 bytes to Untitled.pdf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;先程のテンプレートをユーザが作成して、それを指定して変換するには、
+    &lt;code&gt;jupyter nbconvert --to latex --template jsarticle.tplx [ファイル名].ipynb&lt;/code&gt;
+とする。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://texwiki.texjp.org/?%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F#cb7a8a28&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;日本語が含まれるノートを PDF化するには、Jupyter の中からは難しく（実行されるスクリプトの変更方法が不明で）、
+次のように2段階に分けて、ターミナルで行う道筋をみつけた。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;dviファイルの生成&lt;/p&gt;
+
+    &lt;p&gt;jupyter nbconvert –to latex (–template article.tplx) jupyter_note.ipynb&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;pdfへの変換&lt;/p&gt;
+
+    &lt;p&gt;dvipdfmx jupyter_note.dvi&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;なお、カッコ内のテンプレートファイルの指定は、必要に応じて行う。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 10 Jun 2016 12:00:00 +0900</pubDate>
+      </item>
+    
+      <item>
+        <title>日本語LaTeX環境の構築</title>
+        <link>http://NaokiMizutani.github.io/tech/latex/install/LaTeX-Japanese.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/latex/install/LaTeX-Japanese.html</guid>
+        <description>&lt;p&gt;Linux(Cent OS) で TeX 環境を構築する方法には、いくつかの方法がある。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;パッケージ管理システム (yum) を使う方法&lt;/li&gt;
+  &lt;li&gt;TeX Live のインストーラを使う方法
+    &lt;ul&gt;
+      &lt;li&gt;ネットワーク経由（通信障害を経験し、成功に至っていない。）&lt;/li&gt;
+      &lt;li&gt;ISOイメージを用いる方法（インストール経験あり。）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;である。
+上手くいった ISOイメージを用いる方法を中心に説明する。&lt;/p&gt;
+
+&lt;h2 id=&quot;tex-live-iso-&quot;&gt;TeX Live のインストール（ISO イメージ）&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.ctan.org/&quot;&gt;CTAN&lt;/a&gt; からたどって 
+&lt;a href=&quot;http://tug.org/texlive/acquire-iso.html&quot;&gt;TeX Live (ISO)&lt;/a&gt; で
+ダウンロード先を選んで isoファイルをダウンロードする。
+今回のダウンロード・ファイルは以下のファイル（約30分）&lt;/p&gt;
+
+&lt;p&gt;ftp://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/Images/texlive.iso (2015.6.20)&lt;/p&gt;
+
+&lt;p&gt;ダウンロードが完了したら、/var/tmp に iso ファイルをコピーし、そこで root で作業をする。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;空ディレクトリ /var/tmp/texlive2015 を作成して、&lt;/p&gt;
+
+    &lt;p&gt;# mount -o loop -t iso9660 texlive.iso texlive2015&lt;br /&gt;
+  mount: /dev/loop0 is write-protected, mounting read-only&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;マウントできたか確認する。&lt;/p&gt;
+
+    &lt;p&gt;# ls -lha texlive2015&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;マウントされているディレクトリにある &lt;code&gt;install-tl&lt;/code&gt; を実行し、
+Enter command: のプロンプトに対しては I を入力する。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;インストールメッセージの最後のメッセージにしたがって PATH を設定する。&lt;/p&gt;
+
+    &lt;p&gt;Add /usr/local/texlive/2015/texmf-dist/doc/info to INFOPATH.&lt;br /&gt;
+  Add /usr/local/texlive/2015/texmf-dist/doc/man to MANPATH&lt;br /&gt;
+    (if not dynamically found).&lt;/p&gt;
+
+    &lt;p&gt;Most importantly, add /usr/local/texlive/2015/bin/x86_64-linux&lt;br /&gt;
+  to your PATH for current and future sessions.&lt;/p&gt;
+
+    &lt;p&gt;Welcome to TeX Live!
+  Logfile: /usr/local/texlive/2015/install-tl.log&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;.bashrc に以下の行を追加して &lt;code&gt;source .bashrc&lt;/code&gt; を実行する
+（.bash_profile のほうがよいかも）&lt;/p&gt;
+
+    &lt;p&gt;# set PATHs for TeX Live 2015&lt;br /&gt;
+  export INFOPATH=/usr/local/texlive/2015/texmf-dist/doc/info:$INFOPATH
+  export MANPATH=/usr/local/texlive/2015/texmf-dist/doc/man:$MANPATH
+  export PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;動作を確認する。&lt;/p&gt;
+
+    &lt;p&gt;$ platex -v&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;後作業を行う。&lt;/p&gt;
+
+    &lt;p&gt;# cd /usr/local/texlive/2015&lt;br /&gt;
+  # ln -s texmf-dist texmf&lt;/p&gt;
+
+    &lt;p&gt;# tlmgr –repository=http://www.tug.org/~preining/tlptexlive/ install pxdvi&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ghost View のインストール&lt;/p&gt;
+
+    &lt;p&gt;# yum -y install epel-release&lt;br /&gt;
+  # yum -y install gv&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;tex-live-&quot;&gt;TeX Live のインストール(ネットワーク経由)&lt;/h2&gt;
+
+&lt;p&gt;ネットワーク経由のインストールは1回試しただけであるが、通信のトラブルがおきて
+インストールまで至らなかった。
+ISOイメージを用いる方法を勧める。&lt;/p&gt;
+
+&lt;p&gt;https://www.tug.org/texlive/ にて TexLive の状況の確認&lt;/p&gt;
+
+&lt;p&gt;ダウンロードするインストーラを確認する。
+（このインストーラによる方法では、必要コンポーネントごとにダウンロードを繰り返す。）&lt;/p&gt;
+
+&lt;p&gt;http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz&lt;/p&gt;
+
+&lt;p&gt;ダウンロードしたファイルを /var/tmp あたりに移動する。&lt;br /&gt;
+（/var/tmp にて $ wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz としてもよい。）
+以下 /var/tmp で作業する。&lt;/p&gt;
+
+&lt;p&gt;$ tar zxvf install-tl-unx.tar.gz&lt;/p&gt;
+
+&lt;p&gt;展開すると、install-tl-yyyymmdd というディレクトリが作成されており、その中で root で作業する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ./install-tl
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Enter command: のプロンプトに対して ‘I’ を入力する。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;tex-&quot;&gt;TeX のアップデート&lt;/h2&gt;
+&lt;p&gt;（各種パッケージの更新／新パッケージの自動インストール）&lt;/p&gt;
+
+&lt;p&gt;これは、再インストールに近い動作で時間がかかる..2h?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# tlmgr update --self --all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unknown directive …containerchecksum c59200574a316416a23695c258……
+2716955… , please fix it! at /usr/local/texlive/2015/tlpkg/TeXLive/TLPOBJ.pm line 210, &amp;lt;$retfh&amp;gt; line 5579.&lt;/p&gt;
+
+&lt;p&gt;とエラーが表示されて進行しない場合には、&lt;br /&gt;
+    http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet/&lt;br /&gt;
+から &lt;code&gt;update-tlmgr-latest.sh&lt;/code&gt; 等 適切なものをダウンロードして実行してから更新する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# sh update-tlmgr-latest.sh
+# tlmgr update --self --all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;ipa&quot;&gt;IPAフォントのインストール&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;フォントのダウンロード&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://ipafont.ipa.go.jp/node17#jp&quot;&gt;IPAフォントのダウンロードサイト(新)&lt;/a&gt; から
+IPAexフォント(IPAexfont00301.zip 9.21MB 2files)、&lt;br /&gt;
+&lt;a href=&quot;http://ipafont.ipa.go.jp/old/ipafont/download.html&quot;&gt;IPAフォントのダウンロードサイト(旧)&lt;/a&gt; から
+IPAフォント4書体パック(IPAfont00303.zip 19.1 MB 4files)&lt;br /&gt;
+をダウンロードする。&lt;/p&gt;
+
+&lt;p&gt;圧縮された zipファイルを &lt;code&gt;$ unzip fontfile.zip&lt;/code&gt; として解凍し、
+解凍したファイル群(2+4files)を /usr/share/fonts/japanese/TrueType という
+ディレクトリを作成して、そこに入れる。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;フォントリストの更新 および 確認&lt;/p&gt;
+
+    &lt;p&gt;# fc-cache -fv      （フォントリストの更新）&lt;/p&gt;
+
+    &lt;p&gt;$ fc-list | sort     （登録されたフォントの確認）&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;埋め込む日本語フォントの設定&lt;/h2&gt;
+
+&lt;p&gt;dvipdfmx で、pdf に埋め込む日本語フォントを特定のものに指定したり自動指定できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(例) $ kanji-config-updmap status  
+(例) $ kanji-config-updmap hiragino
+
+sudo kanji-config-updmap-sys (fontname or auto or nofont)
+
+# kanji-config-updmap-sys auto     （これを実行）
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;フォント埋め込みの設定状況を表示させる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kanji-config-updmap status
+CURRENT family : ipaex
+Standby family : ipa
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://user.ecc.u-tokyo.ac.jp/users/user-15826/wiki/?TeX/Install&quot;&gt;参考1&lt;/a&gt;
+&lt;a href=&quot;http://qiita.com/Tats_U_/items/01d48eb70a8b359b0d95&quot;&gt;参考2&lt;/a&gt;
+&lt;a href=&quot;http://osksn2.hep.sci.osaka-u.ac.jp/~taku/osx/embed_hiragino.html&quot;&gt;参考3&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;latex-&quot;&gt;LaTeX のテスト&lt;/h2&gt;
+
+&lt;p&gt;下記サンプルのような tex ファイルを作成し、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;\documentclass{jsarticle}
+\begin{document}
+    アインシュタインは $E = mc^2$ と言った。
+\end{document}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次の流れで pdf化が成功するかチェックする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ platex filename.tex
+$ dvipdfmx filename.dvi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;漢字が含まれたtexファイルも pdf化することを確認した。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 10 Jun 2016 11:00:00 +0900</pubDate>
+      </item>
+    
+      <item>
+        <title>Anaconda を用いた R 対応 Jupyter の導入</title>
+        <link>http://NaokiMizutani.github.io/tech/jupyter/r/windows/Anaconda-Win.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/jupyter/r/windows/Anaconda-Win.html</guid>
+        <description>&lt;p&gt;プログラミングを行う環境（ツール）として、
+コンパイラ・テキストエディタ・デバッガなどをまとめ GUI から利用できる統合開発環境 (IDE) が、
+大抵のコンピュータ言語で整備されるようになっている。
+R (1997〜)においても、標準で導入される GUI に加えて、RStudio (2010〜)が
+統合開発環境の地位を確立しつつある。&lt;/p&gt;
+
+&lt;p&gt;一方、特にスクリプト言語において、対話実行環境 (REPL: Read-Eval-Print-Loop) の有用性が指摘されている。
+R 用の対話実行環境としては、 Jupyter (Julia, Python, R 等の複数言語に適用可) が一例として挙げられる。
+R を用いたデータサイエンスの実作業においては、プログラムのプロトタイプの作成、
+試行した実行結果の評価、ドキュメントを作成、他の者と情報を共有 などが繰り返される。
+Jupyter の対話実行環境は、それら作業をサポートする機能を有しており、
+生産性向上の一助になるツールである。&lt;/p&gt;
+
+&lt;h2 id=&quot;jupyter--windows-&quot;&gt;Jupyter の Windows への導入方法&lt;/h2&gt;
+
+&lt;p&gt;R の実行環境としての Jupyter を Windows機に導入する方法としていくつかの方法があるが、
+最も簡単な方法は Jupyter を動かすための必要パーツを一括してインストールしてくれる
+パッケージ Anaconda を利用することである。&lt;/p&gt;
+
+&lt;p&gt;以下、Windows機を対象に、Jupyter の対話型実行環境を利用可能にする方法として、
+パッケージ Anaconda を導入して利用する手順を説明する。&lt;/p&gt;
+
+&lt;h3 id=&quot;anaconda---r&quot;&gt;Anaconda のインストール と R用カスタマイズ&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.continuum.io/&quot;&gt;Continuum&lt;/a&gt; サイトの Anaconda/Download ページで、
+Python 3.5 / Windows 64-Bit のインストーラーをダウンロードする。&lt;br /&gt;
+（Company Email アドレスを入力するように促されるが、No Thanks ボタンを押せば良い。）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ダウンロードしたインストーラーをダブルクリックして、デフォルトでインストールする。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Windows のスタートメニューにいくつかのアイコンが追加されるはずなので、その中で Jupyter Notebook の
+動作を確認して終了する。&lt;br /&gt;
+（ブラウザを終了して、プロンプトウィンドウで ctrl-c を押して抜ける。）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Jupyter で R が動作するようカスタマイズする。&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Windows のスタートメニューのアイコンから、Anaconda Prompt を立ち上げる。&lt;/li&gt;
+      &lt;li&gt;そのコンソール画面で、&lt;code&gt;conda install -c r r-essentials&lt;/code&gt; と打ち込む。&lt;/li&gt;
+      &lt;li&gt;ダウンロード、インストールされるパッケージのリストが表示され、確認が促されるので ‘y’ を入力する。&lt;br /&gt;
+（最後のモジュール組み込みでエラーメッセージが出るが、completed と表示され実害はなさそうである。）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この R モジュールの組込みによって、GUI等のツールのない必要最小限の R がインストールされる。
+Jupyter の中で install.packages() 関数は使えないので、
+ライブラリをインストールするには、上記 R を立ち上げて
+（Anaconda Prompt で &lt;code&gt;chcp 65001&lt;/code&gt; を実行してから &lt;code&gt;R&lt;/code&gt; と入力して）、
+install.packages() 関数でインストールする。&lt;/p&gt;
+
+&lt;p&gt;conda コマンドで組み込んだ必要最小限の R と、ユーザがインストールした R とが共存した場合に起きる
+トラブル発生（ライブラリ保存場所が複数となっておきる問題）については未確認である。&lt;/p&gt;
+
+&lt;p&gt;なお、R をインストールして、その中から IRkernel をインストールする方法は Windows/Anaconda では
+うまくいかなかった。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 10 Jun 2016 05:08:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>R, RStudio, Shiny のインストール</title>
@@ -1165,204 +1562,6 @@ $(function () {
 
 </description>
         <pubDate>Tue, 10 May 2016 08:30:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Setting Jupyter for R</title>
-        <link>http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/jupyter/r/Jupyter_R.html</guid>
-        <description>&lt;p&gt;Jupyter で R を動かすために必要な IRkernel をインストールする方法&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/IRkernel/IRkernel&quot;&gt;IRkernel サイト&lt;/a&gt; に詳細にインストール方法が記載されている。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;必要なライブラリを準備&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install czmq-devel&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;R をコンソールで立ち上げて、以下のコマンドを打ち込む。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;gt; install.packages(c(&amp;#39;rzmq&amp;#39;,&amp;#39;repr&amp;#39;,&amp;#39;IRkernel&amp;#39;,&amp;#39;IRdisplay&amp;#39;),
-                 repos = c(&amp;#39;http://irkernel.github.io/&amp;#39;, getOption(&amp;#39;repos&amp;#39;)),
-                 type = &amp;#39;source&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;—メッセージ出力 &lt;br /&gt;
-　’lib = “/usr/lib64/R/library”’ は書き込み可能ではありません&lt;br /&gt;
-　Would you like to use a personal library instead?  (y/n)&lt;br /&gt;
-が表示されるので、y を入力する。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;CRAN のミラーサイトを選ぶように促されるので、Japan を選択する。 &lt;br /&gt;
-—メッセージ出力&lt;br /&gt;
-　DONE (IRkernel)&lt;br /&gt;
-　ダウンロードされたパッケージは、以下にあります&lt;br /&gt;
-　　‘/tmp/Rtmpe81bSy/downloaded_packages’&lt;br /&gt;
-が表示される。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;次に以下のコマンドを入力する。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;gt; IRkernel::installspec()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;R を終了させる　  &amp;gt; quit()&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;コンソールで jupyter notebook を立ち上げ、動作を確認する。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ jupyter notebook&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;ファイル新規作成で R が選択肢として表示されれば成功。&lt;/p&gt;
-</description>
-        <pubDate>Wed, 04 May 2016 18:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Installing matplotlib to CentOS7/Python3</title>
-        <link>http://NaokiMizutani.github.io/tech/centos7/python/matplotlib/Python-matplotlib.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/python/matplotlib/Python-matplotlib.html</guid>
-        <description>&lt;p&gt;CentOS7 上の Python3 で matplotlib をインストール&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;CentOS7 で Python3 は導入済とする。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;matplotlib の導入&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# pip3 install matplotlib&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;png パッケージが見つからないというエラーが表示されインストールが完了しないので、
-事前に png を入れる必要がある。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# yum install libpng-devel
-# yum install freetype-devel
-　　（必要に応じてインストールする）&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Python プログラムによる matplotlib のテスト&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib.pyplot as plt
-
-plt.plot([1, 3, 2, 4])
-plt.title(&amp;#39;タイトル&amp;#39;)
-plt.xlabel(&amp;#39;$x$ 軸&amp;#39;)
-plt.ylabel(&amp;#39;$y$ 軸&amp;#39;)
-
-plt.show()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;グラフが表示されれば成功である。
-画像の png による保存、 pdf による保存を確認する。&lt;/p&gt;
-
-&lt;p&gt;このプログラムでタイトルに漢字を設定したが、うまく表示されなければ
-（豆腐になるならば）、日本語フォントの設定が必要である。&lt;/p&gt;
-
-&lt;p&gt;まず、CentOS7 にインストールされているフォントを 
- fc-list | grep font  で確認して、日本語のフォントを見つける。&lt;/p&gt;
-
-&lt;p&gt;/usr/share/fonts/vlgothic/VL-Gothic-Regular.ttf: VL ゴシック,VL Gothic:style=regular&lt;/p&gt;
-
-&lt;p&gt;が見つかったので、これを利用する方法を示す。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Python 環境下で設定ファイルのパスを確認&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib
-matplotlib.matplotlib_fname()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;ファイル名：  ‘/usr/local/python3/lib/python3.5/site-packages/matplotlib/mpl-data/matplotlibrc’  を得た。&lt;br /&gt;
-2. Python 環境下で matplotlib に設定されているフォント名を確認&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;matplotlib.rcParams.get(&amp;#39;font.family&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;フォント名：  [‘sans-serif’]  を得た。&lt;br /&gt;
-3. Python 環境下で matplotlib が利用可能なフォントのリストを表示させる&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib.font_manager as fm
-fm.findSystemFonts()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;フォントファイル：  ‘/usr/share/fonts/vlgothic/VL-Gothic-Regular.ttf’&lt;br /&gt;
-など日本語フォントがあることを確認しておく。&lt;br /&gt;
-4. 存在を確認した設定ファイル matplotlibrc をユーザのホームの .config/matplotlib フォルダに、同名のファイル名 ‘matplotlibrc’ としてコピーする&lt;br /&gt;
-コピーした matplotlibrc に以下の２行を加える（フォント名にスペースが含まれているが、クォーテーションは不要）。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;font.serif : VL Gothic
-font.sans-serif : VL Gothic&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;また、’pdf backend params’ のところで、pdf.fonttype がコメントアウトされているのを&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;pdf.fonttype : 42&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;と TrueType を有効にしておく。&lt;br /&gt;
-ユーザーごとの設定ファイル matplotlibrc の場所は OS によって異なり、詳しくは &lt;a href=&quot;http://matplotlib.org/users/customizing.html&quot;&gt;オリジナルサイト&lt;/a&gt;を参照のこと。&lt;br /&gt;
-5. ~/.cache/matplotlib フォルダには、 fontList.py3k.cache, tex.cache の２つのファイルが存在するが、fontList.py3k.cache を削除しておく。&lt;/p&gt;
-
-&lt;p&gt;python3 を立ち上げ、matplotlib をインポートして cache を再作成させて
-（または $ fc-cache -fv を実行して）動作を確認する。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;(日本語フォント).ttf ファイルを入手した場合、&lt;br /&gt;
-1. /usr/share/fonts/japanese のディレクトリを作成し、そこに (日本語フォント).ttf をコピーする。&lt;br /&gt;
-2.   $ fc-cache -fv によってフォントのキャッシュを更新すると、
-ホームディレクトリの .cache ディレクトリ内のデータが更新される。&lt;br /&gt;
-3. フォントを指定して matplotlib を利用する Python サンプルプログラム&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import matplotlib
-import matplotlib.font_manager as font_manager
-#TTFファイル(フォント)のアドレスを指定
-font_path = &amp;#39;/usr/share/fonts/japanese/(日本語フォント).ttf&amp;#39;
-#フォントの詳細情報を取得
-font_prop = font_manager.FontProperties(fname = font_path)
-#フォントの名前を使い、matplotのデフォルトフォントに指定
-fname = font_prop.get_name()
-print(fname)
-matplotlib.rcParams[&amp;#39;font.family&amp;#39;] = fname
-
-import matplotlib.pyplot as plt
-
-plt.plot([1, 3, 2, 4])
-plt.title(&amp;#39;タイトル&amp;#39;)
-plt.show()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Wed, 04 May 2016 17:08:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>Installing Jupyter to CentOS7</title>
-        <link>http://NaokiMizutani.github.io/tech/centos7/python/jupyter/Jupyter.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/centos7/python/jupyter/Jupyter.html</guid>
-        <description>&lt;p&gt;CentOS7 上の Python3 で Jypyter をインストール&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;CentOS7 で Python3 は導入済とする。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Jupyter のインストール&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# pip3 install jupyter&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;関連記事： 
-&lt;a href=&quot;/tech/centos7/python/matplotlib/Python-matplotlib.html&quot;&gt;matplotlib のインストール&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Wed, 04 May 2016 16:08:00 +0900</pubDate>
       </item>
     
   </channel>

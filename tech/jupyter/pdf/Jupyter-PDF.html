@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Jupyter notebook での pdf 出力 | N.Mizutani</title>
+	<meta name="description" content="Jupyter notebook には Fileタブの Download as カテゴリに PDF via LaTeX の選択肢がある。ところが、この機能は pandoc や LaTeX をインストールしないと動作しない。Jupyter のノートを PDF化する方法について説明する。">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/jupyter/pdf/Jupyter-PDF.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Jupyter notebook での pdf 出力</h1>
+    <p class="meta">
+    June 10, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>Jupyter notebook には Fileタブの Download as カテゴリに PDF via LaTeX の
+選択肢がある。
+ところが、この機能は pandoc や LaTeX をインストールしないと動作しない。
+Jupyter のノートを PDF化する方法について説明する。</p>
+
+<h2 id="latex-">LaTeX の動作確認</h2>
+
+<p>Jupyter notebook で PDFを出力するには、LaTeX を使うので、
+LaTeX が動作するように整備しておく必要がある。
+特に、日本語が出るところまで動作を確認しておく。</p>
+
+<h2 id="pandoc-">Pandoc について</h2>
+
+<p>ノートブックに Markdownタイプのセルが1つもなければ PDFファイルは
+作成されるはずである。
+ところが、 Markdownタイプのセルがあると次のようなエラーが表示される。
+これは、日本語の有無の問題ではない。</p>
+
+<pre><code>nbconvert failed: Pandoc wasn't found.  
+Please check that pandoc is installed:  
+http://johnmacfarlane.net/pandoc/installing.html  
+</code></pre>
+
+<p>Pandoc とは、ドキュメント変換ツールで、Markdown, HTML, LaTeX などの形式を
+Word, PDF, Markdown, HTML などに変換する機能をもち、
+コマンドラインツールとして</p>
+
+<pre><code>pandoc -o output.html input.txt  
+pandoc 01_hoge.md 02_fuga.md -o test.pdf -V documentclass=ltjarticle --latex-engine=lualatex
+</code></pre>
+
+<p>のように利用するものである。</p>
+
+<p>Pandoc については、<a href="http://pandoc.org/README.html">ユーザガイド</a> に
+詳しい説明がある。</p>
+
+<h2 id="pandoc--1">Pandoc のインストール</h2>
+
+<p>Pandoc のインストール方法</p>
+
+<ul>
+  <li>Anaconda で Jupyter を導入した場合 :   <code>conda install pandoc</code></li>
+  <li>Mac の場合、Homebrew を用いる :   <code>brew install pandoc</code></li>
+  <li>Linux(Redhat系) :   <code>yum install pandoc</code></li>
+  <li>Linux(Debian系) :   <code>apt-get install pandoc</code></li>
+</ul>
+
+<p>これで、日本語が含まれないノートブックは pdf化に成功するはずである。
+日本語が入ったノートブックは（日本語が Markdown タイプのセルに入っても code タイプのセルに入っても）、
+PDF への変換で <code>nbconvert failed: PDF creating failed</code> と表示されてエラーとなる。
+PDF化する際に latex を経由するが、そのときに使われるスタイルファイルが日本語に対応しないためと
+考えられる。</p>
+
+<h2 id="section">日本語用テンプレートファイルの準備</h2>
+
+<p>ディレクトリ <code>PYTHONDIR/site-packages/nbconvert/templates/latex/</code> にある
+<code>*.tplx</code> ファイルの中で、
+nbconvert がデフォルトで使うテンプレートファイルが <code>article.tplx</code> のようで、
+このファイルの中で LaTeX が使うスタイルファイルが記されている。</p>
+
+<p>この <code>article.tplx</code> ファイルの内容が</p>
+
+<pre><code>`\documentclass{article}` となっているのを、  
+`\documentclass{jsarticle}`   
+`\documentclass{ltjsarticle}` 
+</code></pre>
+
+<p>などに変更しておく。</p>
+
+<h2 id="pdf">PDF化の方法</h2>
+
+<p>コマンドラインで nbconvert を使って PDF化する方法は、</p>
+
+<pre><code>jupyter nbconvert Untitled.ipynb --to pdf
+</code></pre>
+
+<p>であり、以下のようなメッセージが表示される。（pdflatex が実行されていることが分かる。）</p>
+
+<pre><code>[NbConvertApp] Converting notebook Untitled.ipynb to pdf
+[NbConvertApp] Writing 14233 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running pdflatex 3 times: ['pdflatex', 'notebook.tex']
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 54725 bytes to Untitled.pdf
+</code></pre>
+
+<p>先程のテンプレートをユーザが作成して、それを指定して変換するには、
+    <code>jupyter nbconvert --to latex --template jsarticle.tplx [ファイル名].ipynb</code>
+とする。</p>
+
+<p><a href="https://texwiki.texjp.org/?%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F#cb7a8a28">参考</a></p>
+
+<p>日本語が含まれるノートを PDF化するには、Jupyter の中からは難しく（実行されるスクリプトの変更方法が不明で）、
+次のように2段階に分けて、ターミナルで行う道筋をみつけた。</p>
+
+<ul>
+  <li>
+    <p>dviファイルの生成</p>
+
+    <p>jupyter nbconvert –to latex (–template article.tplx) jupyter_note.ipynb</p>
+  </li>
+  <li>
+    <p>pdfへの変換</p>
+
+    <p>dvipdfmx jupyter_note.dvi</p>
+  </li>
+</ul>
+
+<p>なお、カッコ内のテンプレートファイルの指定は、必要に応じて行う。</p>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

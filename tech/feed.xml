@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 10 Jun 2016 16:12:09 +0900</pubDate>
+    <pubDate>Fri, 10 Jun 2016 16:13:57 +0900</pubDate>
     
       <item>
         <title>Jupyter notebook での pdf 出力</title>
@@ -104,7 +104,7 @@ nbconvert がデフォルトで使うテンプレートファイルが &lt;code&
 &lt;p&gt;&lt;a href=&quot;https://texwiki.texjp.org/?%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%B3%AA%E5%95%8F#cb7a8a28&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;日本語が含まれるノートを PDF化するには、Jupyter の中からは難しく（実行されるスクリプトの変更方法が不明で）、
-次のように2段階に分けて、ターミナルで行う道筋をみつけた。&lt;/p&gt;
+次のように3段階に分けて、ターミナルで行う道筋をみつけた。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;

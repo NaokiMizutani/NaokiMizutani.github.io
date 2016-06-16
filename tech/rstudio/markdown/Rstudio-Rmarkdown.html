@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>R Markdown を用いた文書作成 | N.Mizutani</title>
+	<meta name="description" content="rmarkdown パッケージを利用して、 R markdown 形式のテキスト作成を通じたドキュメント作成方法について解説する。">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/rstudio/markdown/Rstudio-Rmarkdown.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">R Markdown を用いた文書作成</h1>
+    <p class="meta">
+    June 16, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>rmarkdown パッケージを利用して、 R markdown 形式のテキスト作成を通じたドキュメント作成方法
+について解説する。</p>
+
+<h1 id="section">必要なコンポーネント</h1>
+
+<p>R markdown を利用するために必要となるコンポーネントは、 R の環境と、rmarkdown パッケージ、
+そして Pandoc 関連ツールである。</p>
+
+<p>また、 pdf出力を機能させるには、 LaTeX 環境が必要となる。</p>
+
+<p>この説明では、Rstudio が動作する環境のもとで、R markdown が最低限利用できる環境の構築
+（rmarkdownパッケージの導入 と Pandoc の導入）を紹介する。</p>
+
+<h2 id="pandoc">Pandoc（文書形式変換ツール）のインストール</h2>
+
+<p>Linux(CentOS), Mac, Windows のそれぞれについて、Pandoc のインストール方法を述べる。</p>
+
+<ul>
+  <li>
+    <p>[CentOS] # yum install pandoc</p>
+  </li>
+  <li>
+    <p>[Mac OSX] $ brew install pandoc</p>
+  </li>
+  <li>
+    <p>[Windows] <a href="http://pandoc.org/installing.html#windows">Pandoc サイト</a> から
+インストーラをダウンロードしてインストールする。</p>
+  </li>
+</ul>
+
+<h2 id="section-1">利用可能状況かどうかの確認</h2>
+
+<p>Rstudio のコンソールで、</p>
+
+<pre><code>library(rmarkdown)  
+pandoc_available()  
+</code></pre>
+
+<p>を実行して、TRUE が表示されることを確認する。</p>
+
+<p>エラーが出る場合は、Pandoc 利用のためのパスの設定に問題がある可能性が高い。</p>
+
+<h1 id="r-markdown-">R markdown の利用</h1>
+
+<p>Rstudio で新規に R Markdown形式のファイルを作成する。
+ダイアログで作成の際、Document のタイプで Output Format を HTML とする。</p>
+
+<p>デモのための markdown 文書が表示される。この文書を整形表示するには、エディタツールバーの
+‘Knit HTML’ ボタンを押して、ファイル名を確定すると専用ブラウザが開いて表示が行われる。</p>
+
+<p>漢字が含まれるテキストの場合、保存する際に漢字コードを尋ねてくるので、’UTF8’ を選択する。</p>
+
+<p><a href="http://gihyo.jp/admin/serial/01/r-markdown/">技術評論社による紹介</a> ページが参考になる。</p>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

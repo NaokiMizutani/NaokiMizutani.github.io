@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Shiny Server のインストールと運用 | N.Mizutani</title>
+	<meta name="description" content="Shiny には、スタンドアロン版とサーバー版が存在する。そのうち、サーバー版のインストールと運用開始について説明する。">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/shiny/server/Shiny-Server.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">Shiny Server のインストールと運用</h1>
+    <p class="meta">
+    June 16, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p>Shiny には、スタンドアロン版とサーバー版が存在する。
+そのうち、サーバー版のインストールと運用開始について説明する。</p>
+
+<h1 id="shiny-server-">Shiny Server のインストール</h1>
+
+<p><a href="https://www.rstudio.com/products/shiny/shiny-server/">Shiny Server サイト</a> をみると、
+Open Source版 と Pro版（有料） が存在することが分かる。
+Open Source版についての説明をみると、</p>
+
+<ul>
+  <li>Ubuntu 12.04 or later</li>
+  <li>RedHat/CentOS</li>
+  <li>SLES 11+</li>
+  <li>Other Platforms</li>
+</ul>
+
+<p>の4種のインストール方法（うち上3種に対してバイナリを提供）が示されている。
+そのうち、 CentOS 7 へのインストールを試みた。</p>
+
+<h2 id="centos-7-">CentOS 7 へのインストール</h2>
+
+<p>まず、環境として R がインストールされていることが前提である。これは <code>yum install R</code> で
+実行できる。</p>
+
+<p>また、Shiny パッケージのダウンロードもできている必要があり、Shiny-Server サイトでは</p>
+
+<p>$ sudo su - \
+-c “R -e "install.packages(‘shiny’, repos=’https://cran.rstudio.com/’)"”</p>
+
+<p>のように必要なコマンドが示されている。
+このコマンドでは、R を管理者で実行してパッケージをインストールしているので、
+共用領域に shiny パッケージが保存されている必要があると考えられる。</p>
+
+<p>Shiny Server のダウンロードとインストールは以下のコマンドによる。</p>
+
+<p>$ wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.2.786-rh5-x86_64.rpm
+$ sudo yum install –nogpgcheck shiny-server-1.4.2.786-rh5-x86_64.rpm</p>
+
+<h1 id="shiny-server--1">Shiny Server の起動</h1>
+
+<h2 id="section">動作の確認</h2>
+
+<p>Shiny Server の起動／停止は <code>systemctl start shiny-server</code>, <code>systemctl stop shiny-server</code> 
+で行う。
+ブラウザで自アドレスをポート番号 3838 でアクセス (http://address:3838) して、
+/srv/shiny-server/index.html が表示されていれば成功である。
+外部からのアクセスを試すには、ファイアーウォールを処置しておく。</p>
+
+<h2 id="section-1">アプリケーションの配置</h2>
+
+<p>スタンドアロン版 Shiny で作成したプロジェクトは、フォルダごと /srv/shiny-server/ 下におく。
+そして、アプリ名が “01_hello” の場合、http://address:3838/01_hello/ でアクセスする。
+また、ポート番号を 3838 以外のポートで起動させたい場合には、
+ /etc/shiny-server/shiny-server.conf 
+ファイルに使用するポート番号指定の記述箇所があるので変更して再起動をかける。</p>
+
+<h1 id="shiny-">スタンドアロン Shiny で他からアクセスできるようにする方法</h1>
+
+<p>Shiny アプリケーションを Rstudio から Run App で起動すると、
+Console にアクセスすべきホストアドレスとポート番号が表示される。</p>
+
+<p>次に Console で runApp(host=”ip-address”) として起動すると、
+外部から http://ip-address:ポート番号 でアクセスできる。</p>
+
+<p>もちろん、ファイアーウォールを処置しておく必要がある。</p>
+
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

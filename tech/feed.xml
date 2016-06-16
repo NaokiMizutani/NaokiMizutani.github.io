@@ -5,7 +5,143 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 10 Jun 2016 16:13:57 +0900</pubDate>
+    <pubDate>Thu, 16 Jun 2016 17:28:09 +0900</pubDate>
+    
+      <item>
+        <title>Shiny Server のインストールと運用</title>
+        <link>http://NaokiMizutani.github.io/tech/shiny/server/Shiny-Server.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/shiny/server/Shiny-Server.html</guid>
+        <description>&lt;p&gt;Shiny には、スタンドアロン版とサーバー版が存在する。
+そのうち、サーバー版のインストールと運用開始について説明する。&lt;/p&gt;
+
+&lt;h1 id=&quot;shiny-server-&quot;&gt;Shiny Server のインストール&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.rstudio.com/products/shiny/shiny-server/&quot;&gt;Shiny Server サイト&lt;/a&gt; をみると、
+Open Source版 と Pro版（有料） が存在することが分かる。
+Open Source版についての説明をみると、&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ubuntu 12.04 or later&lt;/li&gt;
+  &lt;li&gt;RedHat/CentOS&lt;/li&gt;
+  &lt;li&gt;SLES 11+&lt;/li&gt;
+  &lt;li&gt;Other Platforms&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;の4種のインストール方法（うち上3種に対してバイナリを提供）が示されている。
+そのうち、 CentOS 7 へのインストールを試みた。&lt;/p&gt;
+
+&lt;h2 id=&quot;centos-7-&quot;&gt;CentOS 7 へのインストール&lt;/h2&gt;
+
+&lt;p&gt;まず、環境として R がインストールされていることが前提である。これは &lt;code&gt;yum install R&lt;/code&gt; で
+実行できる。&lt;/p&gt;
+
+&lt;p&gt;また、Shiny パッケージのダウンロードもできている必要があり、Shiny-Server サイトでは&lt;/p&gt;
+
+&lt;p&gt;$ sudo su - \
+-c “R -e &quot;install.packages(‘shiny’, repos=’https://cran.rstudio.com/’)&quot;”&lt;/p&gt;
+
+&lt;p&gt;のように必要なコマンドが示されている。
+このコマンドでは、R を管理者で実行してパッケージをインストールしているので、
+共用領域に shiny パッケージが保存されている必要があると考えられる。&lt;/p&gt;
+
+&lt;p&gt;Shiny Server のダウンロードとインストールは以下のコマンドによる。&lt;/p&gt;
+
+&lt;p&gt;$ wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.2.786-rh5-x86_64.rpm
+$ sudo yum install –nogpgcheck shiny-server-1.4.2.786-rh5-x86_64.rpm&lt;/p&gt;
+
+&lt;h1 id=&quot;shiny-server--1&quot;&gt;Shiny Server の起動&lt;/h1&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;動作の確認&lt;/h2&gt;
+
+&lt;p&gt;Shiny Server の起動／停止は &lt;code&gt;systemctl start shiny-server&lt;/code&gt;, &lt;code&gt;systemctl stop shiny-server&lt;/code&gt; 
+で行う。
+ブラウザで自アドレスをポート番号 3838 でアクセス (http://address:3838) して、
+/srv/shiny-server/index.html が表示されていれば成功である。
+外部からのアクセスを試すには、ファイアーウォールを処置しておく。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;アプリケーションの配置&lt;/h2&gt;
+
+&lt;p&gt;スタンドアロン版 Shiny で作成したプロジェクトは、フォルダごと /srv/shiny-server/ 下におく。
+そして、アプリ名が “01_hello” の場合、http://address:3838/01_hello/ でアクセスする。
+また、ポート番号を 3838 以外のポートで起動させたい場合には、
+ /etc/shiny-server/shiny-server.conf 
+ファイルに使用するポート番号指定の記述箇所があるので変更して再起動をかける。&lt;/p&gt;
+
+&lt;h1 id=&quot;shiny-&quot;&gt;スタンドアロン Shiny で他からアクセスできるようにする方法&lt;/h1&gt;
+
+&lt;p&gt;Shiny アプリケーションを Rstudio から Run App で起動すると、
+Console にアクセスすべきホストアドレスとポート番号が表示される。&lt;/p&gt;
+
+&lt;p&gt;次に Console で runApp(host=”ip-address”) として起動すると、
+外部から http://ip-address:ポート番号 でアクセスできる。&lt;/p&gt;
+
+&lt;p&gt;もちろん、ファイアーウォールを処置しておく必要がある。&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 16 Jun 2016 15:00:00 +0900</pubDate>
+      </item>
+    
+      <item>
+        <title>R Markdown を用いた文書作成</title>
+        <link>http://NaokiMizutani.github.io/tech/rstudio/markdown/Rstudio-Rmarkdown.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/rstudio/markdown/Rstudio-Rmarkdown.html</guid>
+        <description>&lt;p&gt;rmarkdown パッケージを利用して、 R markdown 形式のテキスト作成を通じたドキュメント作成方法
+について解説する。&lt;/p&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;必要なコンポーネント&lt;/h1&gt;
+
+&lt;p&gt;R markdown を利用するために必要となるコンポーネントは、 R の環境と、rmarkdown パッケージ、
+そして Pandoc 関連ツールである。&lt;/p&gt;
+
+&lt;p&gt;また、 pdf出力を機能させるには、 LaTeX 環境が必要となる。&lt;/p&gt;
+
+&lt;p&gt;この説明では、Rstudio が動作する環境のもとで、R markdown が最低限利用できる環境の構築
+（rmarkdownパッケージの導入 と Pandoc の導入）を紹介する。&lt;/p&gt;
+
+&lt;h2 id=&quot;pandoc&quot;&gt;Pandoc（文書形式変換ツール）のインストール&lt;/h2&gt;
+
+&lt;p&gt;Linux(CentOS), Mac, Windows のそれぞれについて、Pandoc のインストール方法を述べる。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;[CentOS] # yum install pandoc&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[Mac OSX] $ brew install pandoc&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[Windows] &lt;a href=&quot;http://pandoc.org/installing.html#windows&quot;&gt;Pandoc サイト&lt;/a&gt; から
+インストーラをダウンロードしてインストールする。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;利用可能状況かどうかの確認&lt;/h2&gt;
+
+&lt;p&gt;Rstudio のコンソールで、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(rmarkdown)  
+pandoc_available()  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;を実行して、TRUE が表示されることを確認する。&lt;/p&gt;
+
+&lt;p&gt;エラーが出る場合は、Pandoc 利用のためのパスの設定に問題がある可能性が高い。&lt;/p&gt;
+
+&lt;h1 id=&quot;r-markdown-&quot;&gt;R markdown の利用&lt;/h1&gt;
+
+&lt;p&gt;Rstudio で新規に R Markdown形式のファイルを作成する。
+ダイアログで作成の際、Document のタイプで Output Format を HTML とする。&lt;/p&gt;
+
+&lt;p&gt;デモのための markdown 文書が表示される。この文書を整形表示するには、エディタツールバーの
+‘Knit HTML’ ボタンを押して、ファイル名を確定すると専用ブラウザが開いて表示が行われる。&lt;/p&gt;
+
+&lt;p&gt;漢字が含まれるテキストの場合、保存する際に漢字コードを尋ねてくるので、’UTF8’ を選択する。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://gihyo.jp/admin/serial/01/r-markdown/&quot;&gt;技術評論社による紹介&lt;/a&gt; ページが参考になる。&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 16 Jun 2016 14:30:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Jupyter notebook での pdf 出力</title>
@@ -1356,217 +1492,6 @@ print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Fri, 13 May 2016 19:00:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>社会情報システム特論の内容</title>
-        <link>http://NaokiMizutani.github.io/tech/python/apache/r/Socilec2016.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/apache/r/Socilec2016.html</guid>
-        <description>&lt;p&gt;Linux(CentOS7) をベースに、データサイエンス方面で有効なツールを種々試行する。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;/tech/centos7/install/CentOS7-install.html&quot;&gt;CentOS7 のインストール&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;/tech/javascript/highcharts/HighCharts-JavaScript.html&quot;&gt;JavaScript パッケージ (HighChars) の試用&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;/tech/python/install/PythonToCentOS7.html&quot;&gt;CentOS7 への Python3 のインストール&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;/tech/centos7/python/jupyter/Jupyter.html&quot;&gt;Jupyter のインストール&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;/tech/python/apache/Apache_Python3.html&quot;&gt;Python を動作させるための Apache の設定&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;データサイエンス向けの環境構築&lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/centos7/r/install/Install-R.html&quot;&gt;R のインストール&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/python/jupyter/r/Jupyter_R.html&quot;&gt;Jupyter で R を動作&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/centos7/python/matplotlib/Python-matplotlib.html&quot;&gt;matplotlib の導入&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/python/r/PypeR.html&quot;&gt;Python から R を動作&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/tech/python/apache/r/Python-R-Webapp.html&quot;&gt;Python から R を動作させる Web アプリ&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/tech/img/structure.png&quot; alt=&quot;画像&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 11 May 2016 08:00:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>JavaScript パッケージ (HighCharts) を使ってグラフを描く</title>
-        <link>http://NaokiMizutani.github.io/tech/javascript/highcharts/HighCharts-JavaScript.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/javascript/highcharts/HighCharts-JavaScript.html</guid>
-        <description>&lt;p&gt;統計分析結果をブラウザ上にグラフとして表示するためのライブラリの試用&lt;/p&gt;
-
-&lt;p&gt;グラフを表示する Javascript ライブラリはいくつもあるようだが、
-その中で &lt;a href=&quot;http://www.highcharts.com/&quot;&gt;Highcharts&lt;/a&gt; というライブラリを試してみた。&lt;/p&gt;
-
-&lt;p&gt;サイトのデモを見ながら、組み込みたい機能を決めて、&lt;a href=&quot;http://www.highcharts.com/download&quot;&gt;ダウンロード&lt;/a&gt; したサンプルプログラムを参考に作りたいグラフに近づけていく。&lt;/p&gt;
-
-&lt;p&gt;最終的には Javascript を生成する方法を考えなければならないが、
-高機能なグラフを比較的簡単に利用できるのはありがたい。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ブラウザで確認するための html ファイル&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;!DOCTYPE HTML&amp;gt;
-&amp;lt;html&amp;gt;
-	&amp;lt;head&amp;gt;
-		&amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=utf-8&amp;quot;&amp;gt;
-		&amp;lt;title&amp;gt;Highcharts Example&amp;lt;/title&amp;gt;
-
-		&amp;lt;script type=&amp;quot;text/javascript&amp;quot; src=&amp;quot;https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-		&amp;lt;style type=&amp;quot;text/css&amp;quot;&amp;gt;
-${demo.css}
-		&amp;lt;/style&amp;gt;
-		&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
-$(function () {
-    $(&amp;#39;#container&amp;#39;).highcharts({
-        chart: {
-            zoomType: &amp;#39;xy&amp;#39;
-        },
-        title: {
-            text: &amp;#39;項目特性曲線&amp;#39;
-        },
-        subtitle: {
-            text: &amp;#39;3 Curves (a, b)&amp;#39;
-        },
-        xAxis: {
-            title: {
-                enabled: true,
-                text: &amp;#39;Ability (θ)&amp;#39;
-            },
-            min: -4.0,
-            max: 4.0,
-            startOnTick: true,
-            endOnTick: true,
-            showLastLabel: true,
-            gridLineWidth: 1
-        },
-        yAxis: {
-            title: {
-                text: &amp;#39;Probability&amp;#39;
-            },
-            min: 0.0,
-            max: 1.0
-        },
-        legend: {
-            layout: &amp;#39;vertical&amp;#39;,
-            align: &amp;#39;left&amp;#39;,
-            verticalAlign: &amp;#39;top&amp;#39;,
-            x: 100,
-            y: 50,
-            floating: true,
-            backgroundColor: (Highcharts.theme &amp;amp;&amp;amp; Highcharts.theme.legendBackgroundColor) || &amp;#39;#FFFFFF&amp;#39;,
-            borderWidth: 1
-        },
-        plotOptions: {
-            series: {
-                marker: {
-                    enabled: false
-                }
-            }
-        },
-        series: [{
-            name: &amp;#39;Data1: (1.0, 0.0)&amp;#39;,
-            color: &amp;#39;rgba(255, 0, 0, 1.0)&amp;#39;,
-            data: 
-            [[-4,0.001], [-3.9,0.001], [-3.8,0.002], [-3.7,0.002], 
-            [-3.6,0.002], [-3.5,0.003], [-3.4,0.003], [-3.3,0.004], 
-            [-3.2,0.004], [-3.1,0.005], [-3,0.006], [-2.9,0.007], 
-            [-2.8,0.008], [-2.7,0.010], [-2.6,0.012], [-2.5,0.014], 
-            [-2.4,0.017], [-2.3,0.020], [-2.2,0.023], [-2.1,0.027], 
-            [-2,0.032], [-1.9,0.038], [-1.8,0.045], [-1.7,0.053], 
-            [-1.6,0.062], [-1.5,0.072], [-1.4,0.085], [-1.3,0.099], 
-            [-1.2,0.115], [-1.1,0.133], [-1,0.154], [-0.9,0.178], 
-            [-0.8,0.204], [-0.7,0.233], [-0.6,0.265], [-0.5,0.299], 
-            [-0.4,0.336], [-0.3,0.375], [-0.2,0.416], [-0.1,0.458], 
-            [0,0.500], [0.1,0.542], [0.2,0.584], [0.3,0.625], 
-            [0.4,0.664], [0.5,0.701], [0.6,0.735], [0.7,0.767], 
-            [0.8,0.796], [0.9,0.822], [1,0.846], [1.1,0.867], 
-            [1.2,0.885], [1.3,0.901], [1.4,0.915], [1.5,0.928], 
-            [1.6,0.938], [1.7,0.947], [1.8,0.955], [1.9,0.962], 
-            [2,0.968], [2.1,0.973], [2.2,0.977], [2.3,0.980], 
-            [2.4,0.983], [2.5,0.986], [2.6,0.988], [2.7,0.990], 
-            [2.8,0.992], [2.9,0.993], [3,0.994], [3.1,0.995], 
-            [3.2,0.996], [3.3,0.996], [3.4,0.997], [3.5,0.997], 
-            [3.6,0.998], [3.7,0.998], [3.8,0.998], [3.9,0.999], 
-            [4,0.999]] 
-        },
-        {
-            name: &amp;#39;Data2: (2.0, 0.5)&amp;#39;,
-            color: &amp;#39;rgba(0, 255, 0, 1.0)&amp;#39;,
-            data: 
-            [[-4,0.000], [-3.9,0.000], [-3.8,0.000], [-3.7,0.000], 
-            [-3.6,0.000], [-3.5,0.000], [-3.4,0.000], [-3.3,0.000], 
-            [-3.2,0.000], [-3.1,0.000], [-3,0.000], [-2.9,0.000], 
-            [-2.8,0.000], [-2.7,0.000], [-2.6,0.000], [-2.5,0.000], 
-            [-2.4,0.000], [-2.3,0.000], [-2.2,0.000], [-2.1,0.000], 
-            [-2,0.000], [-1.9,0.000], [-1.8,0.000], [-1.7,0.001], 
-            [-1.6,0.001], [-1.5,0.001], [-1.4,0.002], [-1.3,0.002], 
-            [-1.2,0.003], [-1.1,0.004], [-1,0.006], [-0.9,0.008], 
-            [-0.8,0.012], [-0.7,0.017], [-0.6,0.023], [-0.5,0.032], 
-            [-0.4,0.045], [-0.3,0.062], [-0.2,0.085], [-0.1,0.115], 
-            [0,0.154], [0.1,0.204], [0.2,0.265], [0.3,0.336], 
-            [0.4,0.416], [0.5,0.500], [0.6,0.584], [0.7,0.664], 
-            [0.8,0.735], [0.9,0.796], [1,0.846], [1.1,0.885], 
-            [1.2,0.915], [1.3,0.938], [1.4,0.955], [1.5,0.968], 
-            [1.6,0.977], [1.7,0.983], [1.8,0.988], [1.9,0.992], 
-            [2,0.994], [2.1,0.996], [2.2,0.997], [2.3,0.998], 
-            [2.4,0.998], [2.5,0.999], [2.6,0.999], [2.7,0.999], 
-            [2.8,1.000], [2.9,1.000], [3,1.000], [3.1,1.000], 
-            [3.2,1.000], [3.3,1.000], [3.4,1.000], [3.5,1.000], 
-            [3.6,1.000], [3.7,1.000], [3.8,1.000], [3.9,1.000], 
-            [4,1.000]] 
-        },
-        {
-            name: &amp;#39;Data3: (3.0, -0.4)&amp;#39;,
-            color: &amp;#39;rgba(0, 0, 255, 1.0)&amp;#39;,
-            data:
-            [[-4,0.000], [-3.9,0.000], [-3.8,0.000], [-3.7,0.000], 
-            [-3.6,0.000], [-3.5,0.000], [-3.4,0.000], [-3.3,0.000], 
-            [-3.2,0.000], [-3.1,0.000], [-3,0.000], [-2.9,0.000], 
-            [-2.8,0.000], [-2.7,0.000], [-2.6,0.000], [-2.5,0.000], 
-            [-2.4,0.000], [-2.3,0.000], [-2.2,0.000], [-2.1,0.000], 
-            [-2,0.000], [-1.9,0.000], [-1.8,0.001], [-1.7,0.001], 
-            [-1.6,0.002], [-1.5,0.004], [-1.4,0.006], [-1.3,0.010], 
-            [-1.2,0.017], [-1.1,0.027], [-1,0.045], [-0.9,0.072], 
-            [-0.8,0.115], [-0.7,0.178], [-0.6,0.265], [-0.5,0.375], 
-            [-0.4,0.500], [-0.3,0.625], [-0.2,0.735], [-0.1,0.822], 
-            [0,0.885], [0.1,0.928], [0.2,0.955], [0.3,0.973], 
-            [0.4,0.983], [0.5,0.990], [0.6,0.994], [0.7,0.996], 
-            [0.8,0.998], [0.9,0.999], [1,0.999], [1.1,1.000], 
-            [1.2,1.000], [1.3,1.000], [1.4,1.000], [1.5,1.000], 
-            [1.6,1.000], [1.7,1.000], [1.8,1.000], [1.9,1.000], 
-            [2,1.000], [2.1,1.000], [2.2,1.000], [2.3,1.000], 
-            [2.4,1.000], [2.5,1.000], [2.6,1.000], [2.7,1.000], 
-            [2.8,1.000], [2.9,1.000], [3,1.000], [3.1,1.000], 
-            [3.2,1.000], [3.3,1.000], [3.4,1.000], [3.5,1.000], 
-            [3.6,1.000], [3.7,1.000], [3.8,1.000], [3.9,1.000], 
-            [4,1.000]]
-        }] 
-    });
-});
-		&amp;lt;/script&amp;gt;
-	&amp;lt;/head&amp;gt;
-	&amp;lt;body&amp;gt;
-&amp;lt;script src=&amp;quot;https://code.highcharts.com/highcharts.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-&amp;lt;script src=&amp;quot;https://code.highcharts.com/modules/exporting.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-
-&amp;lt;div id=&amp;quot;container&amp;quot; style=&amp;quot;min-width: 310px; height: 600px; max-width: 800px; margin: 0 auto&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
-
-	&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Tue, 10 May 2016 08:30:00 +0900</pubDate>
       </item>
     
   </channel>

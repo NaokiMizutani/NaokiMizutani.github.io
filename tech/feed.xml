@@ -5,10 +5,10 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 24 Jun 2016 19:33:42 +0900</pubDate>
+    <pubDate>Fri, 24 Jun 2016 19:36:27 +0900</pubDate>
     
       <item>
-        <title>rChart</title>
+        <title>rChart （R の可視化ライブラリ）の使い方</title>
         <link>http://NaokiMizutani.github.io/tech/r/rcharts/highcharts/Rcharts.html</link>
         <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/r/rcharts/highcharts/Rcharts.html</guid>
         <description>&lt;p&gt;&lt;a href=&quot;http://ramnathv.github.io/rCharts/&quot;&gt;rChart&lt;/a&gt; は、R からグラフを作成し、

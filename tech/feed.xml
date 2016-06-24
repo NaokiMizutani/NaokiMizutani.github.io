@@ -5,7 +5,158 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Thu, 16 Jun 2016 17:28:09 +0900</pubDate>
+    <pubDate>Fri, 24 Jun 2016 16:50:00 +0900</pubDate>
+    
+      <item>
+        <title>rChart</title>
+        <link>http://NaokiMizutani.github.io/tech/r/rcharts/highcharts/Rcharts.html</link>
+        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/r/rcharts/highcharts/Rcharts.html</guid>
+        <description>&lt;p&gt;&lt;a href=&quot;http://ramnathv.github.io/rCharts/&quot;&gt;rChart&lt;/a&gt; は、R からグラフを作成し、
+特にブラウザ上に表示することを可能にする可視化ライブラリである。
+R から代表的な javascript 可視化ライブラリ（Highcharts, Polychart, NVD3 など）を 
+呼び出すインタフェース的役割を担う。
+rCharts パッケージを利用する方法について解説する。&lt;/p&gt;
+
+&lt;h2 id=&quot;rcharts-&quot;&gt;rCharts のインストール&lt;/h2&gt;
+
+&lt;p&gt;rCharts は github に公開されており、 CRAN で管理されていないので、 devtools パッケージを
+用いて github からインストールする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(devtools)
+install_github(&#39;rCharts&#39;, &#39;ramnathv&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;rcharts--1&quot;&gt;rCharts のデモ&lt;/h2&gt;
+
+&lt;p&gt;rCharts のサイトに掲載されているデモプログラムを４種示す。
+R コンソールで rCharts ライブラリを読み込んで、下記コードをタイプするとグラフがブラウザに表示される。&lt;/p&gt;
+
+&lt;p&gt;・デモ１&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;names(iris) = gsub(&quot;\\.&quot;, &quot;&quot;, names(iris))
+rPlot(SepalLength ~ SepalWidth | Species, data = iris, color = &#39;Species&#39;, type = &#39;point&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;・デモ２&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hair_eye = as.data.frame(HairEyeColor)
+rPlot(Freq ~ Hair | Eye, color = &#39;Eye&#39;, data = hair_eye, type = &#39;bar&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;・NVD3 を使ったデモ&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hair_eye_male &amp;lt;- subset(as.data.frame(HairEyeColor), Sex == &quot;Male&quot;)
+n1 &amp;lt;- nPlot(Freq ~ Hair, group = &quot;Eye&quot;, data = hair_eye_male, type = &quot;multiBarChart&quot;)
+n1$show()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;・Highcharts を使ったデモ&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;h1 &amp;lt;- hPlot(x = &quot;Wr.Hnd&quot;, y = &quot;NW.Hnd&quot;, data = MASS::survey, type = c(&quot;line&quot;, 
+    &quot;bubble&quot;, &quot;scatter&quot;), group = &quot;Clap&quot;, size = &quot;Age&quot;)
+h1$show()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;rcharts--2&quot;&gt;rCharts ギャラリー、サンプルプログラム&lt;/h2&gt;
+
+&lt;p&gt;rCharts はグラフ描画のために Javascript グラフ描画パッケージを用いるが、
+幾つかのグラフ描画 Javascript パッケージの中から利用したいものを選択して利用する。&lt;/p&gt;
+
+&lt;p&gt;まず、 &lt;a href=&quot;http://rcharts.io/gallery/&quot;&gt;rCharts のギャラリー・ページ&lt;/a&gt; には、
+多数のグラフサンプルが掲載されており、どのようなグラフが描画できるか確認できる。&lt;/p&gt;
+
+&lt;p&gt;また、利用したいグラフ描画パッケージごとにサンプルプログラムが
+&lt;a href=&quot;https://github.com/ramnathv/rCharts/tree/master/inst/libraries&quot;&gt;Github, rChart サイト&lt;/a&gt; に
+公開されている。&lt;/p&gt;
+
+&lt;h2 id=&quot;rchartshighcharts-&quot;&gt;rCharts/HighCharts サンプルプログラム&lt;/h2&gt;
+
+&lt;p&gt;Javascript グラフライブラリの中で、評価の高い &lt;a href=&quot;http://www.highcharts.com/&quot;&gt;HighCharts&lt;/a&gt; で
+描くことを前提に rCharts の利用を試みる。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# rCharts サンプルプログラム
+
+# rCharts 利用の際にはライブラリ読み込みを行う。
+
+require(&amp;quot;rCharts&amp;quot;)
+
+# sin曲線と cos曲線をグラフに表示することを目標とする。
+# それぞれのデータを作成するために、
+# まず x 座標の数列を作成して変数 xdata に入れるとともに、
+# その個数を変数 nsize に入れる。
+
+xdata &amp;lt;- seq(-1.0, 7.01, by=0.1)
+nsize &amp;lt;- length(xdata)
+
+# x の値を示す数列データ xdata のそれぞれの値に対応する 
+# sin(x) の値でできた数列データを sindata, 
+# xdata のそれぞれの値に対応する cos(x) の値でできた数列データを
+# cosdata とする。
+
+sindata &amp;lt;- sin(xdata)
+cosdata &amp;lt;- cos(xdata)
+
+# プロットするためのデータを data.frame 形式で作成する。
+# sin曲線上の (x, y) の値を nsize 個、cos曲線上の (x, y) の値を nsize 個、
+# そして、それぞれの前に sin データか cos データかを示すラベルをつけ、
+# それらを結合させてデータフレームを作成する。
+# データフレーム data の内容イメージを後に表として示す。
+
+data &amp;lt;- rbind( data.frame(type=rep(&amp;quot;sin&amp;quot;, nsize), x = xdata, y = sindata),
+              data.frame(type=rep(&amp;quot;cos&amp;quot;, nsize), x = xdata, y = cosdata) )
+
+# データフレーム data の x, y を、HighCharts によってグラフ化する。
+# 各種の詳細設定を指定は、HighCharts での Javascript の形式を下記のように書き換えて指定する。
+
+p &amp;lt;- hPlot(y~x, group=&amp;quot;type&amp;quot;, data=data, type = &amp;#39;line&amp;#39;, title = &amp;#39;三角関数&amp;#39;, subtitle = &amp;#39;rCharts/HighCharts Demo&amp;#39;)
+p$chart(zoomType = &amp;quot;xy&amp;quot;)
+p$exporting(enabled = T)
+p$xAxis(title = list(text = &amp;quot;x&amp;quot;), min = -1.0, max = 7.0, gridLineWidth = 1)
+p$yAxis(title = list(text = &amp;quot;y = sin(x), y = cos(x)&amp;quot;), min = -1.2, max = 1.2, gridLineWidth = 1)
+p$plotOptions(line = list(marker = list(enabled = F), enableMouseTracking = F))
+p$legend(align = &amp;#39;right&amp;#39;, verticalAlign = &amp;#39;middle&amp;#39;, layout = &amp;#39;vertical&amp;#39;)
+p$show()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;データフレーム data の内容イメージは下記の表のとおりである。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;type&lt;/th&gt;
+      &lt;th&gt;x&lt;/th&gt;
+      &lt;th&gt;y&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;“sin”&lt;/td&gt;
+      &lt;td&gt;-1.0&lt;/td&gt;
+      &lt;td&gt;-0.345&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;“cos”&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://news.infoseek.co.jp/article/codezine_7383/&quot;&gt;rCharts の簡単な解説&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://rstudio-pubs-static.s3.amazonaws.com/12409_1fe45c5349a64f05ac602405205aa7d2.html&quot;&gt;rCharts/HighCharts の実例&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 24 Jun 2016 08:00:00 +0900</pubDate>
+      </item>
     
       <item>
         <title>Shiny Server のインストールと運用</title>
@@ -1406,92 +1557,6 @@ application = AppSample()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Fri, 13 May 2016 20:00:00 +0900</pubDate>
-      </item>
-    
-      <item>
-        <title>HTML生成のための Jinja2 の導入</title>
-        <link>http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2.html</link>
-        <guid isPermaLink="true">http://NaokiMizutani.github.io/tech/python/jinja2/Python3-Jinja2.html</guid>
-        <description>&lt;p&gt;ダイナミックなページを Python を用いて作成することを考えると、
-労力を減らすためにテンプレートエンジンやフレームワークを導入するのが
-得策と考えられる。
-ここでは、Python 用のテンプレートエンジンとして、利用者が多そうな Jinja2 を試す。&lt;/p&gt;
-
-&lt;p&gt;Python用のテンプレートエンジンとして、&lt;br /&gt;
-* 標準モジュールとしての string.Template（&lt;a href=&quot;http://coreblog.org/ats/stuff/minpy_web/09/03.html&quot;&gt;みんなのPython Web編&lt;/a&gt; に解説）&lt;br /&gt;
-* &lt;a href=&quot;http://jinja.pocoo.org/&quot;&gt;jinja2&lt;/a&gt;&lt;br /&gt;
-などがある。&lt;/p&gt;
-
-&lt;p&gt;Webアプリケーション・フレームワークとしては、&lt;br /&gt;
-* &lt;a href=&quot;https://www.djangoproject.com/&quot;&gt;Django&lt;/a&gt;  （ &lt;a href=&quot;http://djangoproject.jp/&quot;&gt;DjangoProject.jp&lt;/a&gt; には日本語のドキュメンテーションも充実している）&lt;br /&gt;
-* &lt;a href=&quot;http://bottlepy.org/docs/dev/index.html&quot;&gt;Bottle&lt;/a&gt;&lt;br /&gt;
-などがある。
-また、Pythonサイトには、&lt;a href=&quot;https://wiki.python.org/moin/WebFrameworks&quot;&gt;フレームワークの一覧&lt;/a&gt; も掲載されている。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;jinja2-&quot;&gt;Jinja2 のインストール&lt;/h2&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# pip3 install jinja2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;jinja2-hello-world&quot;&gt;Jinja2 の利用（Hello world）&lt;/h2&gt;
-&lt;p&gt;Python ターミナルで下記を実行すると、テンプレートとしての ‘Hello ‘ の  のところに、値 ‘World’ がレンダリングされ、戻り値 ‘Hello World’ を得る。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;from jinja2 import Template
-template = Template(&amp;#39;Hello {{ name }}!&amp;#39;)
-template.render(name=&amp;#39;World&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;この機能を使って、HTML の枠組みの中の特定箇所に Python プログラムの結果を
-流し込むことにより、得たい HTML を容易に生成することができる。&lt;/p&gt;
-
-&lt;h2 id=&quot;jinja2--1&quot;&gt;Jinja2 によるテンプレートの利用&lt;/h2&gt;
-
-&lt;p&gt;下記ファイル（data.csv, template.txt, jinja2test.py） を同一ディレクトリにおいて、
-jinja2test.py を実行すると、template.txt に指定された形式で data.csv の内容が整形されて
-出力される。&lt;/p&gt;
-
-&lt;p&gt;— data.csv&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;西暦年,和暦年,干支,干支の読み
-西暦2008年,平成20年,子年,ねずみどし
-西暦2009年,平成21年,丑年,うしどし
-西暦2010年,平成22年,寅年,とらどし
-西暦2011年,平成23年,卯年,うさぎどし
-西暦2012年,平成24年,辰年,たつどし
-西暦2013年,平成25年,巳年,みどし
-西暦2014年,平成26年,午年,うまどし
-西暦2015年,平成27年,未年,ひつじどし
-西暦2016年,平成28年,申年,さるどし
-西暦2017年,平成29年,酉年,とりどし
-西暦2018年,平成30年,戌年,いぬどし
-西暦2019年,平成31年,亥年,いのししどし&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;— template.txt&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;----- This is a test. -----
-{% for data in dictlist %}{{ loop.index }}: {{ data.year_w }} ({{ data.year_j }}) ： {{ data.eto }} ({{ data.eto_yomi }})
-{% endfor %}----- The test ended. -----&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;— jinja2test.py&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import csv
-from jinja2 import Environment, FileSystemLoader
-env = Environment(loader=FileSystemLoader(&amp;#39;./&amp;#39;, encoding=&amp;#39;utf8&amp;#39;))
-template = env.get_template(&amp;#39;template.txt&amp;#39;)
-
-dictlist = []
-with open(&amp;#39;data.csv&amp;#39;, &amp;#39;r&amp;#39;) as f:
-    reader = csv.reader(f)
-    header = next(reader)
-    for row in reader:
-        dictlist.append({&amp;#39;year_w&amp;#39;: row[0], &amp;#39;year_j&amp;#39;: row[1], &amp;#39;eto&amp;#39;: row[2], &amp;#39;eto_yomi&amp;#39;: row[3] })
-
-text = template.render({&amp;#39;dictlist&amp;#39;: dictlist})
-
-print(text)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Fri, 13 May 2016 19:00:00 +0900</pubDate>
       </item>
     
   </channel>

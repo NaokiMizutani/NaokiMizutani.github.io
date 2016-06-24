@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>rChart | N.Mizutani</title>
+	<meta name="description" content="rChart は、R からグラフを作成し、特にブラウザ上に表示することを可能にする可視化ライブラリである。R から代表的な javascript 可視化ライブラリ（Highcharts, Polychart, NVD3 など）を 呼び出すインタフェース的役割を担う。rCharts パッケージを利用する方法について...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/tech/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/tech/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="http://NaokiMizutani.github.io/tech/r/rcharts/highcharts/Rcharts.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="N.Mizutani" href="http://NaokiMizutani.github.io/tech/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/tech/">
+			<img class="avatar" src="/tech/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/tech/">N.Mizutani</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/tech/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/NaokiMizutani" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/twitter" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/tech/')">
+    <h1 class="title">rChart</h1>
+    <p class="meta">
+    June 24, 2016
+    
+    </p>
+  </header>
+  <section class="post-content"><p><a href="http://ramnathv.github.io/rCharts/">rChart</a> は、R からグラフを作成し、
+特にブラウザ上に表示することを可能にする可視化ライブラリである。
+R から代表的な javascript 可視化ライブラリ（Highcharts, Polychart, NVD3 など）を 
+呼び出すインタフェース的役割を担う。
+rCharts パッケージを利用する方法について解説する。</p>
+
+<h2 id="rcharts-">rCharts のインストール</h2>
+
+<p>rCharts は github に公開されており、 CRAN で管理されていないので、 devtools パッケージを
+用いて github からインストールする。</p>
+
+<pre><code>require(devtools)
+install_github('rCharts', 'ramnathv')
+</code></pre>
+
+<h2 id="rcharts--1">rCharts のデモ</h2>
+
+<p>rCharts のサイトに掲載されているデモプログラムを４種示す。
+R コンソールで rCharts ライブラリを読み込んで、下記コードをタイプするとグラフがブラウザに表示される。</p>
+
+<p>・デモ１</p>
+
+<pre><code>names(iris) = gsub("\\.", "", names(iris))
+rPlot(SepalLength ~ SepalWidth | Species, data = iris, color = 'Species', type = 'point')
+</code></pre>
+
+<p>・デモ２</p>
+
+<pre><code>hair_eye = as.data.frame(HairEyeColor)
+rPlot(Freq ~ Hair | Eye, color = 'Eye', data = hair_eye, type = 'bar')
+</code></pre>
+
+<p>・NVD3 を使ったデモ</p>
+
+<pre><code>hair_eye_male &lt;- subset(as.data.frame(HairEyeColor), Sex == "Male")
+n1 &lt;- nPlot(Freq ~ Hair, group = "Eye", data = hair_eye_male, type = "multiBarChart")
+n1$show()
+</code></pre>
+
+<p>・Highcharts を使ったデモ</p>
+
+<pre><code>h1 &lt;- hPlot(x = "Wr.Hnd", y = "NW.Hnd", data = MASS::survey, type = c("line", 
+    "bubble", "scatter"), group = "Clap", size = "Age")
+h1$show()
+</code></pre>
+
+<h2 id="rcharts--2">rCharts ギャラリー、サンプルプログラム</h2>
+
+<p>rCharts はグラフ描画のために Javascript グラフ描画パッケージを用いるが、
+幾つかのグラフ描画 Javascript パッケージの中から利用したいものを選択して利用する。</p>
+
+<p>まず、 <a href="http://rcharts.io/gallery/">rCharts のギャラリー・ページ</a> には、
+多数のグラフサンプルが掲載されており、どのようなグラフが描画できるか確認できる。</p>
+
+<p>また、利用したいグラフ描画パッケージごとにサンプルプログラムが
+<a href="https://github.com/ramnathv/rCharts/tree/master/inst/libraries">Github, rChart サイト</a> に
+公開されている。</p>
+
+<h2 id="rchartshighcharts-">rCharts/HighCharts サンプルプログラム</h2>
+
+<p>Javascript グラフライブラリの中で、評価の高い <a href="http://www.highcharts.com/">HighCharts</a> で
+描くことを前提に rCharts の利用を試みる。</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"># rCharts サンプルプログラム
+
+# rCharts 利用の際にはライブラリ読み込みを行う。
+
+require(&quot;rCharts&quot;)
+
+# sin曲線と cos曲線をグラフに表示することを目標とする。
+# それぞれのデータを作成するために、
+# まず x 座標の数列を作成して変数 xdata に入れるとともに、
+# その個数を変数 nsize に入れる。
+
+xdata &lt;- seq(-1.0, 7.01, by=0.1)
+nsize &lt;- length(xdata)
+
+# x の値を示す数列データ xdata のそれぞれの値に対応する 
+# sin(x) の値でできた数列データを sindata, 
+# xdata のそれぞれの値に対応する cos(x) の値でできた数列データを
+# cosdata とする。
+
+sindata &lt;- sin(xdata)
+cosdata &lt;- cos(xdata)
+
+# プロットするためのデータを data.frame 形式で作成する。
+# sin曲線上の (x, y) の値を nsize 個、cos曲線上の (x, y) の値を nsize 個、
+# そして、それぞれの前に sin データか cos データかを示すラベルをつけ、
+# それらを結合させてデータフレームを作成する。
+# データフレーム data の内容イメージを後に表として示す。
+
+data &lt;- rbind( data.frame(type=rep(&quot;sin&quot;, nsize), x = xdata, y = sindata),
+              data.frame(type=rep(&quot;cos&quot;, nsize), x = xdata, y = cosdata) )
+
+# データフレーム data の x, y を、HighCharts によってグラフ化する。
+# 各種の詳細設定を指定は、HighCharts での Javascript の形式を下記のように書き換えて指定する。
+
+p &lt;- hPlot(y~x, group=&quot;type&quot;, data=data, type = &#39;line&#39;, title = &#39;三角関数&#39;, subtitle = &#39;rCharts/HighCharts Demo&#39;)
+p$chart(zoomType = &quot;xy&quot;)
+p$exporting(enabled = T)
+p$xAxis(title = list(text = &quot;x&quot;), min = -1.0, max = 7.0, gridLineWidth = 1)
+p$yAxis(title = list(text = &quot;y = sin(x), y = cos(x)&quot;), min = -1.2, max = 1.2, gridLineWidth = 1)
+p$plotOptions(line = list(marker = list(enabled = F), enableMouseTracking = F))
+p$legend(align = &#39;right&#39;, verticalAlign = &#39;middle&#39;, layout = &#39;vertical&#39;)
+p$show()</code></pre></figure>
+
+<p>データフレーム data の内容イメージは下記の表のとおりである。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>type</th>
+      <th>x</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>“sin”</td>
+      <td>-1.0</td>
+      <td>-0.345</td>
+    </tr>
+    <tr>
+      <td>:</td>
+      <td>:</td>
+      <td>:</td>
+    </tr>
+    <tr>
+      <td>“cos”</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>:</td>
+      <td>:</td>
+      <td>:</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="http://news.infoseek.co.jp/article/codezine_7383/">rCharts の簡単な解説</a></p>
+
+<p><a href="http://rstudio-pubs-static.s3.amazonaws.com/12409_1fe45c5349a64f05ac602405205aa7d2.html">rCharts/HighCharts の実例</a></p>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    
+<script src="/tech/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

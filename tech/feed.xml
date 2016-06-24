@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 24 Jun 2016 16:50:00 +0900</pubDate>
+    <pubDate>Fri, 24 Jun 2016 19:33:42 +0900</pubDate>
     
       <item>
         <title>rChart</title>
@@ -151,7 +151,13 @@ p$show()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://news.infoseek.co.jp/article/codezine_7383/&quot;&gt;rCharts の簡単な解説&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://news.infoseek.co.jp/article/codezine_7383/&quot;&gt;rCharts の簡単な紹介&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://codezine.jp/article/detail/7383&quot;&gt;Codezine への掲載記事&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://tech-sketch.jp/2013/09/datavisualization-with-rcharts.html&quot;&gt;rCharts の解説記事&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://kohske.github.io/ESTRELA/201407/index.html&quot;&gt;rCharts の基礎&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://rstudio-pubs-static.s3.amazonaws.com/12409_1fe45c5349a64f05ac602405205aa7d2.html&quot;&gt;rCharts/HighCharts の実例&lt;/a&gt;&lt;/p&gt;
 </description>

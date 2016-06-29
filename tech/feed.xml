@@ -5,7 +5,7 @@
     <atom:link href="http://NaokiMizutani.github.io/tech/feed.xml" rel="self" type="application/rss+xml"/>
     <link>http://NaokiMizutani.github.io/tech/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 24 Jun 2016 19:36:27 +0900</pubDate>
+    <pubDate>Wed, 29 Jun 2016 16:31:36 +0900</pubDate>
     
       <item>
         <title>rChart （R の可視化ライブラリ）の使い方</title>
@@ -24,6 +24,12 @@ rCharts パッケージを利用する方法について解説する。&lt;/p&gt
 
 &lt;pre&gt;&lt;code&gt;require(devtools)
 install_github(&#39;rCharts&#39;, &#39;ramnathv&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;install_github() でエラーが出る場合、curl(cURL) 関連のツールが未導入であることが原因の可能性がある。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum list installed | grep &#39;curl&#39;
+yum install libcurl, libcurl-devel
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&quot;rcharts--1&quot;&gt;rCharts のデモ&lt;/h2&gt;

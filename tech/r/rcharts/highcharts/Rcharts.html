@@ -153,6 +153,12 @@ rCharts パッケージを利用する方法について解説する。</p>
 install_github('rCharts', 'ramnathv')
 </code></pre>
 
+<p>install_github() でエラーが出る場合、curl(cURL) 関連のツールが未導入であることが原因の可能性がある。</p>
+
+<pre><code>yum list installed | grep 'curl'
+yum install libcurl, libcurl-devel
+</code></pre>
+
 <h2 id="rcharts--1">rCharts のデモ</h2>
 
 <p>rCharts のサイトに掲載されているデモプログラムを４種示す。
